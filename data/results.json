@@ -1,47 +1,47 @@
 {
-  "updated": 1781213623013,
+  "updated": 1781214537577,
   "corpus": 3,
   "hitRadius": 90,
   "leaderboard": [
     {
       "name": "qwen-solo",
       "legendAcc": 0.167,
-      "locateAcc": 0.5,
-      "solveAcc": 0.333,
-      "p50ms": 18191,
-      "avgTokens": 1987,
-      "avgCalls": 1.7,
+      "locateAcc": 0.833,
+      "solveAcc": 0.667,
+      "p50ms": 19680,
+      "avgTokens": 2414,
+      "avgCalls": 2,
       "estPer1000Usd": 0,
       "free": true,
       "errors": 0,
       "n": 3,
       "providers": {
-        "ollama": 5
+        "ollama": 6
       }
     },
     {
       "name": "gemini",
       "legendAcc": 0.278,
-      "locateAcc": 0.389,
+      "locateAcc": 0.611,
       "solveAcc": 0,
-      "p50ms": 5059,
-      "avgTokens": 624,
-      "avgCalls": 1.7,
+      "p50ms": 2329,
+      "avgTokens": 774,
+      "avgCalls": 2,
       "estPer1000Usd": 0,
       "free": true,
       "errors": 0,
       "n": 3,
       "providers": {
-        "gemini-native1": 3,
-        "gemini-native2": 2
+        "gemini-native1": 1,
+        "gemini-native2": 5
       }
     },
     {
       "name": "qwen+moondream",
       "legendAcc": 0.167,
-      "locateAcc": 0.222,
+      "locateAcc": 0.5,
       "solveAcc": 0,
-      "p50ms": 19233,
+      "p50ms": 17122,
       "avgTokens": 1141,
       "avgCalls": 3.7,
       "estPer1000Usd": 2.1333,
@@ -56,9 +56,9 @@
     {
       "name": "moondream-cloud",
       "legendAcc": 0,
-      "locateAcc": 0.111,
+      "locateAcc": 0.389,
       "solveAcc": 0,
-      "p50ms": 3643,
+      "p50ms": 2938,
       "avgTokens": 0,
       "avgCalls": 4,
       "estPer1000Usd": 3.2,
@@ -67,6 +67,22 @@
       "n": 3,
       "providers": {
         "moondream": 12
+      }
+    },
+    {
+      "name": "color-cv",
+      "legendAcc": 0,
+      "locateAcc": 0,
+      "solveAcc": 0,
+      "p50ms": 1688,
+      "avgTokens": 0,
+      "avgCalls": 3.3,
+      "estPer1000Usd": 2.6667,
+      "free": true,
+      "errors": 0,
+      "n": 3,
+      "providers": {
+        "moondream": 10
       }
     }
   ]
