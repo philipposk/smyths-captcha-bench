@@ -1,0 +1,8 @@
+{
+  "configs": ["qwen-solo", "gemini", "qwen+moondream", "moondream-cloud", "color-cv"],
+  "puzzles": [
+    { "id": "cap_p3_doodle_a01_failed", "legend": ["cloud", "train"] },
+    { "id": "cap_p2_doodle_a02_failed", "legend": ["scribble", "paw", "target"] },
+    { "id": "cap_p3_doodle_a02_failed", "legend": ["compass", "horn", "comb"] }
+  ]
+}

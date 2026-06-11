@@ -1,0 +1,20 @@
+{
+  "updated": 0,
+  "source": "9 gentle Tor runs, 2026-06-11 (97 product fetches)",
+  "transport": "tor",
+  "exits_sampled": 9,
+  "clean_exits": 6,
+  "hostile_exits": 3,
+  "clean_pct": 66.7,
+  "scrapes_attempted": 97,
+  "scrapes_success": 88,
+  "success_pct": 90.7,
+  "captcha_detected": 16,
+  "captcha_rate_pct": 16.5,
+  "captcha_solved_live": 0,
+  "solve_rate_live_pct": 0,
+  "hard_blocks": 4,
+  "block_pct": 4.1,
+  "tor_rotations": 20,
+  "note": "On Tor, ~83% of fetches never see a captcha (clean exit = $0). The 16.5% captcha tax is the whole problem. Imperva clears a real browser silently via the reese84/utmvc sensor token — the doodle only fires on LOW-TRUST exits. Datacenter/Tor IPs are the #1 trust killer; residential/mobile proxies + a consistent real-Chrome fingerprint + preserved incap_ses/visid_incap/reese84 cookies should push captcha rate toward ~0."
+}

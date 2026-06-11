@@ -43,7 +43,7 @@
 <body>
 <div class="wrap">
   <h1>Captcha solver — live model bench</h1>
-  <p class="sub">Same saved puzzles, every candidate model. Ranked by how often it clicks the right icons — plus speed and cost. Goal: free / ≤ $0.50 per 1,000.</p>
+  <p class="sub">Same saved puzzles, every candidate model. Ranked by how often it clicks the right icons — plus speed and cost. Goal: free / ≤ $0.50 per 1,000. &middot; <a href="gallery.html">see why they fumbled →</a></p>
 
   <div class="cards">
     <div class="card"><div class="k">Puzzles</div><div class="v" id="corpus">—</div></div>
@@ -53,6 +53,11 @@
   </div>
 
   <div id="board"></div>
+
+  <h2 style="font-size:17px;margin:30px 0 4px">Exit health — the real lever</h2>
+  <p class="sub" style="margin-bottom:14px">The captcha only fires on low-trust connections. Most fetches never see one — so the win is avoiding captchas, not solving them faster.</p>
+  <div class="cards" id="exitcards"></div>
+  <div id="exitnote" class="legend" style="margin-top:0"></div>
 
   <div class="legend">
     <b>solve</b> = every icon in the puzzle clicked correctly · <b>locate</b> = fraction of icons hit ·
@@ -102,7 +107,18 @@ async function load() {
     <thead><tr><th class="rank">#</th><th>model / combo</th><th>solve</th><th>locate</th><th>legend</th><th>p50</th><th>$/1k</th><th></th></tr></thead>
     <tbody>${rows}</tbody></table>`;
 }
+async function loadExits() {
+  let e; try { e = await fetch('data/exits.json?_='+Date.now()).then(r=>r.json()); } catch { return; }
+  const card = (k,v,sub)=>`<div class="card"><div class="k">${k}</div><div class="v">${v}</div>${sub?`<div class="mut" style="font-size:12px;margin-top:2px">${sub}</div>`:''}</div>`;
+  document.getElementById('exitcards').innerHTML =
+    card('Clean exits', (e.clean_pct??'—')+'%', `${e.clean_exits}/${e.exits_sampled} Tor exits`) +
+    card('Captcha rate', (e.captcha_rate_pct??'—')+'%', `${e.captcha_detected}/${e.scrapes_attempted} fetches`) +
+    card('Scrape success', (e.success_pct??'—')+'%', `${e.scrapes_success}/${e.scrapes_attempted}`) +
+    card('Hard blocks', (e.block_pct??'—')+'%', `${e.hard_blocks} of ${e.scrapes_attempted}`);
+  document.getElementById('exitnote').innerHTML = e.note ? `<b>How to reach ~0 captchas:</b> ${e.note}` : '';
+}
 load(); setInterval(load, 60000);
+loadExits(); setInterval(loadExits, 60000);
 </script>
 </body>
 </html>
