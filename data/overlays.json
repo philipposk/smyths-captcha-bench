@@ -1,8 +1,72 @@
 {
-  "configs": ["qwen-solo", "gemini", "qwen+moondream", "moondream-cloud", "color-cv"],
+  "configs": [
+    "qwen-solo",
+    "qwen+moondream",
+    "shape-match",
+    "moondream-cloud",
+    "color-cv",
+    "gemini"
+  ],
   "puzzles": [
-    { "id": "cap_p3_doodle_a01_failed", "legend": ["cloud", "train"] },
-    { "id": "cap_p2_doodle_a02_failed", "legend": ["scribble", "paw", "target"] },
-    { "id": "cap_p3_doodle_a02_failed", "legend": ["compass", "horn", "comb"] }
+    {
+      "id": "cap_p2_doodle_a02_failed",
+      "legend": [
+        "icon1",
+        "icon2",
+        "icon3"
+      ]
+    },
+    {
+      "id": "cap_p3_doodle_a01_failed",
+      "legend": [
+        "icon1",
+        "icon2"
+      ]
+    },
+    {
+      "id": "cap_p3_doodle_a02_failed",
+      "legend": [
+        "icon1",
+        "icon2",
+        "icon3"
+      ]
+    },
+    {
+      "id": "shot01",
+      "legend": [
+        "icon1",
+        "icon2",
+        "icon3"
+      ]
+    },
+    {
+      "id": "shot02",
+      "legend": [
+        "icon1",
+        "icon2"
+      ]
+    },
+    {
+      "id": "shot03",
+      "legend": [
+        "icon1",
+        "icon2"
+      ]
+    },
+    {
+      "id": "shot04",
+      "legend": [
+        "icon1",
+        "icon2"
+      ]
+    },
+    {
+      "id": "shot05",
+      "legend": [
+        "icon1",
+        "icon2",
+        "icon3"
+      ]
+    }
   ]
 }
