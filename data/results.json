@@ -1,8 +1,73 @@
 {
-  "updated": 0,
-  "corpus": 0,
-  "hitRadius": 70,
-  "note": "Waiting for the first bench run. Collect ~50–100 puzzles (run the scraper with CAPTCHA_DUMP_DIR set), then `node bin/bench-solve.js`.",
-  "leaderboard": [],
-  "configs": ["moondream-local", "moondream-cloud", "gemini", "qwen+moondream", "smolvlm+moondream", "qwen-solo"]
+  "updated": 1781213623013,
+  "corpus": 3,
+  "hitRadius": 90,
+  "leaderboard": [
+    {
+      "name": "qwen-solo",
+      "legendAcc": 0.167,
+      "locateAcc": 0.5,
+      "solveAcc": 0.333,
+      "p50ms": 18191,
+      "avgTokens": 1987,
+      "avgCalls": 1.7,
+      "estPer1000Usd": 0,
+      "free": true,
+      "errors": 0,
+      "n": 3,
+      "providers": {
+        "ollama": 5
+      }
+    },
+    {
+      "name": "gemini",
+      "legendAcc": 0.278,
+      "locateAcc": 0.389,
+      "solveAcc": 0,
+      "p50ms": 5059,
+      "avgTokens": 624,
+      "avgCalls": 1.7,
+      "estPer1000Usd": 0,
+      "free": true,
+      "errors": 0,
+      "n": 3,
+      "providers": {
+        "gemini-native1": 3,
+        "gemini-native2": 2
+      }
+    },
+    {
+      "name": "qwen+moondream",
+      "legendAcc": 0.167,
+      "locateAcc": 0.222,
+      "solveAcc": 0,
+      "p50ms": 19233,
+      "avgTokens": 1141,
+      "avgCalls": 3.7,
+      "estPer1000Usd": 2.1333,
+      "free": true,
+      "errors": 0,
+      "n": 3,
+      "providers": {
+        "ollama": 3,
+        "moondream": 8
+      }
+    },
+    {
+      "name": "moondream-cloud",
+      "legendAcc": 0,
+      "locateAcc": 0.111,
+      "solveAcc": 0,
+      "p50ms": 3643,
+      "avgTokens": 0,
+      "avgCalls": 4,
+      "estPer1000Usd": 3.2,
+      "free": true,
+      "errors": 0,
+      "n": 3,
+      "providers": {
+        "moondream": 12
+      }
+    }
+  ]
 }
