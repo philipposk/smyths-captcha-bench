@@ -1,0 +1,8 @@
+{
+  "updated": 0,
+  "corpus": 0,
+  "hitRadius": 70,
+  "note": "Waiting for the first bench run. Collect ~50–100 puzzles (run the scraper with CAPTCHA_DUMP_DIR set), then `node bin/bench-solve.js`.",
+  "leaderboard": [],
+  "configs": ["moondream-local", "moondream-cloud", "gemini", "qwen+moondream", "smolvlm+moondream", "qwen-solo"]
+}

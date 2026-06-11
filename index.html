@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Captcha solver bench — live model ranking</title>
+<meta name="description" content="Live ranking of free/local vision models on the Smyths captcha-solving task: same puzzles, every model, scored on accuracy, speed and cost.">
+<link rel="icon" href="favicon.svg">
+<style>
+  :root { --bg:#0c0e12; --panel:#14171d; --line:#232833; --txt:#e8edf4; --mut:#8b95a7; --good:#4dd4ac; --warn:#f2b441; --bad:#ff6b6b; --accent:#6aa8ff; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--txt); font:15px/1.5 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial; }
+  .wrap { max-width:980px; margin:0 auto; padding:28px 18px 60px; }
+  h1 { font-size:24px; margin:0 0 4px; letter-spacing:-.2px; }
+  .sub { color:var(--mut); margin:0 0 20px; }
+  .mut { color:var(--mut); }
+  .cards { display:flex; gap:12px; flex-wrap:wrap; margin:0 0 22px; }
+  .card { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:14px 16px; min-width:140px; }
+  .card .k { color:var(--mut); font-size:12px; text-transform:uppercase; letter-spacing:.5px; }
+  .card .v { font-size:22px; font-weight:700; margin-top:3px; }
+  table { width:100%; border-collapse:collapse; background:var(--panel); border:1px solid var(--line); border-radius:12px; overflow:hidden; }
+  th,td { padding:11px 12px; text-align:right; border-bottom:1px solid var(--line); white-space:nowrap; }
+  th:first-child,td:first-child { text-align:left; }
+  th { color:var(--mut); font-weight:600; font-size:12px; text-transform:uppercase; letter-spacing:.4px; }
+  tr:last-child td { border-bottom:none; }
+  tbody tr:hover { background:#181c24; }
+  .name { font-weight:600; }
+  .rank { color:var(--mut); width:24px; }
+  .bar { height:7px; border-radius:4px; background:#222; overflow:hidden; display:inline-block; width:84px; vertical-align:middle; margin-left:8px; }
+  .bar > i { display:block; height:100%; background:var(--good); }
+  .pill { display:inline-block; padding:1px 8px; border-radius:999px; font-size:12px; font-weight:600; }
+  .pill.free { background:rgba(77,212,172,.16); color:var(--good); }
+  .pill.paid { background:rgba(242,180,65,.16); color:var(--warn); }
+  .top td { background:rgba(106,168,255,.06); }
+  footer { color:var(--mut); margin-top:26px; font-size:13px; }
+  a { color:var(--accent); text-decoration:none; }
+  a:hover { text-decoration:underline; }
+  .empty { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:30px; text-align:center; color:var(--mut); }
+  .legend { margin-top:14px; font-size:13px; color:var(--mut); }
+  .legend b { color:var(--txt); font-weight:600; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Captcha solver — live model bench</h1>
+  <p class="sub">Same saved puzzles, every candidate model. Ranked by how often it clicks the right icons — plus speed and cost. Goal: free / ≤ $0.50 per 1,000.</p>
+
+  <div class="cards">
+    <div class="card"><div class="k">Puzzles</div><div class="v" id="corpus">—</div></div>
+    <div class="card"><div class="k">Models tested</div><div class="v" id="nmodels">—</div></div>
+    <div class="card"><div class="k">Best solve rate</div><div class="v" id="best">—</div></div>
+    <div class="card"><div class="k">Updated</div><div class="v" id="updated" style="font-size:15px;font-weight:500">—</div></div>
+  </div>
+
+  <div id="board"></div>
+
+  <div class="legend">
+    <b>solve</b> = every icon in the puzzle clicked correctly · <b>locate</b> = fraction of icons hit ·
+    <b>legend</b> = icon names read correctly · <b>p50</b> = median time per puzzle ·
+    <b>$/1k</b> = est. cost per 1,000 puzzles · <b>free</b> = no paid API used.
+    Local models (Moondream / Qwen / SmolVLM) run on your own machine at $0.
+  </div>
+
+  <footer>
+    auto-refreshes every 60s · data pushed as the bench runs ·
+    <a href="https://github.com/philipposk/smyths-scraper">scraper</a> ·
+    <span class="mut">no keys or raw site data are published here</span>
+  </footer>
+</div>
+
+<script>
+const fmtPct = (x) => (x==null ? '—' : (x*100).toFixed(1)+'%');
+const bar = (x) => `<span class="bar"><i style="width:${Math.round((x||0)*100)}%"></i></span>`;
+const ago = (ms) => { const s=Math.round((Date.now()-ms)/1000); if(s<90) return s+'s ago'; const m=Math.round(s/60); if(m<90) return m+'m ago'; return Math.round(m/60)+'h ago'; };
+
+async function load() {
+  let d;
+  try { d = await fetch('data/results.json?_='+Date.now()).then(r=>r.json()); } catch { return; }
+  const board = document.getElementById('board');
+  const lb = d.leaderboard || [];
+  document.getElementById('corpus').textContent = d.corpus ?? '—';
+  document.getElementById('nmodels').textContent = lb.length || (d.configs ? d.configs.length : '—');
+  document.getElementById('updated').textContent = d.updated ? ago(d.updated) : '—';
+  document.getElementById('best').textContent = lb.length ? fmtPct(lb[0].solveAcc) : '—';
+
+  if (!lb.length) {
+    board.innerHTML = `<div class="empty">No results yet.<br>${d.note ? d.note : 'The bench will publish here as soon as it runs over the saved puzzles.'}</div>`;
+    return;
+  }
+  let rows = lb.map((r,i)=>`
+    <tr class="${i===0?'top':''}">
+      <td class="rank">${i+1}</td>
+      <td class="name">${r.name}</td>
+      <td>${fmtPct(r.solveAcc)}</td>
+      <td>${fmtPct(r.locateAcc)}${bar(r.locateAcc)}</td>
+      <td>${fmtPct(r.legendAcc)}</td>
+      <td>${r.p50ms} ms</td>
+      <td>${r.estPer1000Usd ? '$'+r.estPer1000Usd.toFixed(2) : '$0'}</td>
+      <td><span class="pill ${r.free?'free':'paid'}">${r.free?'free':'paid'}</span></td>
+    </tr>`).join('');
+  board.innerHTML = `<table>
+    <thead><tr><th class="rank">#</th><th>model / combo</th><th>solve</th><th>locate</th><th>legend</th><th>p50</th><th>$/1k</th><th></th></tr></thead>
+    <tbody>${rows}</tbody></table>`;
+}
+load(); setInterval(load, 60000);
+</script>
+</body>
+</html>
