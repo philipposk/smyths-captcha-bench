@@ -1,5 +1,5 @@
 {
-  "updated": 1781308243339,
+  "updated": 1781308299292,
   "partial": true,
   "note": "Each arm scraped the same URL sample on its OWN Tor (own exits), in parallel. Arms differ only in the locate method; legend reading is qwen/vlm in all. Aggregate comparison, not a same-captcha test. Captcha counts are solve ATTEMPTS (a method that keeps failing logs several).",
   "arms": [
@@ -7,20 +7,20 @@
       "name": "qwen",
       "label": "qwen3-vl-32b",
       "locate": "vlm",
-      "kind": "vision AI · paid (cheap)",
+      "kind": "vision AI \u00b7 paid (cheap)",
       "partial": true,
-      "fetches": 2198,
-      "success_pct": 29.8,
-      "block_pct": 6,
-      "exits_n": 623,
+      "fetches": 2202,
+      "success_pct": 29.7,
+      "block_pct": 5.9,
+      "exits_n": 625,
       "captchas": {
         "detected": 21,
         "solved": 2,
         "failed": 19
       },
       "solve_rate_pct": 9.5,
-      "rotations": 622,
-      "duration_min": 305.7,
+      "rotations": 624,
+      "duration_min": 306.4,
       "fetches_per_hour": 431,
       "items": [
         {
@@ -54,7 +54,7 @@
       "name": "gemini",
       "label": "gemini-3.1-flash-lite",
       "locate": "vlm",
-      "kind": "vision AI · paid",
+      "kind": "vision AI \u00b7 paid",
       "partial": false,
       "fetches": 3000,
       "success_pct": 90.5,
@@ -111,20 +111,20 @@
       "name": "shape",
       "label": "shape-match",
       "locate": "match",
-      "kind": "computer vision · free locate",
+      "kind": "computer vision \u00b7 free locate",
       "partial": true,
-      "fetches": 2971,
-      "success_pct": 85.3,
+      "fetches": 2979,
+      "success_pct": 85.1,
       "block_pct": 13.3,
-      "exits_n": 284,
+      "exits_n": 286,
       "captchas": {
         "detected": 72,
         "solved": 5,
         "failed": 67
       },
       "solve_rate_pct": 6.9,
-      "rotations": 283,
-      "duration_min": 305.6,
+      "rotations": 285,
+      "duration_min": 306.6,
       "fetches_per_hour": 583,
       "items": [
         {
@@ -169,20 +169,20 @@
       "name": "color",
       "label": "color-cv",
       "locate": "blob",
-      "kind": "computer vision · free locate",
+      "kind": "computer vision \u00b7 free locate",
       "partial": true,
-      "fetches": 2011,
-      "success_pct": 31.2,
+      "fetches": 2017,
+      "success_pct": 31.1,
       "block_pct": 0.6,
-      "exits_n": 558,
+      "exits_n": 561,
       "captchas": {
         "detected": 82,
         "solved": 4,
         "failed": 78
       },
       "solve_rate_pct": 4.9,
-      "rotations": 557,
-      "duration_min": 304.1,
+      "rotations": 560,
+      "duration_min": 305.1,
       "fetches_per_hour": 397,
       "items": [
         {
@@ -219,5 +219,6 @@
         }
       ]
     }
-  ]
+  ],
+  "warning": "\u26a0 This 3k run is INVALID for the qwen-based arms. Running 5 qwen solvers at once rate-limited the shared OpenRouter qwen endpoint (HTTP 429), so qwen / shape-match / color-cv went into a fail-and-rotate spiral \u2014 their numbers here are rate-limit artifacts, NOT real method performance. Only gemini-3.1-flash-lite (a separate endpoint) ran clean. A valid comparison needs the arms run one-at-a-time. The earlier 1k run is the trustworthy ranking."
 }

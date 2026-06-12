@@ -231,7 +231,8 @@ async function load(){
     // best-in-column helpers (higher is better for these)
     const best = (key) => Math.max(...A.map(a=>a[key]==null?-1:a[key]));
     const cell = (a,key,fmt) => `<td class="${a[key]!=null && a[key]===best(key)?'best':''}">${fmt(a[key])}</td>`;
-    runsEl.innerHTML = (runs.partial?`<div style="background:rgba(244,183,64,.1);border:1px solid rgba(244,183,64,.3);color:var(--warn);font-size:12.5px;border-radius:10px;padding:9px 13px;margin-bottom:11px">⚠ Partial smoke run — the arms were stopped early (the free methods got stuck rotating on hostile exits). Numbers are directional, not a full run.</div>`:'') +
+    runsEl.innerHTML = (runs.warning?`<div style="background:rgba(255,106,106,.1);border:1px solid rgba(255,106,106,.4);color:var(--bad);font-size:12.5px;border-radius:10px;padding:10px 13px;margin-bottom:11px;line-height:1.5">${runs.warning}</div>`:'') +
+      (runs.partial&&!runs.warning?`<div style="background:rgba(244,183,64,.1);border:1px solid rgba(244,183,64,.3);color:var(--warn);font-size:12.5px;border-radius:10px;padding:9px 13px;margin-bottom:11px">⚠ Partial smoke run — the arms were stopped early (the free methods got stuck rotating on hostile exits). Numbers are directional, not a full run.</div>`:'') +
       `<table class="cmp"><thead><tr>
         <th>method</th><th>URLs tried</th><th>exits</th><th>captcha tries</th><th>solved</th>
         <th>solve rate</th><th>products scraped</th><th>speed</th></tr></thead><tbody>` +
