@@ -74,9 +74,8 @@
   <h2 class="sec">Captcha rate by day <span class="dim" style="font-size:13px;font-weight:400">· whiskers = 95% CI</span></h2>
   <div id="days" class="days"><div class="empty" style="margin:auto">Day 1 is collecting — results appear here as fetches land.</div></div>
 
-  <h2 class="sec">By region <span class="dim" style="font-size:13px;font-weight:400">· catalogue coverage, not captcha</span></h2>
+  <h2 class="sec">Products parsed by region</h2>
   <div id="regions"></div>
-  <div class="legend" id="regnote"></div>
 
   <h2 class="sec">Exit distribution</h2>
   <div id="exits"></div>
@@ -121,7 +120,6 @@ async function load(){
   if(ov.by_region){
     const rows=Object.entries(ov.by_region).map(([cc,r])=>`<tr><td>${cc.toUpperCase()}</td><td class="num">${(r.attempted||0).toLocaleString()}</td><td class="num">${pct(r.success_pct)}</td></tr>`).join('');
     document.getElementById('regions').innerHTML=`<table><thead><tr><th>Region</th><th>fetches</th><th>products parsed OK</th></tr></thead><tbody>${rows}</tbody></table>`;
-    document.getElementById('regnote').innerHTML='<b>Why no captcha column?</b> The wall depends on the Tor exit’s IP, not the product’s country. One exit fetches every region’s URLs mixed together — so a per-country captcha rate just measures which countries got dealt a bad exit, not the countries themselves. Region only changes how many products parse.';
   }
   if(ov.exits&&ov.exits.windows){
     const e=ov.exits;
