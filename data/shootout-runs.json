@@ -1,5 +1,5 @@
 {
-  "updated": 1781290063128,
+  "updated": 1781290245006,
   "partial": true,
   "note": "Each arm scraped the same URL sample on its OWN Tor (own exits), in parallel. Arms differ only in the locate method; legend reading is qwen/vlm in all. Aggregate comparison, not a same-captcha test. Captcha counts are solve ATTEMPTS (a method that keeps failing logs several).",
   "arms": [
@@ -9,19 +9,19 @@
       "locate": "vlm",
       "kind": "vision AI · paid (cheap)",
       "partial": true,
-      "fetches": 33,
+      "fetches": 68,
       "success_pct": 100,
       "block_pct": 0,
-      "exits_n": 2,
+      "exits_n": 4,
       "captchas": {
         "detected": 0,
         "solved": 0,
         "failed": 0
       },
       "solve_rate_pct": null,
-      "rotations": 1,
-      "duration_min": 2.7,
-      "fetches_per_hour": 740,
+      "rotations": 3,
+      "duration_min": 5.7,
+      "fetches_per_hour": 717,
       "items": []
     },
     {
@@ -30,19 +30,19 @@
       "locate": "vlm",
       "kind": "vision AI · paid",
       "partial": true,
-      "fetches": 26,
-      "success_pct": 100,
+      "fetches": 65,
+      "success_pct": 98.5,
       "block_pct": 0,
-      "exits_n": 2,
+      "exits_n": 4,
       "captchas": {
         "detected": 1,
         "solved": 1,
         "failed": 0
       },
       "solve_rate_pct": 100,
-      "rotations": 1,
-      "duration_min": 2.7,
-      "fetches_per_hour": 587,
+      "rotations": 3,
+      "duration_min": 5.7,
+      "fetches_per_hour": 680,
       "items": [
         {
           "image": "data/shootout/gemini/gemini_doodle_a01_solved.png",
@@ -60,19 +60,19 @@
       "locate": "match",
       "kind": "computer vision · free locate",
       "partial": true,
-      "fetches": 33,
-      "success_pct": 97,
+      "fetches": 65,
+      "success_pct": 96.9,
       "block_pct": 0,
-      "exits_n": 2,
+      "exits_n": 4,
       "captchas": {
         "detected": 0,
         "solved": 0,
         "failed": 0
       },
       "solve_rate_pct": null,
-      "rotations": 1,
-      "duration_min": 2.6,
-      "fetches_per_hour": 750,
+      "rotations": 3,
+      "duration_min": 5.7,
+      "fetches_per_hour": 689,
       "items": []
     },
     {
@@ -81,27 +81,26 @@
       "locate": "blob",
       "kind": "computer vision · free locate",
       "partial": true,
-      "fetches": 0,
-      "success_pct": null,
-      "block_pct": null,
+      "fetches": 2,
+      "success_pct": 0,
+      "block_pct": 100,
       "exits_n": 1,
       "captchas": {
-        "detected": 6,
+        "detected": 14,
         "solved": 0,
-        "failed": 6
+        "failed": 14
       },
       "solve_rate_pct": 0,
       "rotations": 0,
-      "duration_min": 0,
-      "fetches_per_hour": 0,
+      "duration_min": 3.3,
+      "fetches_per_hour": 36,
       "items": [
         {
           "image": "data/shootout/color/color_doodle_a02_failed.png",
           "solved": false,
           "legend": [
-            "apple",
-            "battery",
-            "sword"
+            "ink bottle",
+            "bicycle"
           ]
         },
         {
