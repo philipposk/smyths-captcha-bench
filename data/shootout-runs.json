@@ -1,6 +1,6 @@
 {
-  "updated": 1781289005708,
-  "partial": false,
+  "updated": 1781290063128,
+  "partial": true,
   "note": "Each arm scraped the same URL sample on its OWN Tor (own exits), in parallel. Arms differ only in the locate method; legend reading is qwen/vlm in all. Aggregate comparison, not a same-captcha test. Captcha counts are solve ATTEMPTS (a method that keeps failing logs several).",
   "arms": [
     {
@@ -8,59 +8,48 @@
       "label": "qwen3-vl-32b",
       "locate": "vlm",
       "kind": "vision AI · paid (cheap)",
-      "partial": false,
-      "fetches": 1000,
-      "success_pct": 85.8,
-      "block_pct": 13,
-      "exits_n": 93,
+      "partial": true,
+      "fetches": 33,
+      "success_pct": 100,
+      "block_pct": 0,
+      "exits_n": 2,
       "captchas": {
-        "detected": 3,
-        "solved": 3,
+        "detected": 0,
+        "solved": 0,
         "failed": 0
       },
-      "solve_rate_pct": 100,
-      "rotations": 92,
-      "duration_min": 102.9,
-      "fetches_per_hour": 583,
-      "items": [
-        {
-          "image": "data/shootout/qwen/qwen_doodle_a01_solved.png",
-          "solved": true,
-          "legend": [
-            "sword",
-            "paintbrush",
-            "vhs"
-          ]
-        }
-      ]
+      "solve_rate_pct": null,
+      "rotations": 1,
+      "duration_min": 2.7,
+      "fetches_per_hour": 740,
+      "items": []
     },
     {
       "name": "gemini",
       "label": "gemini-3.1-flash-lite",
       "locate": "vlm",
       "kind": "vision AI · paid",
-      "partial": false,
-      "fetches": 1000,
-      "success_pct": 98.7,
+      "partial": true,
+      "fetches": 26,
+      "success_pct": 100,
       "block_pct": 0,
-      "exits_n": 50,
+      "exits_n": 2,
       "captchas": {
-        "detected": 6,
-        "solved": 6,
+        "detected": 1,
+        "solved": 1,
         "failed": 0
       },
       "solve_rate_pct": 100,
-      "rotations": 49,
-      "duration_min": 92.4,
-      "fetches_per_hour": 650,
+      "rotations": 1,
+      "duration_min": 2.7,
+      "fetches_per_hour": 587,
       "items": [
         {
           "image": "data/shootout/gemini/gemini_doodle_a01_solved.png",
           "solved": true,
           "legend": [
-            "dragonfly",
-            "hammer",
-            "cigarette"
+            "smartphone",
+            "people"
           ]
         }
       ]
@@ -70,92 +59,57 @@
       "label": "shape-match",
       "locate": "match",
       "kind": "computer vision · free locate",
-      "partial": false,
-      "fetches": 1000,
-      "success_pct": 92.9,
-      "block_pct": 5.9,
-      "exits_n": 68,
+      "partial": true,
+      "fetches": 33,
+      "success_pct": 97,
+      "block_pct": 0,
+      "exits_n": 2,
       "captchas": {
-        "detected": 13,
-        "solved": 4,
-        "failed": 9
+        "detected": 0,
+        "solved": 0,
+        "failed": 0
       },
-      "solve_rate_pct": 30.8,
-      "rotations": 76,
-      "duration_min": 103,
-      "fetches_per_hour": 583,
-      "items": [
-        {
-          "image": "data/shootout/shape/shape_doodle_a02_solved.png",
-          "solved": true,
-          "legend": [
-            "alarm clock",
-            "balloon"
-          ]
-        },
-        {
-          "image": "data/shootout/shape/shape_doodle_a01_failed.png",
-          "solved": false,
-          "legend": [
-            "key",
-            "coin",
-            "leaf"
-          ]
-        },
-        {
-          "image": "data/shootout/shape/shape_doodle_a02_failed.png",
-          "solved": false,
-          "legend": [
-            "watering can",
-            "bug"
-          ]
-        }
-      ]
+      "solve_rate_pct": null,
+      "rotations": 1,
+      "duration_min": 2.6,
+      "fetches_per_hour": 750,
+      "items": []
     },
     {
       "name": "color",
       "label": "color-cv",
       "locate": "blob",
       "kind": "computer vision · free locate",
-      "partial": false,
-      "fetches": 1000,
-      "success_pct": 85.8,
-      "block_pct": 13.2,
-      "exits_n": 94,
+      "partial": true,
+      "fetches": 0,
+      "success_pct": null,
+      "block_pct": null,
+      "exits_n": 1,
       "captchas": {
-        "detected": 18,
-        "solved": 2,
-        "failed": 16
+        "detected": 6,
+        "solved": 0,
+        "failed": 6
       },
-      "solve_rate_pct": 11.1,
-      "rotations": 109,
-      "duration_min": 119,
-      "fetches_per_hour": 504,
+      "solve_rate_pct": 0,
+      "rotations": 0,
+      "duration_min": 0,
+      "fetches_per_hour": 0,
       "items": [
         {
           "image": "data/shootout/color/color_doodle_a02_failed.png",
           "solved": false,
           "legend": [
-            "pedestrian crossing",
-            "coin",
-            "hammer"
+            "apple",
+            "battery",
+            "sword"
           ]
         },
         {
           "image": "data/shootout/color/color_doodle_a01_failed.png",
           "solved": false,
           "legend": [
-            "pedestal",
-            "coin",
-            "hammer"
-          ]
-        },
-        {
-          "image": "data/shootout/color/color_doodle_a01_solved.png",
-          "solved": true,
-          "legend": [
-            "coin purse",
-            "rooster"
+            "ink bottle",
+            "bicycle"
           ]
         }
       ]
