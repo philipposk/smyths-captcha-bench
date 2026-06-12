@@ -114,6 +114,7 @@
   </div>
 
   <h2 class="sec">Head-to-head <span class="dim" style="font-size:13px;font-weight:400">· same <span id="npz">37</span> real puzzles</span></h2>
+  <p class="secsub">Three rungs, hardest last: <b>① hit each icon</b> = of every individual doodle, how many it clicked near · <b>② found all icons / puzzle</b> = puzzles where it located <i>every</i> doodle (order ignored) · <b>③ in the right order = solved</b>, the only one that actually passes the captcha.</p>
   <div class="three" id="cards"></div>
   <p class="dim" style="font-size:12px;margin:8px 2px 0" id="benchnote"></p>
 
@@ -166,8 +167,9 @@ async function load(){
     return `<div class="mc ${m.cls}"><span class="tag">${m.tag}</span>
       <h3>${m.label}</h3><div class="kind">${m.kind}</div>
       <div class="big">${pct(r.orderedSolveAcc)}<small> solved</small></div>
-      <div class="row"><span>found the doodles</span><b>${pct(r.solveAcc)}</b></div>
-      <div class="row"><span>located on photo</span><b>${pct(r.locateAcc)}</b></div>
+      <div class="row"><span>① hit each icon</span><b>${pct(r.locateAcc)}</b></div>
+      <div class="row"><span>② found all icons / puzzle</span><b>${pct(r.solveAcc)}</b></div>
+      <div class="row"><span>③ …in the right order</span><b>${pct(r.orderedSolveAcc)}</b></div>
       <div class="row"><span>speed (median)</span><b>${ms(r.p50ms)}</b></div>
       <div class="row"><span>cost / 1,000</span><b>${usd(r.estPer1000Usd)}</b></div>
       <div class="verdict">${m.verdict}</div></div>`;
@@ -182,9 +184,9 @@ async function load(){
     const r = by[m.key]||{}; const f=r.solveAcc||0, s=r.orderedSolveAcc||0; const leak=Math.max(0,f-s);
     return `<div class="grow"><div class="gname">${m.label}</div><div class="bars">
       <div class="bar found"><div class="fill" style="width:${(f/maxV*100).toFixed(1)}%"></div></div>
-      <div class="barlbl"><span>found the doodles</span><span>${pct(f)}</span></div>
+      <div class="barlbl"><span>② found all icons (any order)</span><span>${pct(f)}</span></div>
       <div class="bar solv"><div class="fill" style="width:${(s/maxV*100).toFixed(1)}%"></div></div>
-      <div class="barlbl"><span>actually solved (right order)</span><span>${pct(s)}</span></div>
+      <div class="barlbl"><span>③ solved (right order)</span><span>${pct(s)}</span></div>
       ${leak>0.02?`<div class="leak">↳ ${pct(leak)} found but clicked in the wrong order — pure ordering loss</div>`:''}
     </div></div>`;
   }).join('');
