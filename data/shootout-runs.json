@@ -1,5 +1,5 @@
 {
-  "updated": 1781290426759,
+  "updated": 1781290608784,
   "partial": true,
   "note": "Each arm scraped the same URL sample on its OWN Tor (own exits), in parallel. Arms differ only in the locate method; legend reading is qwen/vlm in all. Aggregate comparison, not a same-captcha test. Captcha counts are solve ATTEMPTS (a method that keeps failing logs several).",
   "arms": [
@@ -9,19 +9,19 @@
       "locate": "vlm",
       "kind": "vision AI · paid (cheap)",
       "partial": true,
-      "fetches": 96,
+      "fetches": 135,
       "success_pct": 100,
       "block_pct": 0,
-      "exits_n": 5,
+      "exits_n": 7,
       "captchas": {
         "detected": 0,
         "solved": 0,
         "failed": 0
       },
       "solve_rate_pct": null,
-      "rotations": 4,
-      "duration_min": 8.8,
-      "fetches_per_hour": 658,
+      "rotations": 6,
+      "duration_min": 11.8,
+      "fetches_per_hour": 688,
       "items": []
     },
     {
@@ -30,19 +30,19 @@
       "locate": "vlm",
       "kind": "vision AI · paid",
       "partial": true,
-      "fetches": 100,
-      "success_pct": 99,
+      "fetches": 139,
+      "success_pct": 99.3,
       "block_pct": 0,
-      "exits_n": 6,
+      "exits_n": 7,
       "captchas": {
         "detected": 1,
         "solved": 1,
         "failed": 0
       },
       "solve_rate_pct": 100,
-      "rotations": 5,
-      "duration_min": 8.7,
-      "fetches_per_hour": 687,
+      "rotations": 6,
+      "duration_min": 11.8,
+      "fetches_per_hour": 709,
       "items": [
         {
           "image": "data/shootout/gemini/gemini_doodle_a01_solved.png",
@@ -60,19 +60,19 @@
       "locate": "match",
       "kind": "computer vision · free locate",
       "partial": true,
-      "fetches": 98,
-      "success_pct": 96.9,
+      "fetches": 129,
+      "success_pct": 97.7,
       "block_pct": 0,
-      "exits_n": 5,
+      "exits_n": 7,
       "captchas": {
         "detected": 0,
         "solved": 0,
         "failed": 0
       },
       "solve_rate_pct": null,
-      "rotations": 4,
-      "duration_min": 8.7,
-      "fetches_per_hour": 676,
+      "rotations": 6,
+      "duration_min": 11.7,
+      "fetches_per_hour": 660,
       "items": []
     },
     {
@@ -81,36 +81,35 @@
       "locate": "blob",
       "kind": "computer vision · free locate",
       "partial": true,
-      "fetches": 3,
+      "fetches": 4,
       "success_pct": 0,
       "block_pct": 100,
       "exits_n": 2,
       "captchas": {
-        "detected": 20,
+        "detected": 27,
         "solved": 0,
-        "failed": 20
+        "failed": 27
       },
       "solve_rate_pct": 0,
       "rotations": 1,
-      "duration_min": 7.1,
-      "fetches_per_hour": 25,
+      "duration_min": 8.8,
+      "fetches_per_hour": 27,
       "items": [
-        {
-          "image": "data/shootout/color/color_doodle_a02_failed.png",
-          "solved": false,
-          "legend": [
-            "camera",
-            "guitar",
-            "fan"
-          ]
-        },
         {
           "image": "data/shootout/color/color_doodle_a01_failed.png",
           "solved": false,
           "legend": [
-            "pot",
-            "fish",
-            "leaf"
+            "dog",
+            "person"
+          ]
+        },
+        {
+          "image": "data/shootout/color/color_doodle_a02_failed.png",
+          "solved": false,
+          "legend": [
+            "bow",
+            "scissors",
+            "person"
           ]
         }
       ]
