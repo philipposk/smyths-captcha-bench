@@ -121,7 +121,7 @@ async function load(){
   if(ov.by_region){
     const rows=Object.entries(ov.by_region).map(([cc,r])=>`<tr><td>${cc.toUpperCase()}</td><td class="num">${(r.attempted||0).toLocaleString()}</td><td class="num">${pct(r.success_pct)}</td></tr>`).join('');
     document.getElementById('regions').innerHTML=`<table><thead><tr><th>Region</th><th>fetches</th><th>products parsed OK</th></tr></thead><tbody>${rows}</tbody></table>`;
-    document.getElementById('regnote').innerHTML='<b>No captcha column here on purpose.</b> The captcha wall is a property of the <b>Tor exit IP</b>, not the country — one exit fetches a mix of every region’s URLs. Splitting captcha by country would just scatter a single hostile exit across whatever countries happened to be in its window (and indeed block% would equal captcha%, since walled fetches don’t recover). Captcha hostility is measured per-exit in the cards above; region only legitimately affects how many products parse.';
+    document.getElementById('regnote').innerHTML='<b>Why no captcha column?</b> The wall depends on the Tor exit’s IP, not the product’s country. One exit fetches every region’s URLs mixed together — so a per-country captcha rate just measures which countries got dealt a bad exit, not the countries themselves. Region only changes how many products parse.';
   }
   if(ov.exits&&ov.exits.windows){
     const e=ov.exits;
