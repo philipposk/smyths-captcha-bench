@@ -74,6 +74,12 @@
   table.cmp tr:last-child td{border-bottom:none}
   table.cmp td .mname{font-weight:700} table.cmp td .mloc{font-size:11px;color:var(--dim)}
   table.cmp .best{color:var(--good);font-weight:750}
+  #runs{position:relative}
+  tr.gemini-hl td{background:rgba(122,169,255,.10)}
+  .racenote{position:absolute;z-index:25;width:226px;background:#171b23;border:2px solid var(--accent);border-radius:13px;padding:10px 12px;font-family:"Comic Sans MS","Comic Sans",cursive;font-size:12.5px;line-height:1.42;color:var(--txt);box-shadow:0 12px 30px rgba(0,0,0,.6);transform:rotate(-1.3deg)}
+  .racenote b{color:var(--accent)}
+  .racenote:after{content:"";position:absolute;left:-15px;top:50%;transform:translateY(-50%);border:8px solid transparent;border-right-color:var(--accent)}
+  .racenote .rx{position:absolute;top:-10px;right:-10px;width:20px;height:20px;border-radius:50%;background:var(--accent);color:#0b0d11;border:none;font:700 12px/20px ui-sans-serif;text-align:center;cursor:pointer}
   .armcap{margin-top:16px}
   .armcap h4{font-size:13px;margin:0 0 8px;font-weight:700} .armcap h4 .loc{color:var(--dim);font-weight:400;font-size:12px}
   .strip{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:9px}
@@ -218,9 +224,9 @@ async function load(){
     const cell = (a,key,fmt) => `<td class="${a[key]!=null && a[key]===best(key)?'best':''}">${fmt(a[key])}</td>`;
     runsEl.innerHTML = (runs.partial?`<div style="background:rgba(244,183,64,.1);border:1px solid rgba(244,183,64,.3);color:var(--warn);font-size:12.5px;border-radius:10px;padding:9px 13px;margin-bottom:11px">⚠ Partial smoke run — the arms were stopped early (the free methods got stuck rotating on hostile exits). Numbers are directional, not a full run.</div>`:'') +
       `<table class="cmp"><thead><tr>
-        <th>method</th><th>URLs</th><th>exits</th><th>captcha tries</th><th>solved</th>
-        <th>solve rate</th><th>products OK</th><th>speed</th></tr></thead><tbody>` +
-      A.map(a=>`<tr>
+        <th>method</th><th>URLs tried</th><th>exits</th><th>captcha tries</th><th>solved</th>
+        <th>solve rate</th><th>products scraped</th><th>speed</th></tr></thead><tbody>` +
+      A.map(a=>`<tr ${a.name==='gemini'?'id="generow" class="gemini-hl"':''}>
         <td><span class="mname">${a.label}</span> <span class="mloc">${a.locate}</span></td>
         <td>${(a.fetches||0).toLocaleString()}</td>
         <td>${a.exits_n||0}</td>
@@ -230,7 +236,8 @@ async function load(){
         ${cell(a,'success_pct',p)}
         <td>${a.fetches_per_hour?a.fetches_per_hour.toLocaleString()+'/h':'—'}</td>
       </tr>`).join('') + `</tbody></table>
-      <p class="dim" style="font-size:12px;margin:8px 2px 0">${runs.note||''}${runs.updated?' · updated '+new Date(runs.updated).toISOString().slice(0,16).replace('T',' '):''}</p>`;
+      <p class="dim" style="font-size:12px;margin:8px 2px 0"><b>URLs tried</b> = how many we attempted (1,000 each). <b>Products scraped</b> = % that returned a real product; the rest hit a captcha wall or error on a bad exit (not bad products — just no product). <b>Captcha tries / solved</b> count only the fetches that hit the wall. ${runs.note||''}${runs.updated?' · updated '+new Date(runs.updated).toISOString().slice(0,16).replace('T',' '):''}</p>`;
+    placeRaceNote();
 
     // per-arm captured captchas (real puzzles each arm faced + its attempt)
     const withImgs = A.filter(a=>a.items&&a.items.length);
@@ -248,7 +255,24 @@ async function load(){
     live.innerHTML = '';
   }
 }
-load();
+// comic callout anchored to the gemini-3.1-flash-lite row (re-measured each render + on resize so it
+// always points at the right row, even after sort/refresh); dismissable, remembered per browser.
+function placeRaceNote(){
+  const runsEl=document.getElementById('runs'), row=document.getElementById('generow');
+  let note=document.getElementById('racenote');
+  if(!row || localStorage.getItem('racenoteDismissed')){ if(note) note.remove(); return; }
+  if(!note){
+    note=document.createElement('div'); note.id='racenote'; note.className='racenote';
+    note.innerHTML=`<button class="rx" title="dismiss">×</button>🏁 <b>Tamás</b> put <b>gemini-3.1-flash-lite</b> in the race — it did great on the bench! Now running the 1,000 scrapes to see it in action.`;
+    runsEl.appendChild(note);
+    note.querySelector('.rx').onclick=()=>{ localStorage.setItem('racenoteDismissed','1'); note.remove(); };
+  }
+  const rr=row.getBoundingClientRect(), cr=runsEl.getBoundingClientRect();
+  note.style.top=Math.max(0, rr.top-cr.top+rr.height/2-note.offsetHeight/2)+'px';
+  note.style.right='6px';
+}
+window.addEventListener('resize', placeRaceNote);
+load(); setInterval(load, 60000);
 </script>
 </body>
 </html>
