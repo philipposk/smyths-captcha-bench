@@ -60,8 +60,8 @@
   <div id="exitnote" class="legend" style="margin-top:0"></div>
 
   <div class="legend">
-    <b>solve</b> = every icon in the puzzle clicked correctly · <b>locate</b> = fraction of icons hit ·
-    <b>legend</b> = icon-naming (shows 0 — labels are positions not names, so naming isn't scored here) · <b>p50</b> = median time per puzzle ·
+    <b>found</b> = all icons located (any order) · <b>ordered</b> = all icons clicked in the RIGHT order (the real solve) ·
+    <b>locate</b> = fraction of icons hit · <b>p50</b> = median time per puzzle ·
     <b>$/1k</b> = est. cost per 1,000 puzzles · <b>free</b> = no paid API used.
     Local models (Moondream / Qwen / SmolVLM) run on your own machine at $0.
   </div>
@@ -97,14 +97,14 @@ async function load() {
       <td class="rank">${i+1}</td>
       <td class="name">${r.name}</td>
       <td>${fmtPct(r.solveAcc)}</td>
+      <td>${fmtPct(r.orderedSolveAcc)}</td>
       <td>${fmtPct(r.locateAcc)}${bar(r.locateAcc)}</td>
-      <td>${fmtPct(r.legendAcc)}</td>
       <td>${r.p50ms} ms</td>
       <td>${r.estPer1000Usd ? '$'+r.estPer1000Usd.toFixed(2) : '$0'}</td>
       <td><span class="pill ${r.free?'free':'paid'}">${r.free?'free':'paid'}</span></td>
     </tr>`).join('');
   board.innerHTML = `<table>
-    <thead><tr><th class="rank">#</th><th>model / combo</th><th>solve</th><th>locate</th><th>legend</th><th>p50</th><th>$/1k</th><th></th></tr></thead>
+    <thead><tr><th class="rank">#</th><th>model / combo</th><th>found</th><th>ordered</th><th>locate</th><th>p50</th><th>$/1k</th><th></th></tr></thead>
     <tbody>${rows}</tbody></table>`;
 }
 async function loadExits() {

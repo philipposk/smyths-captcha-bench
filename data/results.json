@@ -1,22 +1,23 @@
 {
-  "updated": 1781226092430,
+  "updated": 1781229850168,
   "corpus": 37,
   "hitRadius": 80,
   "leaderboard": [
     {
       "name": "qwen-solo",
       "legendAcc": 0,
-      "locateAcc": 0.734,
+      "locateAcc": 0.77,
       "solveAcc": 0.486,
-      "p50ms": 25103,
-      "avgTokens": 2371,
-      "avgCalls": 1.9,
+      "orderedSolveAcc": 0.243,
+      "p50ms": 24767,
+      "avgTokens": 2443,
+      "avgCalls": 2,
       "estPer1000Usd": 0,
       "free": true,
       "errors": 0,
       "n": 37,
       "providers": {
-        "ollama": 72
+        "ollama": 74
       }
     },
     {
@@ -24,33 +25,32 @@
       "legendAcc": 0,
       "locateAcc": 0.716,
       "solveAcc": 0.486,
-      "p50ms": 663,
-      "avgTokens": 9,
+      "orderedSolveAcc": 0.189,
+      "p50ms": 599,
+      "avgTokens": 0,
       "avgCalls": 0,
       "estPer1000Usd": 0,
       "free": true,
       "errors": 0,
       "n": 37,
-      "providers": {
-        "gemini-native2": 1
-      }
+      "providers": {}
     },
     {
       "name": "color-cv",
       "legendAcc": 0,
       "locateAcc": 0.716,
       "solveAcc": 0.486,
-      "p50ms": 2646,
-      "avgTokens": 18,
+      "orderedSolveAcc": 0.189,
+      "p50ms": 2947,
+      "avgTokens": 9,
       "avgCalls": 2.7,
       "estPer1000Usd": 2.1189,
       "free": true,
       "errors": 0,
       "n": 37,
       "providers": {
-        "moondream": 98,
-        "gemini-native2": 1,
-        "gemini": 1
+        "gemini-native1": 1,
+        "moondream": 98
       }
     },
     {
@@ -58,7 +58,8 @@
       "legendAcc": 0,
       "locateAcc": 0.55,
       "solveAcc": 0.189,
-      "p50ms": 21745,
+      "orderedSolveAcc": 0.162,
+      "p50ms": 21222,
       "avgTokens": 1156,
       "avgCalls": 3.6,
       "estPer1000Usd": 2.1189,
@@ -73,34 +74,37 @@
     {
       "name": "moondream-cloud",
       "legendAcc": 0,
-      "locateAcc": 0.324,
-      "solveAcc": 0.054,
-      "p50ms": 5921,
+      "locateAcc": 0.311,
+      "solveAcc": 0.027,
+      "orderedSolveAcc": 0.027,
+      "p50ms": 6215,
       "avgTokens": 0,
-      "avgCalls": 3.9,
-      "estPer1000Usd": 3.1568,
+      "avgCalls": 4,
+      "estPer1000Usd": 3.1784,
       "free": true,
       "errors": 0,
       "n": 37,
       "providers": {
-        "moondream": 146
+        "moondream": 147
       }
     },
     {
       "name": "gemini",
       "legendAcc": 0,
-      "locateAcc": 0,
+      "locateAcc": 0.027,
       "solveAcc": 0,
-      "p50ms": 1407,
-      "avgTokens": 18,
+      "orderedSolveAcc": 0,
+      "p50ms": 1284,
+      "avgTokens": 41,
       "avgCalls": 0.1,
       "estPer1000Usd": 0,
       "free": true,
       "errors": 0,
       "n": 37,
       "providers": {
-        "gemini-native1": 1,
-        "gemini": 1
+        "gemini": 2,
+        "gemini-native2": 1,
+        "gemini-native1": 1
       }
     }
   ]
