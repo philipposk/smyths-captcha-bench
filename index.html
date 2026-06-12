@@ -48,7 +48,7 @@
   <div class="cards">
     <div class="card"><div class="k">Puzzles</div><div class="v" id="corpus">—</div></div>
     <div class="card"><div class="k">Models tested</div><div class="v" id="nmodels">—</div></div>
-    <div class="card"><div class="k">Best solve rate</div><div class="v" id="best">—</div></div>
+    <div class="card"><div class="k">Best real-solve</div><div class="v" id="best">—</div></div>
     <div class="card"><div class="k">Updated</div><div class="v" id="updated" style="font-size:15px;font-weight:500">—</div></div>
   </div>
 
@@ -60,8 +60,9 @@
   <div id="exitnote" class="legend" style="margin-top:0"></div>
 
   <div class="legend">
-    <b>found</b> = all icons located (any order) · <b>ordered</b> = all icons clicked in the RIGHT order (the real solve) ·
-    <b>locate</b> = fraction of icons hit · <b>p50</b> = median time per puzzle ·
+    <b style="color:var(--good)">solved ✓</b> = clicked ALL icons in the RIGHT order — the only thing that actually passes the captcha (the real score) ·
+    <b>found</b> = located all icons but maybe wrong order (fails the captcha) · <b>icons hit</b> = avg fraction of icons located ·
+    <b>$/1k</b> = est. cost per 1,000 puzzles; <b>free</b> = $0 to run (local or free-tier) · <b>p50</b> = median time per puzzle ·
     <b>$/1k</b> = est. cost per 1,000 puzzles · <b>free</b> = no paid API used.
     Local models (Moondream / Qwen / SmolVLM) run on your own machine at $0.
   </div>
@@ -86,25 +87,25 @@ async function load() {
   document.getElementById('corpus').textContent = d.corpus ?? '—';
   document.getElementById('nmodels').textContent = lb.length || (d.configs ? d.configs.length : '—');
   document.getElementById('updated').textContent = d.updated ? ago(d.updated) : '—';
-  document.getElementById('best').textContent = lb.length ? fmtPct(lb[0].solveAcc) : '—';
+  document.getElementById('best').textContent = lb.length ? fmtPct(lb[0].orderedSolveAcc) : '—';
 
   if (!lb.length) {
     board.innerHTML = `<div class="empty">No results yet.<br>${d.note ? d.note : 'The bench will publish here as soon as it runs over the saved puzzles.'}</div>`;
     return;
   }
-  let rows = lb.map((r,i)=>`
+  let rows = lb.map((r,i)=>{ const isFree=(r.estPer1000Usd||0)===0; return `
     <tr class="${i===0?'top':''}">
       <td class="rank">${i+1}</td>
       <td class="name">${r.name}</td>
+      <td><b style="color:var(--good)">${fmtPct(r.orderedSolveAcc)}</b></td>
       <td>${fmtPct(r.solveAcc)}</td>
-      <td>${fmtPct(r.orderedSolveAcc)}</td>
       <td>${fmtPct(r.locateAcc)}${bar(r.locateAcc)}</td>
       <td>${r.p50ms} ms</td>
       <td>${r.estPer1000Usd ? '$'+r.estPer1000Usd.toFixed(2) : '$0'}</td>
-      <td><span class="pill ${r.free?'free':'paid'}">${r.free?'free':'paid'}</span></td>
-    </tr>`).join('');
+      <td><span class="pill ${isFree?'free':'paid'}">${isFree?'free':'paid'}</span></td>
+    </tr>`}).join('');
   board.innerHTML = `<table>
-    <thead><tr><th class="rank">#</th><th>model / combo</th><th>found</th><th>ordered</th><th>locate</th><th>p50</th><th>$/1k</th><th></th></tr></thead>
+    <thead><tr><th class="rank">#</th><th>model / combo</th><th>solved ✓</th><th>found</th><th>icons hit</th><th>p50</th><th>$/1k</th><th></th></tr></thead>
     <tbody>${rows}</tbody></table>`;
 }
 async function loadExits() {
