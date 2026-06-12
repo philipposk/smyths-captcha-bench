@@ -70,7 +70,7 @@ async function load(){
   const cfgs = m.configs||[];
 
   document.getElementById('cov').innerHTML =
-    `<b>Showing ${cfgs.length} free / local candidates</b> over ${(m.puzzles||[]).length} clean puzzles. ` +
+    `<b>Showing ${cfgs.length} models</b> over ${(m.puzzles||[]).length} clean puzzles — the paid winners (bold markers) next to the free/local candidates. ` +
     (m.note||'');
 
   document.getElementById('board').innerHTML = (m.puzzles||[]).map(p=>`

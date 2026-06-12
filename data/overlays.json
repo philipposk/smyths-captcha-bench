@@ -1,11 +1,11 @@
 {
-  "note": "Free / local candidates only. Clean puzzles (no failed-attempt markers). Strong API models (qwen3-vl-32b, gemini-3-flash) join here after the next bench run, which now saves click points so the gallery never needs a re-run again.",
-  "configs": ["qwen-solo", "shape-match", "color-cv", "qwen+moondream", "moondream-cloud"],
+  "note": "Clean puzzles (no failed-attempt markers). Strong API winners shown with bold markers; free/local candidates keep their original overlays. Click points are now saved, so refreshing this gallery never needs a paid re-run again.",
+  "configs": ["gemini-3-flash", "qwen3-vl-32b", "qwen-solo", "shape-match", "color-cv", "qwen+moondream", "moondream-cloud"],
   "puzzles": [
-    { "id": "shot02", "n": 2 },
-    { "id": "shot03", "n": 2 },
     { "id": "shot05", "n": 3 },
+    { "id": "shot03", "n": 2 },
     { "id": "shot07", "n": 2 },
-    { "id": "shot08", "n": 3 }
+    { "id": "shot08", "n": 3 },
+    { "id": "shot02", "n": 2 }
   ]
 }
