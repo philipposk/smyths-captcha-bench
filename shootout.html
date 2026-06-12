@@ -213,8 +213,9 @@ async function load(){
     // best-in-column helpers (higher is better for these)
     const best = (key) => Math.max(...A.map(a=>a[key]==null?-1:a[key]));
     const cell = (a,key,fmt) => `<td class="${a[key]!=null && a[key]===best(key)?'best':''}">${fmt(a[key])}</td>`;
-    runsEl.innerHTML = `<table class="cmp"><thead><tr>
-        <th>method</th><th>URLs</th><th>exits</th><th>captchas hit</th><th>solved</th>
+    runsEl.innerHTML = (runs.partial?`<div style="background:rgba(244,183,64,.1);border:1px solid rgba(244,183,64,.3);color:var(--warn);font-size:12.5px;border-radius:10px;padding:9px 13px;margin-bottom:11px">⚠ Partial smoke run — the arms were stopped early (the free methods got stuck rotating on hostile exits). Numbers are directional, not a full run.</div>`:'') +
+      `<table class="cmp"><thead><tr>
+        <th>method</th><th>URLs</th><th>exits</th><th>captcha tries</th><th>solved</th>
         <th>solve rate</th><th>products OK</th><th>speed</th></tr></thead><tbody>` +
       A.map(a=>`<tr>
         <td><span class="mname">${a.label}</span> <span class="mloc">${a.locate}</span></td>
@@ -233,7 +234,7 @@ async function load(){
     live.innerHTML = withImgs.length ? withImgs.map(a=>
       `<div class="armcap"><h4>${a.label} <span class="loc">— what it actually faced (${a.items.length})</span></h4>
         <div class="strip">`+ a.items.map(it=>
-          `<div class="shot"><img src="${it.image}" loading="lazy" alt="captcha">
+          `<div class="shot"><img src="${it.image}?_=${runs.updated||Date.now()}" alt="captcha">
             <div class="cap"><span class="dim">${(it.legend||[]).slice(0,3).join(', ')||'doodle'}</span>
             <span class="pill ${it.solved?'ok':'no'}">${it.solved?'solved':'failed'}</span></div></div>`
         ).join('') + `</div></div>`
