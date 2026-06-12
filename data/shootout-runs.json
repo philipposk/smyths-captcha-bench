@@ -1,5 +1,5 @@
 {
-  "updated": 1781305700123,
+  "updated": 1781305881736,
   "partial": true,
   "note": "Each arm scraped the same URL sample on its OWN Tor (own exits), in parallel. Arms differ only in the locate method; legend reading is qwen/vlm in all. Aggregate comparison, not a same-captcha test. Captcha counts are solve ATTEMPTS (a method that keeps failing logs several).",
   "arms": [
@@ -9,18 +9,18 @@
       "locate": "vlm",
       "kind": "vision AI · paid (cheap)",
       "partial": true,
-      "fetches": 1926,
-      "success_pct": 34,
-      "block_pct": 6.8,
-      "exits_n": 519,
+      "fetches": 1947,
+      "success_pct": 33.6,
+      "block_pct": 6.7,
+      "exits_n": 527,
       "captchas": {
         "detected": 21,
         "solved": 2,
         "failed": 19
       },
       "solve_rate_pct": 9.5,
-      "rotations": 518,
-      "duration_min": 263.2,
+      "rotations": 526,
+      "duration_min": 266.3,
       "fetches_per_hour": 439,
       "items": [
         {
@@ -56,43 +56,36 @@
       "locate": "vlm",
       "kind": "vision AI · paid",
       "partial": true,
-      "fetches": 2836,
-      "success_pct": 90.1,
+      "fetches": 2843,
+      "success_pct": 90,
       "block_pct": 9,
-      "exits_n": 228,
+      "exits_n": 229,
       "captchas": {
-        "detected": 22,
-        "solved": 11,
-        "failed": 11
+        "detected": 28,
+        "solved": 12,
+        "failed": 16
       },
-      "solve_rate_pct": 50,
-      "rotations": 227,
-      "duration_min": 263.1,
-      "fetches_per_hour": 647,
+      "solve_rate_pct": 42.9,
+      "rotations": 228,
+      "duration_min": 266.4,
+      "fetches_per_hour": 640,
       "items": [
-        {
-          "image": "data/shootout/gemini/gemini_doodle_a01_solved.png",
-          "solved": true,
-          "legend": [
-            "bicycle",
-            "hammer"
-          ]
-        },
         {
           "image": "data/shootout/gemini/gemini_doodle_a02_solved.png",
           "solved": true,
           "legend": [
-            "ladybug",
-            "bowling pins"
+            "duck",
+            "cassette",
+            "flower"
           ]
         },
         {
           "image": "data/shootout/gemini/gemini_doodle_a01_failed.png",
           "solved": false,
           "legend": [
-            "bus",
-            "motorcycle",
-            "bicycle"
+            "apple",
+            "owl",
+            "bus"
           ]
         },
         {
@@ -103,6 +96,14 @@
             "motorcycle",
             "bicycle"
           ]
+        },
+        {
+          "image": "data/shootout/gemini/gemini_doodle_a01_solved.png",
+          "solved": true,
+          "legend": [
+            "bicycle",
+            "hammer"
+          ]
         }
       ]
     },
@@ -112,19 +113,19 @@
       "locate": "match",
       "kind": "computer vision · free locate",
       "partial": true,
-      "fetches": 2542,
-      "success_pct": 88.7,
-      "block_pct": 10.5,
-      "exits_n": 216,
+      "fetches": 2578,
+      "success_pct": 88.8,
+      "block_pct": 10.4,
+      "exits_n": 217,
       "captchas": {
         "detected": 68,
         "solved": 4,
         "failed": 64
       },
       "solve_rate_pct": 5.9,
-      "rotations": 215,
-      "duration_min": 263.1,
-      "fetches_per_hour": 580,
+      "rotations": 216,
+      "duration_min": 266.2,
+      "fetches_per_hour": 581,
       "items": [
         {
           "image": "data/shootout/shape/shape_doodle_a02_failed.png",
@@ -168,18 +169,18 @@
       "locate": "blob",
       "kind": "computer vision · free locate",
       "partial": true,
-      "fetches": 1753,
-      "success_pct": 35.8,
+      "fetches": 1773,
+      "success_pct": 35.4,
       "block_pct": 0.7,
-      "exits_n": 460,
+      "exits_n": 467,
       "captchas": {
         "detected": 82,
         "solved": 4,
         "failed": 78
       },
       "solve_rate_pct": 4.9,
-      "rotations": 459,
-      "duration_min": 261.9,
+      "rotations": 466,
+      "duration_min": 264.9,
       "fetches_per_hour": 402,
       "items": [
         {
