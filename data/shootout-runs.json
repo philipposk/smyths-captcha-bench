@@ -1,5 +1,5 @@
 {
-  "updated": 1781254710535,
+  "updated": 1781254892414,
   "partial": true,
   "note": "Each arm scraped the same URL sample on its OWN Tor (own exits), in parallel. Arms differ only in the locate method; legend reading is qwen/vlm in all. Aggregate comparison, not a same-captcha test. Captcha counts are solve ATTEMPTS (a method that keeps failing logs several).",
   "arms": [
@@ -39,42 +39,44 @@
       "locate": "match",
       "kind": "computer vision · free locate",
       "partial": true,
-      "fetches": 665,
-      "success_pct": 90.7,
-      "block_pct": 8.4,
-      "exits_n": 52,
+      "fetches": 691,
+      "success_pct": 91,
+      "block_pct": 8.1,
+      "exits_n": 53,
       "captchas": {
-        "detected": 8,
+        "detected": 10,
         "solved": 2,
-        "failed": 6
+        "failed": 8
       },
-      "solve_rate_pct": 25,
-      "rotations": 51,
-      "duration_min": 66.2,
-      "fetches_per_hour": 603,
+      "solve_rate_pct": 20,
+      "rotations": 52,
+      "duration_min": 67.9,
+      "fetches_per_hour": 610,
       "items": [
         {
-          "image": "data/shootout/shape/shape_doodle_a02_solved.png",
-          "solved": true,
+          "image": "data/shootout/shape/shape_doodle_a02_failed.png",
+          "solved": false,
           "legend": [
-            "book",
-            "watermelon"
+            "scissors",
+            "clock",
+            "skateboard"
           ]
         },
         {
           "image": "data/shootout/shape/shape_doodle_a01_failed.png",
           "solved": false,
           "legend": [
-            "umbrella",
-            "bird"
+            "money bag",
+            "bell",
+            "lantern"
           ]
         },
         {
-          "image": "data/shootout/shape/shape_doodle_a02_failed.png",
-          "solved": false,
+          "image": "data/shootout/shape/shape_doodle_a02_solved.png",
+          "solved": true,
           "legend": [
-            "rabbit",
-            "lantern"
+            "book",
+            "watermelon"
           ]
         }
       ]
@@ -88,33 +90,32 @@
       "fetches": 604,
       "success_pct": 77.3,
       "block_pct": 21.4,
-      "exits_n": 73,
+      "exits_n": 74,
       "captchas": {
-        "detected": 5,
+        "detected": 12,
         "solved": 1,
-        "failed": 4
+        "failed": 11
       },
-      "solve_rate_pct": 20,
-      "rotations": 72,
-      "duration_min": 65.8,
-      "fetches_per_hour": 551,
+      "solve_rate_pct": 8.3,
+      "rotations": 73,
+      "duration_min": 67.5,
+      "fetches_per_hour": 537,
       "items": [
-        {
-          "image": "data/shootout/color/color_doodle_a02_failed.png",
-          "solved": false,
-          "legend": [
-            "hand",
-            "crowd",
-            "owl"
-          ]
-        },
         {
           "image": "data/shootout/color/color_doodle_a01_failed.png",
           "solved": false,
           "legend": [
-            "hand",
-            "stars",
-            "owl"
+            "book",
+            "pepper",
+            "teddy bear"
+          ]
+        },
+        {
+          "image": "data/shootout/color/color_doodle_a02_failed.png",
+          "solved": false,
+          "legend": [
+            "tablet",
+            "hand"
           ]
         },
         {
