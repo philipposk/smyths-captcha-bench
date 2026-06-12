@@ -110,6 +110,21 @@
   .cinfo .ctip b{color:var(--txt)} .cinfo .ctip .hd{color:var(--accent);font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.4px;display:block;margin-bottom:5px}
   .cinfo .ctip:after{content:"";position:absolute;top:100%;right:14px;border:7px solid transparent;border-top-color:#0f1320}
   .cinfo:hover .ctip{opacity:1;transform:translateY(0) scale(1)}
+
+  /* a tiny ↕ caret on every sortable header (the convention) so it reads as clickable even without the gag */
+  th.sortable .arr{opacity:0} th.sortable:after{content:"↕";font-size:10px;margin-left:3px;opacity:.4} th.sortable.act:after{content:""} th.sortable.act .arr{opacity:1}
+
+  /* playful one-time "CLICKABLE" comic nudge pointing at the headers */
+  @keyframes bobx{0%,100%{transform:translateX(0)}50%{transform:translateX(-9px)}}
+  @keyframes hintin{from{opacity:0;transform:translateX(46px)}to{opacity:1;transform:translateX(0)}}
+  .sorthint{position:absolute;top:46px;right:8px;z-index:26;display:flex;align-items:center;gap:4px;pointer-events:none;animation:hintin .5s ease both}
+  .sorthint.hide{opacity:0;transition:opacity .5s}
+  .sorthint .lbl{font-family:"Comic Sans MS","Comic Sans",cursive;font-weight:700;color:#ffd24d;font-size:17px;line-height:1.05;text-shadow:0 2px 7px rgba(0,0,0,.7);transform:rotate(-5deg);white-space:nowrap;text-align:center}
+  .sorthint .lbl small{display:block;font:600 11px/1.2 "Comic Sans MS","Comic Sans",cursive;color:#cbb87a;transform:rotate(2deg)}
+  .sorthint svg{animation:bobx 1.15s ease-in-out infinite;flex:none}
+  /* comic "best free pick" note on the gemini-2.5-flash row */
+  .gnote{font-family:"Comic Sans MS","Comic Sans",cursive;color:#67dcb6;font-weight:700;font-size:12.5px;margin-left:9px;white-space:nowrap;transform:rotate(-2deg);display:inline-block;text-shadow:0 1px 3px rgba(0,0,0,.5)}
+  .gnote .a{color:#ffd24d}
 </style>
 </head>
 <body>
@@ -136,7 +151,7 @@
     <div class="card"><div class="k">Cheapest that clears target</div><div class="v" id="cheap">—</div></div>
   </div>
 
-  <div id="board"></div>
+  <div id="boardwrap" style="position:relative"><div id="board"></div></div>
 
   <div class="legend">
     <b style="color:var(--good)">solved ✓</b> = clicked every doodle in the <b>right order</b> — the only result that actually passes the captcha (the real score) ·
@@ -225,9 +240,10 @@ function renderBoard(){
     const isFree=(r.estPer1000Usd||0)===0;
     const pick = PICKS[r.name];
     const crown = pick ? `<span class="crown">👑<span class="tip">${pick.t}<small>${pick.s}</small></span></span>` : '';
+    const gnote = r.name==='gemini-2.5-flash' ? `<span class="gnote">👈 <span class="a">actually the best pick</span> — free, ~500/day</span>` : '';
     return `<tr class="${i===0?'top1':''}">
       <td><span class="rank">${i+1}</span>${crown}</td>
-      <td class="name">${r.name}</td>
+      <td class="name">${r.name}${gnote}</td>
       <td class="detcol det">${detail(r)}</td>
       <td><span class="solv">${fmtPct(r.orderedSolveAcc)}</span></td>
       <td class="num">${fmtPct(r.solveAcc)}</td>
@@ -245,10 +261,26 @@ function renderBoard(){
     <tbody>${rows}</tbody></table></div>`;
 
   board.querySelectorAll('th.sortable').forEach(h=>h.addEventListener('click',()=>{
+    dismissHint();
     const k=h.dataset.sort;
     if(sortKey===k) sortDir=-sortDir; else { sortKey=k; sortDir=-1; }
     renderBoard();
   }));
+}
+
+let hintShown=false;
+function dismissHint(){ const h=document.getElementById('sorthint'); if(h){ h.classList.add('hide'); setTimeout(()=>h.remove(),500); } }
+function showSortHint(){
+  if(hintShown) return; hintShown=true;
+  const wrap=document.getElementById('boardwrap'); if(!wrap) return;
+  const el=document.createElement('div'); el.id='sorthint'; el.className='sorthint';
+  el.innerHTML=`<span class="lbl">CLICKABLE!<small>sort any column ↕</small></span>
+    <svg width="104" height="50" viewBox="0 0 104 50" fill="none">
+      <path d="M100 10 C78 1, 44 4, 14 33" stroke="#ffd24d" stroke-width="4" stroke-linecap="round" fill="none"/>
+      <path d="M14 33 L30 26 M14 33 L24 43" stroke="#ffd24d" stroke-width="4" stroke-linecap="round"/>
+    </svg>`;
+  wrap.appendChild(el);
+  setTimeout(dismissHint, 9000);   // auto-fade so it never nags
 }
 
 async function load(){
@@ -271,6 +303,7 @@ async function load(){
     ? '⚠︎ <b style="color:var(--warn)">Not ranked:</b> ' + DEADROWS.map(r=>`<b>${r.name}</b> — ${DEAD[r.name]}`).join(' · ')
     : '';
   renderBoard();
+  showSortHint();
 }
 
 async function loadExits(){
