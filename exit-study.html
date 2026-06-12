@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tor exit study — 3-day captcha-rate measurement</title>
+<meta name="description" content="A 3-day measurement of how many Tor exits get captcha'd scraping Smyths across every region, with confidence intervals.">
+<link rel="icon" href="favicon.svg">
+<style>
+  :root{ --bg:#0b0d11; --panel:#13161d; --panel2:#171b23; --line:#222734; --txt:#eef2f8; --mut:#93a0b4; --dim:#6b7585;
+    --good:#46d6a6; --warn:#f4b740; --bad:#ff6a6a; --accent:#7aa9ff; --shadow:0 8px 30px rgba(0,0,0,.45); }
+  *{box-sizing:border-box}
+  body{margin:0;background:radial-gradient(1100px 480px at 78% -8%, rgba(122,169,255,.10), transparent 60%),var(--bg);
+    color:var(--txt);font:15px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1040px;margin:0 auto;padding:30px 18px 70px}
+  a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
+  .mut{color:var(--mut)} .dim{color:var(--dim)}
+  .nav{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+  .nav a{font-size:13px;font-weight:600;color:var(--mut);background:var(--panel);border:1px solid var(--line);padding:6px 13px;border-radius:999px}
+  .nav a.on{color:var(--txt);border-color:#33415a;background:var(--panel2)}
+  .badge{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:600;color:var(--good);background:rgba(70,214,166,.12);border:1px solid rgba(70,214,166,.25);padding:4px 11px;border-radius:999px}
+  .pulse{width:7px;height:7px;border-radius:50%;background:var(--good);animation:pulse 2s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(70,214,166,.55)}70%{box-shadow:0 0 0 7px rgba(70,214,166,0)}100%{box-shadow:0 0 0 0 rgba(70,214,166,0)}}
+  h1{font-size:26px;margin:12px 0 6px;letter-spacing:-.3px;font-weight:750}
+  .sub{color:var(--mut);margin:0 0 18px;max-width:74ch}
+  .about{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:15px 18px;margin:0 0 22px;box-shadow:var(--shadow)}
+  .about h2{font-size:13px;text-transform:uppercase;letter-spacing:.6px;color:var(--mut);margin:0 0 8px}
+  .about p{margin:0 0 8px} .about p:last-child{margin:0} .about b{color:var(--txt)}
+  .cards{display:flex;gap:12px;flex-wrap:wrap;margin:0 0 22px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:13px 16px;min-width:150px;flex:1}
+  .card .k{color:var(--dim);font-size:11px;text-transform:uppercase;letter-spacing:.6px}
+  .card .v{font-size:23px;font-weight:750;margin-top:3px} .card .v small{font-size:13px;color:var(--mut);font-weight:600}
+  h2.sec{font-size:18px;margin:28px 0 10px}
+  /* per-day bars with CI whiskers */
+  .days{display:flex;gap:20px;align-items:flex-end;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:22px 22px 14px;box-shadow:var(--shadow);min-height:230px}
+  .daycol{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;height:200px;justify-content:flex-end}
+  .barwrap{position:relative;width:54px;flex:1;display:flex;align-items:flex-end}
+  .barfill{width:100%;background:linear-gradient(180deg,#f4b740,#e0922f);border-radius:6px 6px 0 0;position:relative}
+  .ci{position:absolute;left:50%;transform:translateX(-50%);width:2px;background:rgba(255,255,255,.5)}
+  .ci:before,.ci:after{content:"";position:absolute;left:-5px;width:12px;height:2px;background:rgba(255,255,255,.6)}
+  .ci:before{top:0} .ci:after{bottom:0}
+  .dval{font-weight:750;font-size:15px} .dlbl{font-size:12px;color:var(--mut);text-align:center}
+  table{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-top:8px}
+  th,td{padding:10px 12px;text-align:right;border-bottom:1px solid var(--line);font-size:13.5px;white-space:nowrap}
+  th:first-child,td:first-child{text-align:left}
+  th{color:var(--dim);font-size:11px;text-transform:uppercase;letter-spacing:.4px}
+  tr:last-child td{border-bottom:none}
+  .num{font-variant-numeric:tabular-nums}
+  .empty{background:var(--panel);border:1px dashed var(--line);border-radius:14px;padding:40px;text-align:center;color:var(--mut)}
+  .legend{font-size:12.5px;color:var(--dim);margin-top:12px;line-height:1.6}
+  footer{color:var(--dim);margin-top:26px;font-size:13px;border-top:1px solid var(--line);padding-top:16px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="nav">
+    <a href="./">◂ Captcha leaderboard</a>
+    <a href="gallery.html">Where models clicked</a>
+    <a href="exit-study.html" class="on">Tor exit study</a>
+  </div>
+
+  <span class="badge"><span class="pulse"></span> LIVE · 3-day run</span>
+  <h1>How many Tor exits get captcha'd?</h1>
+  <p class="sub">Scraping <b>3,000 random Smyths products/day</b> across <b>every region</b> (UK · IE · DE · AT · CH · FR · NL) over Tor, for 3 days — measuring how often an exit hits the captcha wall, with real confidence intervals. Solver limited to <b>qwen3-vl-32b + shape-match + color-cv</b>.</p>
+
+  <div class="about">
+    <h2>Why this exists</h2>
+    <p>The captcha only fires on <b>low-trust connections</b>. The earlier number (16.5%) came from just 97 fetches — a ±7% guess. This run gathers <b>thousands of real fetches across hundreds of exits</b> so the captcha rate, the block rate, and the share of <b>hostile exits</b> are measured properly, not estimated from a handful.</p>
+    <p class="dim">Each fetch is the real browser flow (clears Imperva's sensor). “Captcha” = the exit threw the doodle wall; “block” = a hard Imperva denial; “clean” = product loaded with no challenge. Ranges are 95% confidence intervals (Wilson).</p>
+  </div>
+
+  <div class="cards" id="cards"></div>
+
+  <h2 class="sec">Captcha rate by day <span class="dim" style="font-size:13px;font-weight:400">· whiskers = 95% CI</span></h2>
+  <div id="days" class="days"><div class="empty" style="margin:auto">Day 1 is collecting — results appear here as fetches land.</div></div>
+
+  <h2 class="sec">By region</h2>
+  <div id="regions"></div>
+
+  <h2 class="sec">Exit distribution</h2>
+  <div id="exits"></div>
+  <div class="legend" id="note"></div>
+
+  <footer>
+    Auto-refreshes every 60s · real browser fetches over Tor ·
+    <span class="dim">no URLs, IPs, or raw product data are published here — only aggregate counts</span>
+  </footer>
+</div>
+<script>
+const pct=(x)=> x==null?'—':(x).toFixed(1)+'%';
+const ago=(ms)=>{ if(!ms) return '—'; const s=Math.round((Date.now()-ms)/1000); if(s<90)return s+'s ago'; const m=Math.round(s/60); if(m<90)return m+'m ago'; return Math.round(m/60)+'h ago';};
+async function load(){
+  let d; try{ d=await fetch('data/exits-study.json?_='+Date.now()).then(r=>r.json()); }catch{ return; }
+  const days=d.days||[], ov=d.overall||{};
+  const card=(k,v,sub)=>`<div class="card"><div class="k">${k}</div><div class="v">${v}</div>${sub?`<div class="dim" style="font-size:12px;margin-top:2px">${sub}</div>`:''}</div>`;
+  document.getElementById('cards').innerHTML =
+    card('Product fetches', (ov.attempted||0).toLocaleString(), `target ${(d.target_per_day*3||9000).toLocaleString()} over 3 days · ${ov.exits_n||0} exits sampled`) +
+    card('Exit captcha rate', ov.exits_n? pct(ov.captcha_rate_pct) : '—', ov.captcha_ci? `95% CI ${pct(ov.captcha_ci[0])}–${pct(ov.captcha_ci[1])} · n=${ov.exits_n}` : 'collecting…') +
+    card('Bad exits', ov.exits&&ov.exits.windows? `${(ov.exits.hostile_windows/ov.exits.windows*100).toFixed(0)}%` : '—', ov.exits&&ov.exits.windows? `${ov.exits.hostile_windows}/${ov.exits.windows} exits hit a wall` : 'collecting…') +
+    card('Product success', ov.attempted? pct(ov.success_pct) : '—', 'parsed OK after clearing');
+
+  if(days.length){
+    const maxHi = Math.max(...days.map(x=>(x.captcha_ci?x.captcha_ci[1]:x.captcha_rate_pct)||0), 5);
+    document.getElementById('days').innerHTML = days.map(x=>{
+      const r=x.captcha_rate_pct||0, ci=x.captcha_ci||[r,r];
+      const h=Math.max(3, r/maxHi*100), lo=ci[0]/maxHi*100, hi=ci[1]/maxHi*100;
+      return `<div class="daycol">
+        <div class="dval">${pct(r)}</div>
+        <div class="barwrap"><div class="barfill" style="height:${h}%">
+          <div class="ci" style="bottom:${(lo-r)/Math.max(r,1)*0}px;top:${(maxHi-hi)/maxHi*200 - (200-200)}px;height:${(hi-lo)/maxHi*200}px"></div>
+        </div></div>
+        <div class="dlbl">Day ${x.day}<br><span class="dim">${(x.attempted||0).toLocaleString()} fetches</span></div>
+      </div>`;
+    }).join('');
+  }
+  // region table
+  if(ov.by_region){
+    const rows=Object.entries(ov.by_region).map(([cc,r])=>`<tr><td>${cc.toUpperCase()}</td><td class="num">${(r.attempted||0).toLocaleString()}</td><td class="num">${pct(r.captcha_rate_pct)}</td><td class="num">${pct(r.block_rate_pct)}</td><td class="num">${pct(r.success_pct)}</td></tr>`).join('');
+    document.getElementById('regions').innerHTML=`<table><thead><tr><th>Region</th><th>fetches</th><th>captcha</th><th>block</th><th>clean</th></tr></thead><tbody>${rows}</tbody></table>`;
+  }
+  if(ov.exits&&ov.exits.windows){
+    const e=ov.exits;
+    document.getElementById('exits').innerHTML=`<table><thead><tr><th>Tor exits sampled</th><th>clean (no wall)</th><th>hit a captcha / block</th><th>bad-exit rate</th></tr></thead><tbody><tr><td class="num">${e.windows}</td><td class="num">${e.clean_windows}</td><td class="num">${e.hostile_windows}</td><td class="num">${e.windows?pct(e.hostile_windows/e.windows*100):'—'}</td></tr></tbody></table>`;
+  }
+  document.getElementById('note').innerHTML = `<b>Sample size:</b> ${(ov.attempted||0).toLocaleString()} fetches → captcha rate ±${ov.captcha_ci?((ov.captcha_ci[1]-ov.captcha_ci[0])/2).toFixed(1):'—'}% at 95%. ` + (d.note||'') + (d.updated?` · updated ${ago(d.updated)}`:'');
+}
+load(); setInterval(load,60000);
+</script>
+</body>
+</html>

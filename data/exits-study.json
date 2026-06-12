@@ -1,0 +1,3 @@
+{ "updated": 0, "regions": ["uk","ie","de","at","ch","fr","nl"], "target_per_day": 3000,
+  "solver": "qwen3-vl-32b + shape-match + color-cv",
+  "note": "Day 1 starting — results stream in as fetches land.", "days": [], "overall": {} }
