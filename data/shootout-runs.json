@@ -1,5 +1,5 @@
 {
-  "updated": 1781253427572,
+  "updated": 1781253609807,
   "partial": true,
   "note": "Each arm scraped the same URL sample on its OWN Tor (own exits), in parallel. Arms differ only in the locate method; legend reading is qwen/vlm in all. Aggregate comparison, not a same-captcha test. Captcha counts are solve ATTEMPTS (a method that keeps failing logs several).",
   "arms": [
@@ -9,19 +9,19 @@
       "locate": "vlm",
       "kind": "vision AI · paid (cheap)",
       "partial": true,
-      "fetches": 485,
-      "success_pct": 96.7,
-      "block_pct": 1.6,
-      "exits_n": 27,
+      "fetches": 503,
+      "success_pct": 93.2,
+      "block_pct": 5.2,
+      "exits_n": 34,
       "captchas": {
         "detected": 0,
         "solved": 0,
         "failed": 0
       },
       "solve_rate_pct": null,
-      "rotations": 26,
-      "duration_min": 45.5,
-      "fetches_per_hour": 639,
+      "rotations": 33,
+      "duration_min": 48.6,
+      "fetches_per_hour": 621,
       "items": []
     },
     {
@@ -30,19 +30,19 @@
       "locate": "match",
       "kind": "computer vision · free locate",
       "partial": true,
-      "fetches": 488,
-      "success_pct": 97.3,
-      "block_pct": 1.4,
-      "exits_n": 27,
+      "fetches": 507,
+      "success_pct": 93.7,
+      "block_pct": 5.1,
+      "exits_n": 34,
       "captchas": {
         "detected": 2,
         "solved": 1,
         "failed": 1
       },
       "solve_rate_pct": 50,
-      "rotations": 26,
-      "duration_min": 44.6,
-      "fetches_per_hour": 656,
+      "rotations": 33,
+      "duration_min": 47.8,
+      "fetches_per_hour": 636,
       "items": [
         {
           "image": "data/shootout/shape/shape_doodle_a02_solved.png",
@@ -69,19 +69,19 @@
       "locate": "blob",
       "kind": "computer vision · free locate",
       "partial": true,
-      "fetches": 480,
-      "success_pct": 97.3,
-      "block_pct": 1,
-      "exits_n": 26,
+      "fetches": 496,
+      "success_pct": 94.2,
+      "block_pct": 4.2,
+      "exits_n": 32,
       "captchas": {
         "detected": 1,
         "solved": 1,
         "failed": 0
       },
       "solve_rate_pct": 100,
-      "rotations": 25,
-      "duration_min": 44.9,
-      "fetches_per_hour": 641,
+      "rotations": 31,
+      "duration_min": 47.9,
+      "fetches_per_hour": 621,
       "items": [
         {
           "image": "data/shootout/color/color_doodle_a01_solved.png",
