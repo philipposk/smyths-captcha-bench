@@ -1,5 +1,5 @@
 {
-  "updated": 1781302975122,
+  "updated": 1781303156897,
   "partial": true,
   "note": "Each arm scraped the same URL sample on its OWN Tor (own exits), in parallel. Arms differ only in the locate method; legend reading is qwen/vlm in all. Aggregate comparison, not a same-captcha test. Captcha counts are solve ATTEMPTS (a method that keeps failing logs several).",
   "arms": [
@@ -9,18 +9,18 @@
       "locate": "vlm",
       "kind": "vision AI · paid (cheap)",
       "partial": true,
-      "fetches": 1639,
-      "success_pct": 39.9,
-      "block_pct": 8,
-      "exits_n": 409,
+      "fetches": 1659,
+      "success_pct": 39.4,
+      "block_pct": 7.9,
+      "exits_n": 416,
       "captchas": {
         "detected": 21,
         "solved": 2,
         "failed": 19
       },
       "solve_rate_pct": 9.5,
-      "rotations": 408,
-      "duration_min": 217.8,
+      "rotations": 415,
+      "duration_min": 220.8,
       "fetches_per_hour": 451,
       "items": [
         {
@@ -56,19 +56,19 @@
       "locate": "vlm",
       "kind": "vision AI · paid",
       "partial": true,
-      "fetches": 2314,
-      "success_pct": 93.5,
-      "block_pct": 5.5,
-      "exits_n": 159,
+      "fetches": 2350,
+      "success_pct": 93.6,
+      "block_pct": 5.4,
+      "exits_n": 161,
       "captchas": {
         "detected": 21,
         "solved": 10,
         "failed": 11
       },
       "solve_rate_pct": 47.6,
-      "rotations": 158,
-      "duration_min": 217.9,
-      "fetches_per_hour": 637,
+      "rotations": 160,
+      "duration_min": 220.9,
+      "fetches_per_hour": 638,
       "items": [
         {
           "image": "data/shootout/gemini/gemini_doodle_a01_solved.png",
@@ -112,35 +112,44 @@
       "locate": "match",
       "kind": "computer vision · free locate",
       "partial": true,
-      "fetches": 2024,
+      "fetches": 2037,
       "success_pct": 86.2,
       "block_pct": 13.2,
       "exits_n": 190,
       "captchas": {
-        "detected": 62,
-        "solved": 3,
-        "failed": 59
+        "detected": 66,
+        "solved": 4,
+        "failed": 62
       },
-      "solve_rate_pct": 4.8,
+      "solve_rate_pct": 6.1,
       "rotations": 189,
-      "duration_min": 216.7,
-      "fetches_per_hour": 560,
+      "duration_min": 220.8,
+      "fetches_per_hour": 554,
       "items": [
         {
-          "image": "data/shootout/shape/shape_doodle_a01_failed.png",
-          "solved": false,
+          "image": "data/shootout/shape/shape_doodle_a01_solved.png",
+          "solved": true,
           "legend": [
-            "dinosaur",
-            "pepper"
+            "lollipop",
+            "bowling pins"
           ]
         },
         {
           "image": "data/shootout/shape/shape_doodle_a02_failed.png",
           "solved": false,
           "legend": [
-            "ink bottle",
-            "bicycle",
-            "paw print"
+            "key",
+            "snail",
+            "ring"
+          ]
+        },
+        {
+          "image": "data/shootout/shape/shape_doodle_a01_failed.png",
+          "solved": false,
+          "legend": [
+            "cookie",
+            "scale",
+            "cassette"
           ]
         },
         {
@@ -151,14 +160,6 @@
             "key",
             "book"
           ]
-        },
-        {
-          "image": "data/shootout/shape/shape_doodle_a01_solved.png",
-          "solved": true,
-          "legend": [
-            "dice",
-            "videotape"
-          ]
         }
       ]
     },
@@ -168,18 +169,18 @@
       "locate": "blob",
       "kind": "computer vision · free locate",
       "partial": true,
-      "fetches": 1465,
-      "success_pct": 42.8,
+      "fetches": 1486,
+      "success_pct": 42.2,
       "block_pct": 0.9,
-      "exits_n": 350,
+      "exits_n": 357,
       "captchas": {
         "detected": 82,
         "solved": 4,
         "failed": 78
       },
       "solve_rate_pct": 4.9,
-      "rotations": 349,
-      "duration_min": 216.4,
+      "rotations": 356,
+      "duration_min": 219.4,
       "fetches_per_hour": 406,
       "items": [
         {
