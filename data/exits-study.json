@@ -1,5 +1,5 @@
 {
-  "updated": 1781302356870,
+  "updated": 1781302538616,
   "regions": [
     "uk",
     "ie",
@@ -27,15 +27,15 @@
         "failed": 0
       },
       "attempted": 1860,
-      "exits_n": 168,
+      "exits_n": 169,
       "captcha": 1,
-      "block": 48,
+      "block": 49,
       "captcha_rate_pct": 0.6,
       "captcha_ci": [
         0.1,
         3.3
       ],
-      "block_rate_pct": 28.6,
+      "block_rate_pct": 29,
       "success_pct": 81.7,
       "by_region": {
         "uk": {
@@ -68,26 +68,26 @@
         }
       },
       "exits": {
-        "windows": 168,
+        "windows": 169,
         "clean_windows": 119,
-        "hostile_windows": 49
+        "hostile_windows": 50
       },
-      "duration_min": 993.9,
-      "sec_per_fetch": 32.1,
+      "duration_min": 998,
+      "sec_per_fetch": 32.2,
       "fetches_per_hour": 112
     }
   ],
   "overall": {
     "attempted": 1860,
-    "exits_n": 168,
+    "exits_n": 169,
     "captcha": 1,
-    "block": 48,
+    "block": 49,
     "captcha_rate_pct": 0.6,
     "captcha_ci": [
       0.1,
       3.3
     ],
-    "block_rate_pct": 28.6,
+    "block_rate_pct": 29,
     "success_pct": 81.7,
     "by_region": {
       "uk": {
@@ -120,12 +120,12 @@
       }
     },
     "exits": {
-      "windows": 168,
+      "windows": 169,
       "clean_windows": 119,
-      "hostile_windows": 49
+      "hostile_windows": 50
     },
-    "duration_min": 993.9,
-    "sec_per_fetch": 32.1,
+    "duration_min": 998,
+    "sec_per_fetch": 32.2,
     "fetches_per_hour": 112,
     "captchas": {
       "detected": 0,
