@@ -1,8 +1,110 @@
 {
-  "updated": 1781229850168,
+  "updated": 1781231260071,
   "corpus": 37,
   "hitRadius": 80,
   "leaderboard": [
+    {
+      "name": "gemini-3-flash",
+      "legendAcc": 0,
+      "locateAcc": 1,
+      "solveAcc": 1,
+      "orderedSolveAcc": 0.973,
+      "p50ms": 3869,
+      "avgTokens": 2437,
+      "avgCalls": 2,
+      "estPer1000Usd": 0.7312,
+      "free": false,
+      "errors": 0,
+      "n": 37,
+      "providers": {
+        "openrouter": 74
+      }
+    },
+    {
+      "name": "qwen3-vl-32b",
+      "legendAcc": 0,
+      "locateAcc": 1,
+      "solveAcc": 1,
+      "orderedSolveAcc": 0.946,
+      "p50ms": 2527,
+      "avgTokens": 764,
+      "avgCalls": 2,
+      "estPer1000Usd": 0.2291,
+      "free": false,
+      "errors": 0,
+      "n": 37,
+      "providers": {
+        "openrouter": 74
+      }
+    },
+    {
+      "name": "gemini-3.5-flash",
+      "legendAcc": 0,
+      "locateAcc": 0.986,
+      "solveAcc": 0.973,
+      "orderedSolveAcc": 0.946,
+      "p50ms": 8279,
+      "avgTokens": 3358,
+      "avgCalls": 2,
+      "estPer1000Usd": 1.0074,
+      "free": false,
+      "errors": 0,
+      "n": 37,
+      "providers": {
+        "openrouter": 74
+      }
+    },
+    {
+      "name": "glm-4.6v",
+      "legendAcc": 0,
+      "locateAcc": 0.959,
+      "solveAcc": 0.946,
+      "orderedSolveAcc": 0.811,
+      "p50ms": 23762,
+      "avgTokens": 2045,
+      "avgCalls": 2,
+      "estPer1000Usd": 0.6135,
+      "free": false,
+      "errors": 0,
+      "n": 37,
+      "providers": {
+        "openrouter": 74
+      }
+    },
+    {
+      "name": "gpt-5.4",
+      "legendAcc": 0,
+      "locateAcc": 0.896,
+      "solveAcc": 0.784,
+      "orderedSolveAcc": 0.676,
+      "p50ms": 2909,
+      "avgTokens": 877,
+      "avgCalls": 2,
+      "estPer1000Usd": 0.263,
+      "free": false,
+      "errors": 0,
+      "n": 37,
+      "providers": {
+        "openrouter": 74
+      }
+    },
+    {
+      "name": "qwen3-vl-235b",
+      "legendAcc": 0,
+      "locateAcc": 0.712,
+      "solveAcc": 0.649,
+      "orderedSolveAcc": 0.595,
+      "p50ms": 6001,
+      "avgTokens": 784,
+      "avgCalls": 2,
+      "estPer1000Usd": 0.2353,
+      "free": false,
+      "errors": 0,
+      "n": 37,
+      "providers": {
+        "openrouter": 74
+      }
+    },
     {
       "name": "qwen-solo",
       "legendAcc": 0,
@@ -69,6 +171,23 @@
       "providers": {
         "ollama": 37,
         "moondream": 98
+      }
+    },
+    {
+      "name": "claude-sonnet-4.6",
+      "legendAcc": 0,
+      "locateAcc": 0.207,
+      "solveAcc": 0.108,
+      "orderedSolveAcc": 0.081,
+      "p50ms": 7401,
+      "avgTokens": 1021,
+      "avgCalls": 2,
+      "estPer1000Usd": 0.3062,
+      "free": false,
+      "errors": 0,
+      "n": 37,
+      "providers": {
+        "openrouter": 74
       }
     },
     {
