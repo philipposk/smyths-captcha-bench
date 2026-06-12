@@ -1,5 +1,5 @@
 {
-  "updated": 1781255074470,
+  "updated": 1781255256713,
   "partial": true,
   "note": "Each arm scraped the same URL sample on its OWN Tor (own exits), in parallel. Arms differ only in the locate method; legend reading is qwen/vlm in all. Aggregate comparison, not a same-captcha test. Captcha counts are solve ATTEMPTS (a method that keeps failing logs several).",
   "arms": [
@@ -9,26 +9,26 @@
       "locate": "vlm",
       "kind": "vision AI · paid (cheap)",
       "partial": true,
-      "fetches": 623,
-      "success_pct": 77.7,
-      "block_pct": 20.9,
-      "exits_n": 75,
+      "fetches": 652,
+      "success_pct": 78.7,
+      "block_pct": 19.9,
+      "exits_n": 76,
       "captchas": {
-        "detected": 1,
-        "solved": 1,
+        "detected": 2,
+        "solved": 2,
         "failed": 0
       },
       "solve_rate_pct": 100,
-      "rotations": 74,
-      "duration_min": 73,
-      "fetches_per_hour": 512,
+      "rotations": 75,
+      "duration_min": 75.9,
+      "fetches_per_hour": 516,
       "items": [
         {
           "image": "data/shootout/qwen/qwen_doodle_a01_solved.png",
           "solved": true,
           "legend": [
-            "test-tubes",
-            "target"
+            "dial",
+            "pizza"
           ]
         }
       ]
@@ -39,19 +39,19 @@
       "locate": "match",
       "kind": "computer vision · free locate",
       "partial": true,
-      "fetches": 713,
-      "success_pct": 91.2,
-      "block_pct": 8,
-      "exits_n": 54,
+      "fetches": 745,
+      "success_pct": 91.4,
+      "block_pct": 7.7,
+      "exits_n": 56,
       "captchas": {
         "detected": 14,
         "solved": 3,
         "failed": 11
       },
       "solve_rate_pct": 21.4,
-      "rotations": 53,
-      "duration_min": 72.2,
-      "fetches_per_hour": 592,
+      "rotations": 55,
+      "duration_min": 75.2,
+      "fetches_per_hour": 594,
       "items": [
         {
           "image": "data/shootout/shape/shape_doodle_a02_solved.png",
@@ -87,26 +87,27 @@
       "locate": "blob",
       "kind": "computer vision · free locate",
       "partial": true,
-      "fetches": 606,
-      "success_pct": 77.1,
-      "block_pct": 21.6,
-      "exits_n": 74,
+      "fetches": 607,
+      "success_pct": 76.9,
+      "block_pct": 21.7,
+      "exits_n": 75,
       "captchas": {
-        "detected": 17,
+        "detected": 25,
         "solved": 1,
-        "failed": 16
+        "failed": 24
       },
-      "solve_rate_pct": 5.9,
-      "rotations": 73,
-      "duration_min": 72,
-      "fetches_per_hour": 505,
+      "solve_rate_pct": 4,
+      "rotations": 74,
+      "duration_min": 75.3,
+      "fetches_per_hour": 483,
       "items": [
         {
           "image": "data/shootout/color/color_doodle_a02_failed.png",
           "solved": false,
           "legend": [
             "ink bottle",
-            "compass"
+            "bicycle",
+            "laptop"
           ]
         },
         {
@@ -114,7 +115,8 @@
           "solved": false,
           "legend": [
             "ink bottle",
-            "compass"
+            "bicycle",
+            "laptop"
           ]
         },
         {
