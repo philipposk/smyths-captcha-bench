@@ -1,5 +1,5 @@
 {
-  "updated": 1781275704913,
+  "updated": 1781275887076,
   "partial": true,
   "note": "Each arm scraped the same URL sample on its OWN Tor (own exits), in parallel. Arms differ only in the locate method; legend reading is qwen/vlm in all. Aggregate comparison, not a same-captcha test. Captcha counts are solve ATTEMPTS (a method that keeps failing logs several).",
   "arms": [
@@ -40,19 +40,19 @@
       "locate": "vlm",
       "kind": "vision AI · paid",
       "partial": true,
-      "fetches": 905,
+      "fetches": 945,
       "success_pct": 98.6,
       "block_pct": 0,
-      "exits_n": 46,
+      "exits_n": 48,
       "captchas": {
         "detected": 6,
         "solved": 6,
         "failed": 0
       },
       "solve_rate_pct": 100,
-      "rotations": 45,
-      "duration_min": 84.9,
-      "fetches_per_hour": 639,
+      "rotations": 47,
+      "duration_min": 87.9,
+      "fetches_per_hour": 645,
       "items": [
         {
           "image": "data/shootout/gemini/gemini_doodle_a01_solved.png",
