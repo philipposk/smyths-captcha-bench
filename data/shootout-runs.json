@@ -1,5 +1,5 @@
 {
-  "updated": 1781295523857,
+  "updated": 1781295705792,
   "partial": true,
   "note": "Each arm scraped the same URL sample on its OWN Tor (own exits), in parallel. Arms differ only in the locate method; legend reading is qwen/vlm in all. Aggregate comparison, not a same-captcha test. Captcha counts are solve ATTEMPTS (a method that keeps failing logs several).",
   "arms": [
@@ -9,19 +9,19 @@
       "locate": "vlm",
       "kind": "vision AI · paid (cheap)",
       "partial": true,
-      "fetches": 849,
-      "success_pct": 77,
-      "block_pct": 15.4,
-      "exits_n": 106,
+      "fetches": 869,
+      "success_pct": 75.3,
+      "block_pct": 15.1,
+      "exits_n": 114,
       "captchas": {
         "detected": 21,
         "solved": 2,
         "failed": 19
       },
       "solve_rate_pct": 9.5,
-      "rotations": 105,
-      "duration_min": 93.6,
-      "fetches_per_hour": 544,
+      "rotations": 113,
+      "duration_min": 96.7,
+      "fetches_per_hour": 539,
       "items": [
         {
           "image": "data/shootout/qwen/qwen_doodle_a01_failed.png",
@@ -56,27 +56,35 @@
       "locate": "vlm",
       "kind": "vision AI · paid",
       "partial": true,
-      "fetches": 985,
+      "fetches": 1008,
       "success_pct": 99,
       "block_pct": 0,
-      "exits_n": 50,
+      "exits_n": 51,
       "captchas": {
-        "detected": 11,
-        "solved": 5,
-        "failed": 6
+        "detected": 14,
+        "solved": 6,
+        "failed": 8
       },
-      "solve_rate_pct": 45.5,
-      "rotations": 49,
-      "duration_min": 93.7,
-      "fetches_per_hour": 631,
+      "solve_rate_pct": 42.9,
+      "rotations": 50,
+      "duration_min": 96.7,
+      "fetches_per_hour": 625,
       "items": [
         {
-          "image": "data/shootout/gemini/gemini_doodle_a02_solved.png",
+          "image": "data/shootout/gemini/gemini_doodle_a01_solved.png",
           "solved": true,
           "legend": [
-            "bell",
-            "golfer",
-            "safety pin"
+            "grasshopper",
+            "snake"
+          ]
+        },
+        {
+          "image": "data/shootout/gemini/gemini_doodle_a02_failed.png",
+          "solved": false,
+          "legend": [
+            "bus",
+            "motorcycle",
+            "bicycle"
           ]
         },
         {
@@ -89,21 +97,12 @@
           ]
         },
         {
-          "image": "data/shootout/gemini/gemini_doodle_a01_solved.png",
+          "image": "data/shootout/gemini/gemini_doodle_a02_solved.png",
           "solved": true,
           "legend": [
-            "stars",
-            "person",
-            "bicycle"
-          ]
-        },
-        {
-          "image": "data/shootout/gemini/gemini_doodle_a02_failed.png",
-          "solved": false,
-          "legend": [
-            "bus",
-            "motorcycle",
-            "bicycle"
+            "bell",
+            "golfer",
+            "safety pin"
           ]
         }
       ]
@@ -114,19 +113,19 @@
       "locate": "match",
       "kind": "computer vision · free locate",
       "partial": true,
-      "fetches": 961,
-      "success_pct": 85.8,
-      "block_pct": 13.4,
-      "exits_n": 92,
+      "fetches": 999,
+      "success_pct": 86.4,
+      "block_pct": 12.9,
+      "exits_n": 93,
       "captchas": {
         "detected": 5,
         "solved": 2,
         "failed": 3
       },
       "solve_rate_pct": 40,
-      "rotations": 91,
-      "duration_min": 93.7,
-      "fetches_per_hour": 615,
+      "rotations": 92,
+      "duration_min": 96.7,
+      "fetches_per_hour": 620,
       "items": [
         {
           "image": "data/shootout/shape/shape_doodle_a02_solved.png",
@@ -169,18 +168,18 @@
       "locate": "blob",
       "kind": "computer vision · free locate",
       "partial": true,
-      "fetches": 666,
-      "success_pct": 94.1,
-      "block_pct": 2,
-      "exits_n": 43,
+      "fetches": 688,
+      "success_pct": 91.1,
+      "block_pct": 1.9,
+      "exits_n": 51,
       "captchas": {
         "detected": 82,
         "solved": 4,
         "failed": 78
       },
       "solve_rate_pct": 4.9,
-      "rotations": 42,
-      "duration_min": 92.2,
+      "rotations": 50,
+      "duration_min": 95.3,
       "fetches_per_hour": 433,
       "items": [
         {
