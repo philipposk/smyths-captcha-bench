@@ -1,5 +1,5 @@
 {
-  "updated": 1781243818149,
+  "updated": 1781243999671,
   "regions": [
     "uk",
     "ie",
@@ -17,127 +17,127 @@
       "day": 1,
       "date": null,
       "captchas_solved": 0,
-      "attempted": 248,
-      "exits_n": 9,
+      "attempted": 284,
+      "exits_n": 10,
       "captcha": 0,
       "block": 0,
       "captcha_rate_pct": 0,
       "captcha_ci": [
         0,
-        29.9
+        27.8
       ],
       "block_rate_pct": 0,
-      "success_pct": 99.2,
+      "success_pct": 98.9,
       "by_region": {
         "uk": {
-          "attempted": 34,
+          "attempted": 36,
           "captcha_rate_pct": 0,
           "block_rate_pct": 0,
           "success_pct": 100
         },
         "ie": {
-          "attempted": 33,
+          "attempted": 36,
           "captcha_rate_pct": 0,
           "block_rate_pct": 0,
           "success_pct": 100
         },
         "de": {
-          "attempted": 41,
+          "attempted": 46,
           "captcha_rate_pct": 0,
           "block_rate_pct": 0,
           "success_pct": 100
         },
         "at": {
-          "attempted": 26,
-          "captcha_rate_pct": 0,
-          "block_rate_pct": 0,
-          "success_pct": 100
-        },
-        "ch": {
-          "attempted": 40,
-          "captcha_rate_pct": 0,
-          "block_rate_pct": 0,
-          "success_pct": 100
-        },
-        "fr": {
           "attempted": 28,
           "captcha_rate_pct": 0,
           "block_rate_pct": 0,
           "success_pct": 100
         },
-        "nl": {
+        "ch": {
           "attempted": 46,
           "captcha_rate_pct": 0,
           "block_rate_pct": 0,
-          "success_pct": 95.7
+          "success_pct": 100
+        },
+        "fr": {
+          "attempted": 39,
+          "captcha_rate_pct": 0,
+          "block_rate_pct": 0,
+          "success_pct": 100
+        },
+        "nl": {
+          "attempted": 53,
+          "captcha_rate_pct": 0,
+          "block_rate_pct": 0,
+          "success_pct": 94.3
         }
       },
       "exits": {
-        "windows": 9,
-        "clean_windows": 9,
+        "windows": 10,
+        "clean_windows": 10,
         "hostile_windows": 0
       }
     }
   ],
   "overall": {
-    "attempted": 248,
-    "exits_n": 9,
+    "attempted": 284,
+    "exits_n": 10,
     "captcha": 0,
     "block": 0,
     "captcha_rate_pct": 0,
     "captcha_ci": [
       0,
-      29.9
+      27.8
     ],
     "block_rate_pct": 0,
-    "success_pct": 99.2,
+    "success_pct": 98.9,
     "by_region": {
       "uk": {
-        "attempted": 34,
+        "attempted": 36,
         "captcha_rate_pct": 0,
         "block_rate_pct": 0,
         "success_pct": 100
       },
       "ie": {
-        "attempted": 33,
+        "attempted": 36,
         "captcha_rate_pct": 0,
         "block_rate_pct": 0,
         "success_pct": 100
       },
       "de": {
-        "attempted": 41,
+        "attempted": 46,
         "captcha_rate_pct": 0,
         "block_rate_pct": 0,
         "success_pct": 100
       },
       "at": {
-        "attempted": 26,
-        "captcha_rate_pct": 0,
-        "block_rate_pct": 0,
-        "success_pct": 100
-      },
-      "ch": {
-        "attempted": 40,
-        "captcha_rate_pct": 0,
-        "block_rate_pct": 0,
-        "success_pct": 100
-      },
-      "fr": {
         "attempted": 28,
         "captcha_rate_pct": 0,
         "block_rate_pct": 0,
         "success_pct": 100
       },
-      "nl": {
+      "ch": {
         "attempted": 46,
         "captcha_rate_pct": 0,
         "block_rate_pct": 0,
-        "success_pct": 95.7
+        "success_pct": 100
+      },
+      "fr": {
+        "attempted": 39,
+        "captcha_rate_pct": 0,
+        "block_rate_pct": 0,
+        "success_pct": 100
+      },
+      "nl": {
+        "attempted": 53,
+        "captcha_rate_pct": 0,
+        "block_rate_pct": 0,
+        "success_pct": 94.3
       }
     },
     "exits": {
-      "windows": 9,
-      "clean_windows": 9,
+      "windows": 10,
+      "clean_windows": 10,
       "hostile_windows": 0
     }
   }
