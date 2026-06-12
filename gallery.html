@@ -3,61 +3,90 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Why they fumbled — per-puzzle clicks</title>
+<title>Where each model clicked — captcha bench</title>
 <link rel="icon" href="favicon.svg">
 <style>
-  :root { --bg:#0c0e12; --panel:#14171d; --line:#232833; --txt:#e8edf4; --mut:#8b95a7; --good:#4dd4ac; --accent:#6aa8ff; }
-  * { box-sizing:border-box; }
-  body { margin:0; background:var(--bg); color:var(--txt); font:15px/1.5 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial; }
-  .wrap { max-width:1100px; margin:0 auto; padding:26px 18px 60px; }
-  h1 { font-size:23px; margin:0 0 4px; }
-  .sub { color:var(--mut); margin:0 0 8px; }
-  a { color:var(--accent); text-decoration:none; } a:hover { text-decoration:underline; }
-  .key { color:var(--mut); font-size:13px; margin:0 0 22px; }
-  .dot { display:inline-block; width:10px; height:10px; border-radius:50%; vertical-align:middle; margin:0 3px 0 10px; }
-  .puzzle { background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:16px; margin:0 0 20px; }
-  .phead { display:flex; align-items:center; gap:14px; margin:0 0 14px; flex-wrap:wrap; }
-  .phead .legimg { height:34px; background:#0c0e12; border:1px solid var(--line); border-radius:6px; padding:2px 6px; }
-  .phead .names { font-weight:600; }
-  .phead .mut { color:var(--mut); font-weight:400; }
-  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:14px; }
-  .cell { background:#0c0e12; border:1px solid var(--line); border-radius:10px; overflow:hidden; }
-  .cell img { width:100%; display:block; }
-  .cell .cap { padding:7px 9px; font-size:13px; font-weight:600; display:flex; justify-content:space-between; align-items:center; }
-  .cell .cap .mut { color:var(--mut); font-weight:400; font-size:12px; }
-  footer { color:var(--mut); margin-top:10px; font-size:13px; }
+  :root{
+    --bg:#0b0d11; --panel:#13161d; --panel2:#171b23; --line:#222734;
+    --txt:#eef2f8; --mut:#93a0b4; --dim:#6b7585; --good:#46d6a6; --accent:#7aa9ff;
+    --shadow:0 8px 30px rgba(0,0,0,.45);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:
+      radial-gradient(1100px 480px at 80% -8%, rgba(122,169,255,.09), transparent 60%),
+      var(--bg);
+    color:var(--txt);font:15px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial;
+    -webkit-font-smoothing:antialiased}
+  .wrap{max-width:1120px;margin:0 auto;padding:30px 18px 70px}
+  a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
+  h1{font-size:25px;margin:8px 0 6px;letter-spacing:-.3px;font-weight:750}
+  .sub{color:var(--mut);margin:0 0 16px;max-width:74ch}
+  .key{display:flex;gap:18px;flex-wrap:wrap;align-items:center;font-size:13px;color:var(--mut);
+    background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:11px 15px;margin:0 0 12px}
+  .dot{display:inline-block;width:11px;height:11px;border-radius:50%;vertical-align:-1px;margin-right:6px;box-shadow:0 0 0 2px rgba(255,255,255,.08)}
+  .cov{font-size:13px;color:var(--dim);background:rgba(122,169,255,.07);border:1px solid rgba(122,169,255,.18);
+    border-radius:11px;padding:11px 15px;margin:0 0 24px;line-height:1.6}
+  .cov b{color:var(--txt)}
+  .puzzle{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px;margin:0 0 22px;box-shadow:var(--shadow)}
+  .phead{display:flex;align-items:center;gap:14px;margin:0 0 15px;flex-wrap:wrap}
+  .phead .legimg{height:40px;background:#fff;border:1px solid var(--line);border-radius:8px;padding:3px 8px}
+  .phead .meta{font-weight:680} .phead .meta .mut{color:var(--mut);font-weight:500}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(186px,1fr));gap:14px}
+  .cell{background:#0c0e13;border:1px solid var(--line);border-radius:12px;overflow:hidden;transition:transform .12s,border-color .12s}
+  .cell:hover{transform:translateY(-2px);border-color:#33415a}
+  .cell .imgwrap{position:relative;aspect-ratio:1/1;overflow:hidden;background:#000}
+  .cell img{width:100%;height:100%;object-fit:cover;display:block}
+  .cell .cap{padding:9px 11px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+  .cell .cap .nm{font-weight:680;font-size:13.5px}
+  .cell .cap .sc{font-size:12px;font-weight:700;color:var(--good);background:rgba(70,214,166,.13);padding:1px 7px;border-radius:6px;white-space:nowrap}
+  footer{color:var(--dim);margin-top:24px;font-size:13px;border-top:1px solid var(--line);padding-top:16px}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <h1>Why they fumbled</h1>
-  <p class="sub">Each model's actual clicks on the same real Smyths puzzles. <a href="./">← leaderboard</a></p>
-  <p class="key">
-    <span class="dot" style="background:#00ff00"></span> green = correct doodle centre
-    <span class="dot" style="background:#ff3030"></span> red = where the model clicked.
-    A model "solves" only if every green has a red on it.
-  </p>
+  <a href="./" style="font-size:13px">← back to leaderboard</a>
+  <h1>Where each model actually clicked</h1>
+  <p class="sub">The same real Smyths puzzles, run through each candidate. A model only <b>solves</b> if it lands a click on every doodle — <b>in the right order</b>. These show why the cheaper/free models fall short: usually they find the drawings but order them wrong.</p>
+
+  <div class="key">
+    <span><span class="dot" style="background:#00ff00"></span>green = the correct doodle centre (the answer)</span>
+    <span><span class="dot" style="background:#ff3030"></span>red = where the model clicked</span>
+    <span class="dim">overlap = hit · scattered red = miss</span>
+  </div>
+
+  <div class="cov" id="cov">Loading…</div>
+
   <div id="board"></div>
-  <footer>Generated by <code>bin/bench-solve.js</code>. Grows as more puzzles are captured + labelled.</footer>
+  <footer>Real puzzles, clean (no failed-attempt markers). Generated by <code>bin/bench-solve.js</code>.</footer>
 </div>
 <script>
-async function load() {
-  let m; try { m = await fetch('data/overlays.json?_='+Date.now()).then(r=>r.json()); } catch { return; }
-  const board = document.getElementById('board');
-  const ov = (id,cfg)=>`data/overlays/${id}__${cfg}.png`;
-  board.innerHTML = (m.puzzles||[]).map(p=>`
+async function load(){
+  let m, res={};
+  try{ m = await fetch('data/overlays.json?_='+Date.now()).then(r=>r.json()); }catch{ return; }
+  try{ res = await fetch('data/results.json?_='+Date.now()).then(r=>r.json()); }catch{}
+  const score = {};
+  (res.leaderboard||[]).forEach(r => score[r.name] = r.orderedSolveAcc);
+  const ov = (id,cfg)=>`data/overlays/${id}__${cfg}.png?_=${Date.now()}`;
+  const cfgs = m.configs||[];
+
+  document.getElementById('cov').innerHTML =
+    `<b>Showing ${cfgs.length} free / local candidates</b> over ${(m.puzzles||[]).length} clean puzzles. ` +
+    (m.note||'');
+
+  document.getElementById('board').innerHTML = (m.puzzles||[]).map(p=>`
     <div class="puzzle">
       <div class="phead">
-        <img class="legimg" src="${ov(p.id,'legend')}" alt="legend" onerror="this.style.display='none'">
-        <span class="names">${(p.legend||[]).join(' → ')}</span>
-        <span class="mut">(${(p.legend||[]).length} to click, in order)</span>
+        <img class="legimg" src="${ov(p.id,'legend')}" alt="legend strip" onerror="this.style.display='none'">
+        <span class="meta">${p.n||'?'} doodles <span class="mut">· click them in the order shown above</span></span>
       </div>
       <div class="grid">
-        ${(m.configs||[]).map(c=>`
-          <div class="cell">
-            <img src="${ov(p.id,c)}" alt="${c}" loading="lazy" onerror="this.parentElement.style.display='none'">
-            <div class="cap"><span>${c}</span></div>
-          </div>`).join('')}
+        ${cfgs.map(c=>{
+          const s = score[c]!=null ? (score[c]*100).toFixed(0)+'%' : '—';
+          return `<div class="cell">
+            <div class="imgwrap"><img src="${ov(p.id,c)}" alt="${c}" loading="lazy" onerror="this.closest('.cell').style.display='none'"></div>
+            <div class="cap"><span class="nm">${c}</span><span class="sc">${s}</span></div>
+          </div>`;
+        }).join('')}
       </div>
     </div>`).join('');
 }

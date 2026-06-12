@@ -1,72 +1,11 @@
 {
-  "configs": [
-    "qwen-solo",
-    "shape-match",
-    "color-cv",
-    "qwen+moondream",
-    "moondream-cloud",
-    "gemini"
-  ],
+  "note": "Free / local candidates only. Clean puzzles (no failed-attempt markers). Strong API models (qwen3-vl-32b, gemini-3-flash) join here after the next bench run, which now saves click points so the gallery never needs a re-run again.",
+  "configs": ["qwen-solo", "shape-match", "color-cv", "qwen+moondream", "moondream-cloud"],
   "puzzles": [
-    {
-      "id": "shot01",
-      "legend": [
-        "icon1",
-        "icon2",
-        "icon3"
-      ]
-    },
-    {
-      "id": "shot02",
-      "legend": [
-        "icon1",
-        "icon2"
-      ]
-    },
-    {
-      "id": "shot03",
-      "legend": [
-        "icon1",
-        "icon2"
-      ]
-    },
-    {
-      "id": "shot04",
-      "legend": [
-        "icon1",
-        "icon2"
-      ]
-    },
-    {
-      "id": "shot05",
-      "legend": [
-        "icon1",
-        "icon2",
-        "icon3"
-      ]
-    },
-    {
-      "id": "shot06",
-      "legend": [
-        "icon1",
-        "icon2",
-        "icon3"
-      ]
-    },
-    {
-      "id": "shot07",
-      "legend": [
-        "icon1",
-        "icon2"
-      ]
-    },
-    {
-      "id": "shot08",
-      "legend": [
-        "icon1",
-        "icon2",
-        "icon3"
-      ]
-    }
+    { "id": "shot02", "n": 2 },
+    { "id": "shot03", "n": 2 },
+    { "id": "shot05", "n": 3 },
+    { "id": "shot07", "n": 2 },
+    { "id": "shot08", "n": 3 }
   ]
 }

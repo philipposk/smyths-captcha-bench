@@ -4,122 +4,240 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Captcha solver bench — live model ranking</title>
-<meta name="description" content="Live ranking of free/local vision models on the Smyths captcha-solving task: same puzzles, every model, scored on accuracy, speed and cost.">
+<meta name="description" content="Live ranking of vision models on a real hCaptcha 'doodle' task: same puzzles, every model, scored on whether it clicks the right drawings in the right order — plus speed and cost.">
 <link rel="icon" href="favicon.svg">
 <style>
-  :root { --bg:#0c0e12; --panel:#14171d; --line:#232833; --txt:#e8edf4; --mut:#8b95a7; --good:#4dd4ac; --warn:#f2b441; --bad:#ff6b6b; --accent:#6aa8ff; }
-  * { box-sizing:border-box; }
-  body { margin:0; background:var(--bg); color:var(--txt); font:15px/1.5 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial; }
-  .wrap { max-width:980px; margin:0 auto; padding:28px 18px 60px; }
-  h1 { font-size:24px; margin:0 0 4px; letter-spacing:-.2px; }
-  .sub { color:var(--mut); margin:0 0 20px; }
-  .mut { color:var(--mut); }
-  .cards { display:flex; gap:12px; flex-wrap:wrap; margin:0 0 22px; }
-  .card { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:14px 16px; min-width:140px; }
-  .card .k { color:var(--mut); font-size:12px; text-transform:uppercase; letter-spacing:.5px; }
-  .card .v { font-size:22px; font-weight:700; margin-top:3px; }
-  table { width:100%; border-collapse:collapse; background:var(--panel); border:1px solid var(--line); border-radius:12px; overflow:hidden; }
-  th,td { padding:11px 12px; text-align:right; border-bottom:1px solid var(--line); white-space:nowrap; }
-  th:first-child,td:first-child { text-align:left; }
-  th { color:var(--mut); font-weight:600; font-size:12px; text-transform:uppercase; letter-spacing:.4px; }
-  tr:last-child td { border-bottom:none; }
-  tbody tr:hover { background:#181c24; }
-  .name { font-weight:600; }
-  .rank { color:var(--mut); width:24px; }
-  .bar { height:7px; border-radius:4px; background:#222; overflow:hidden; display:inline-block; width:84px; vertical-align:middle; margin-left:8px; }
-  .bar > i { display:block; height:100%; background:var(--good); }
-  .pill { display:inline-block; padding:1px 8px; border-radius:999px; font-size:12px; font-weight:600; }
-  .pill.free { background:rgba(77,212,172,.16); color:var(--good); }
-  .pill.paid { background:rgba(242,180,65,.16); color:var(--warn); }
-  .top td { background:rgba(106,168,255,.06); }
-  footer { color:var(--mut); margin-top:26px; font-size:13px; }
-  a { color:var(--accent); text-decoration:none; }
-  a:hover { text-decoration:underline; }
-  .empty { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:30px; text-align:center; color:var(--mut); }
-  .legend { margin-top:14px; font-size:13px; color:var(--mut); }
-  .legend b { color:var(--txt); font-weight:600; }
+  :root{
+    --bg:#0b0d11; --bg2:#0e1117; --panel:#13161d; --panel2:#171b23; --line:#222734;
+    --txt:#eef2f8; --mut:#93a0b4; --dim:#6b7585;
+    --good:#46d6a6; --warn:#f4b740; --bad:#ff6a6a; --accent:#7aa9ff; --gold:#ffcf4d;
+    --shadow:0 8px 30px rgba(0,0,0,.45);
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:
+      radial-gradient(1100px 480px at 78% -8%, rgba(122,169,255,.10), transparent 60%),
+      radial-gradient(900px 420px at 4% 0%, rgba(70,214,166,.07), transparent 55%),
+      var(--bg);
+    color:var(--txt);font:15px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial;
+    -webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1040px;margin:0 auto;padding:30px 18px 70px}
+  a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
+  .mut{color:var(--mut)} .dim{color:var(--dim)}
+
+  /* header */
+  .top{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;flex-wrap:wrap;margin-bottom:6px}
+  .badge{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:600;letter-spacing:.3px;
+    color:var(--good);background:rgba(70,214,166,.12);border:1px solid rgba(70,214,166,.25);
+    padding:4px 11px;border-radius:999px}
+  .pulse{width:7px;height:7px;border-radius:50%;background:var(--good);box-shadow:0 0 0 0 rgba(70,214,166,.6);animation:pulse 2s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(70,214,166,.55)}70%{box-shadow:0 0 0 7px rgba(70,214,166,0)}100%{box-shadow:0 0 0 0 rgba(70,214,166,0)}}
+  h1{font-size:27px;line-height:1.15;margin:14px 0 6px;letter-spacing:-.4px;font-weight:750}
+  .sub{color:var(--mut);margin:0 0 8px;max-width:70ch}
+
+  /* about */
+  .about{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);
+    border-radius:14px;padding:16px 18px;margin:18px 0 22px;box-shadow:var(--shadow)}
+  .about h2{font-size:13px;text-transform:uppercase;letter-spacing:.6px;color:var(--mut);margin:0 0 8px}
+  .about p{margin:0 0 9px} .about p:last-child{margin:0}
+  .about b{color:var(--txt);font-weight:650}
+  .tag{display:inline-block;font-size:12px;font-weight:600;color:var(--accent);background:rgba(122,169,255,.1);
+    border:1px solid rgba(122,169,255,.22);border-radius:6px;padding:1px 7px;margin:0 1px}
+
+  /* stat cards */
+  .cards{display:flex;gap:12px;flex-wrap:wrap;margin:0 0 22px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:13px 16px;min-width:130px;flex:1}
+  .card .k{color:var(--dim);font-size:11px;text-transform:uppercase;letter-spacing:.6px}
+  .card .v{font-size:23px;font-weight:750;margin-top:3px;letter-spacing:-.3px}
+  .card .v small{font-size:13px;font-weight:600;color:var(--mut)}
+
+  /* table */
+  .tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow)}
+  table{width:100%;border-collapse:collapse;background:var(--panel);min-width:760px}
+  th,td{padding:12px 13px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+  th:first-child,td:first-child{text-align:center}
+  th:nth-child(2),td:nth-child(2),th.detcol,td.detcol{text-align:left}
+  th{color:var(--dim);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.5px;
+    position:sticky;top:0;background:var(--panel2);z-index:1}
+  tbody tr{transition:background .12s} tbody tr:hover{background:#181d27}
+  tr:last-child td{border-bottom:none}
+  .rank{color:var(--dim);font-variant-numeric:tabular-nums;font-weight:600}
+  .name{font-weight:680;font-size:15px}
+  .det{color:var(--mut);font-size:12.5px;white-space:normal;max-width:240px;line-height:1.4}
+  .num{font-variant-numeric:tabular-nums}
+  .solv{color:var(--good);font-weight:750;font-size:15px}
+  .bar{height:6px;border-radius:4px;background:#222936;overflow:hidden;display:inline-block;width:64px;vertical-align:middle;margin-left:8px}
+  .bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--good),#6ae0b8)}
+  .pill{display:inline-block;padding:2px 9px;border-radius:999px;font-size:12px;font-weight:650}
+  .pill.free{background:rgba(70,214,166,.15);color:var(--good)}
+  .pill.paid{background:rgba(244,183,64,.14);color:var(--warn)}
+  .top1 td{background:linear-gradient(90deg,rgba(122,169,255,.10),transparent 70%)}
+
+  /* crown + cartoon tooltip */
+  .crown{position:relative;display:inline-block;margin-left:5px;cursor:help;font-size:15px;filter:drop-shadow(0 1px 2px rgba(0,0,0,.5));
+    transition:transform .15s} .crown:hover{transform:translateY(-1px) rotate(-6deg) scale(1.12)}
+  /* anchored to the crown's left edge and opens rightward so it never clips on the
+     leftmost (#) column inside the table's scroll container */
+  .crown .tip{position:absolute;left:-6px;bottom:150%;transform:translate(0,6px) scale(.6);transform-origin:bottom left;
+    opacity:0;pointer-events:none;white-space:nowrap;z-index:20;
+    background:linear-gradient(180deg,#fff6dc,#ffe39e);color:#5a3d00;
+    font-weight:800;font-size:14.5px;letter-spacing:.2px;padding:9px 14px;border-radius:13px;
+    border:2px solid #ffcf4d;box-shadow:0 10px 24px rgba(0,0,0,.4),0 0 0 4px rgba(255,207,77,.12);
+    transition:opacity .16s ease, transform .22s cubic-bezier(.2,1.5,.4,1)}
+  .crown .tip small{display:block;font-size:11.5px;font-weight:700;color:#8a6a16;letter-spacing:0;margin-top:1px}
+  .crown .tip:after{content:"";position:absolute;top:100%;left:16px;
+    border:7px solid transparent;border-top-color:#ffe39e}
+  /* the popup renders ~15% bigger than a normal tooltip would (scale 1.15) */
+  .crown:hover .tip{opacity:1;transform:translate(0,0) scale(1.15)}
+
+  h2.sec{font-size:18px;margin:34px 0 4px;letter-spacing:-.2px}
+  .legend{margin-top:14px;font-size:13px;color:var(--mut);line-height:1.7}
+  .legend b{color:var(--txt);font-weight:650}
+  .note{font-size:12.5px;color:var(--dim);margin-top:10px;line-height:1.6}
+  .note code{background:#0d1016;border:1px solid var(--line);border-radius:5px;padding:1px 5px;color:var(--mut)}
+  .empty{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:30px;text-align:center;color:var(--mut)}
+  footer{color:var(--dim);margin-top:30px;font-size:13px;border-top:1px solid var(--line);padding-top:16px}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <h1>Captcha solver — live model bench</h1>
-  <p class="sub">Same saved puzzles, every candidate model. Ranked by how often it clicks the right icons — plus speed and cost. Goal: free / ≤ $0.50 per 1,000. &middot; <a href="gallery.html">see why they fumbled →</a></p>
+
+  <div class="top">
+    <span class="badge"><span class="pulse"></span> LIVE · auto-refresh 60s</span>
+    <span class="dim" style="font-size:13px">updated <span id="updated">—</span></span>
+  </div>
+
+  <h1>Which AI actually solves the captcha — cheapest?</h1>
+  <p class="sub">Every candidate model run over the <b>same</b> saved puzzles, scored on the only thing that counts: clicking the right little drawings <b>in the right order</b>. Ranked by real solve-rate, then speed and cost. Target: free / ≤ $0.50 per 1,000 solves.</p>
+
+  <div class="about">
+    <h2>What is this?</h2>
+    <p>We scrape the Smyths toy catalogue through <b>Tor</b> (free, anonymous IPs). Now and then the site throws up a security puzzle from <b>hCaptcha</b> — the <span class="tag">doodle</span> kind: a photo with a few faint hand-drawn icons scribbled on it, and a strip up top saying <i>“select in this order.”</i> You have to click the doodles in that exact sequence.</p>
+    <p>To get past it automatically you need a vision model that can (1) <b>find</b> the doodles and (2) put them in the <b>right order</b>. This page is the bake-off: same real puzzles, every model, head-to-head — so we can pick the one that solves it reliably for the least money. <a href="gallery.html">See where each model actually clicked →</a></p>
+  </div>
 
   <div class="cards">
-    <div class="card"><div class="k">Puzzles</div><div class="v" id="corpus">—</div></div>
+    <div class="card"><div class="k">Puzzles in set</div><div class="v" id="corpus">—</div></div>
     <div class="card"><div class="k">Models tested</div><div class="v" id="nmodels">—</div></div>
-    <div class="card"><div class="k">Best real-solve</div><div class="v" id="best">—</div></div>
-    <div class="card"><div class="k">Updated</div><div class="v" id="updated" style="font-size:15px;font-weight:500">—</div></div>
+    <div class="card"><div class="k">Best real solve-rate</div><div class="v" id="best">—</div></div>
+    <div class="card"><div class="k">Cheapest that clears target</div><div class="v" id="cheap">—</div></div>
   </div>
 
   <div id="board"></div>
 
-  <h2 style="font-size:17px;margin:30px 0 4px">Exit health — the real lever</h2>
-  <p class="sub" style="margin-bottom:14px">The captcha only fires on low-trust connections. Most fetches never see one — so the win is avoiding captchas, not solving them faster.</p>
-  <div class="cards" id="exitcards"></div>
-  <div id="exitnote" class="legend" style="margin-top:0"></div>
-
   <div class="legend">
-    <b style="color:var(--good)">solved ✓</b> = clicked ALL icons in the RIGHT order — the only thing that actually passes the captcha (the real score) ·
-    <b>found</b> = located all icons but maybe wrong order (fails the captcha) · <b>icons hit</b> = avg fraction of icons located ·
-    <b>$/1k</b> = est. cost per 1,000 puzzles; <b>free</b> = $0 to run (local or free-tier) · <b>p50</b> = median time per puzzle ·
-    <b>$/1k</b> = est. cost per 1,000 puzzles · <b>free</b> = no paid API used.
-    Local models (Moondream / Qwen / SmolVLM) run on your own machine at $0.
+    <b style="color:var(--good)">solved ✓</b> = clicked every doodle in the <b>right order</b> — the only result that actually passes the captcha (the real score) ·
+    <b>located</b> = found all the doodles but maybe out of order (still fails) ·
+    <b>icons hit</b> = average share of doodles located ·
+    <b>p50</b> = median time per puzzle ·
+    <b>$/1k</b> = real cost per 1,000 puzzles (from actual OpenRouter spend; local / free-tier = $0).
   </div>
+  <div class="note" id="deadnote"></div>
+
+  <h2 class="sec">Exit health — the bigger lever</h2>
+  <p class="mut" style="margin:4px 0 4px;max-width:72ch;font-size:14px">The puzzle only appears on low-trust connections. Most fetches never see one — so the real win is <b>avoiding</b> captchas, not solving them faster. Numbers below are a <b>small, one-afternoon sample</b> — directional, not a guarantee.</p>
+  <div class="cards" id="exitcards"></div>
+  <div id="exitnote" class="note" style="margin-top:4px"></div>
 
   <footer>
-    auto-refreshes every 60s · data pushed as the bench runs ·
-    <a href="https://github.com/philipposk/smyths-scraper">scraper</a> ·
-    <span class="mut">no keys or raw site data are published here</span>
+    Same puzzles, every model · costs are real API spend, not list price ·
+    <a href="https://github.com/philipposk/smyths-scraper">scraper repo</a> ·
+    <span class="dim">no API keys or raw site data are published here</span>
   </footer>
 </div>
 
 <script>
+// per-model "what is it / how does it run" — shown in the Details column.
+const DETAILS = {
+  'gemini-3-flash':    'OpenRouter API · Google · paid. Top accuracy, no thinking-token tax.',
+  'gemini-3.5-flash':  'OpenRouter API · Google · paid. Accurate but burns pricey reasoning tokens.',
+  'qwen3-vl-32b':      'OpenRouter API · Alibaba · cheap grounded vision model. The value winner.',
+  'glm-4.6v':          'OpenRouter API · Zhipu · paid. Decent but very slow (~23s/puzzle).',
+  'gpt-5.4':           'OpenRouter API · OpenAI · paid. Mid accuracy on tiny icons.',
+  'qwen3-vl-235b':     'OpenRouter API · big Qwen · oddly weaker than the 32B on this task.',
+  'qwen-solo':         'Local · Ollama on your own machine · $0. Best of the free options.',
+  'shape-match':       'Pure computer-vision · no model at all · $0. Finds doodles, can’t order them.',
+  'color-cv':          'CV finds doodles + Moondream cloud names them. Partly paid.',
+  'qwen+moondream':    'Local Qwen locates + Moondream cloud classifies. Partly paid.',
+  'moondream-cloud':   'Moondream cloud point-model · paid. Misses the photo-overlaid doodles.',
+  'claude-sonnet-4.6': 'OpenRouter API · Anthropic · paid. Weak at clicking small icons.'
+};
+// runs that couldn't be fairly scored (dead key / quota) — shown honestly, NOT ranked as a 0%.
+const DEAD = {
+  'gemini': 'Free-tier Gemini key hit its quota mid-run — only ~0.1 successful calls per puzzle. The 0% is a dead key, not the model’s ability. Re-run with a fresh key to score it.'
+};
+// Filippos’s picks — crown + cartoon tooltip on these rows.
+const PICKS = {
+  'qwen3-vl-32b': {t:'Filippos’s selection', s:'best value · ~2¢ / 1,000'},
+  'shape-match':  {t:'Filippos’s selection', s:'free · zero API'}
+};
+
 const fmtPct = (x) => (x==null ? '—' : (x*100).toFixed(1)+'%');
 const bar = (x) => `<span class="bar"><i style="width:${Math.round((x||0)*100)}%"></i></span>`;
-const ago = (ms) => { const s=Math.round((Date.now()-ms)/1000); if(s<90) return s+'s ago'; const m=Math.round(s/60); if(m<90) return m+'m ago'; return Math.round(m/60)+'h ago'; };
+const money = (x) => (!x ? '$0' : (x<0.01 ? '<$0.01' : '$'+x.toFixed(x<1?3:2)));
+const ago = (ms) => { if(!ms) return '—'; const s=Math.round((Date.now()-ms)/1000); if(s<90) return s+'s ago'; const m=Math.round(s/60); if(m<90) return m+'m ago'; return Math.round(m/60)+'h ago'; };
+const detail = (r) => DETAILS[r.name] || (Object.keys(r.providers||{}).join(', ') || 'classical CV · $0');
 
-async function load() {
-  let d;
-  try { d = await fetch('data/results.json?_='+Date.now()).then(r=>r.json()); } catch { return; }
-  const board = document.getElementById('board');
-  const lb = d.leaderboard || [];
+async function load(){
+  let d; try{ d = await fetch('data/results.json?_='+Date.now()).then(r=>r.json()); }catch{ return; }
+  const all = d.leaderboard || [];
+  const dead = all.filter(r => DEAD[r.name]);
+  const lb = all.filter(r => !DEAD[r.name]);   // rank only fairly-scored runs
+
   document.getElementById('corpus').textContent = d.corpus ?? '—';
-  document.getElementById('nmodels').textContent = lb.length || (d.configs ? d.configs.length : '—');
-  document.getElementById('updated').textContent = d.updated ? ago(d.updated) : '—';
+  document.getElementById('nmodels').textContent = lb.length || '—';
+  document.getElementById('updated').textContent = ago(d.updated);
   document.getElementById('best').textContent = lb.length ? fmtPct(lb[0].orderedSolveAcc) : '—';
 
-  if (!lb.length) {
-    board.innerHTML = `<div class="empty">No results yet.<br>${d.note ? d.note : 'The bench will publish here as soon as it runs over the saved puzzles.'}</div>`;
-    return;
-  }
-  let rows = lb.map((r,i)=>{ const isFree=(r.estPer1000Usd||0)===0; return `
-    <tr class="${i===0?'top':''}">
-      <td class="rank">${i+1}</td>
+  const cheap = lb.filter(r => (r.estPer1000Usd||0) <= 0.50*6 && r.orderedSolveAcc >= 0.85)  // $/1k-puzzles → ~×0.16 captcha rate ≈ $/1k-scrapes target
+                  .sort((a,b)=>(a.estPer1000Usd||0)-(b.estPer1000Usd||0))[0];
+  document.getElementById('cheap').innerHTML = cheap ? `${cheap.name}<br><small>${fmtPct(cheap.orderedSolveAcc)} · ${money(cheap.estPer1000Usd)}/1k</small>` : '—';
+
+  const board = document.getElementById('board');
+  if(!lb.length){ board.innerHTML = `<div class="empty">No results yet.</div>`; return; }
+
+  const rows = lb.map((r,i)=>{
+    const isFree=(r.estPer1000Usd||0)===0;
+    const pick = PICKS[r.name];
+    const crown = pick ? `<span class="crown">👑<span class="tip">${pick.t}<small>${pick.s}</small></span></span>` : '';
+    return `<tr class="${i===0?'top1':''}">
+      <td><span class="rank">${i+1}</span>${crown}</td>
       <td class="name">${r.name}</td>
-      <td><b style="color:var(--good)">${fmtPct(r.orderedSolveAcc)}</b></td>
-      <td>${fmtPct(r.solveAcc)}</td>
-      <td>${fmtPct(r.locateAcc)}${bar(r.locateAcc)}</td>
-      <td>${r.p50ms} ms</td>
-      <td>${r.estPer1000Usd ? '$'+r.estPer1000Usd.toFixed(2) : '$0'}</td>
+      <td class="detcol det">${detail(r)}</td>
+      <td><span class="solv">${fmtPct(r.orderedSolveAcc)}</span></td>
+      <td class="num">${fmtPct(r.locateAcc)}${bar(r.locateAcc)}</td>
+      <td class="num">${(r.p50ms/1000).toFixed(1)}s</td>
+      <td class="num">${money(r.estPer1000Usd)}</td>
       <td><span class="pill ${isFree?'free':'paid'}">${isFree?'free':'paid'}</span></td>
-    </tr>`}).join('');
-  board.innerHTML = `<table>
-    <thead><tr><th class="rank">#</th><th>model / combo</th><th>solved ✓</th><th>found</th><th>icons hit</th><th>p50</th><th>$/1k</th><th></th></tr></thead>
-    <tbody>${rows}</tbody></table>`;
+    </tr>`;
+  }).join('');
+
+  board.innerHTML = `<div class="tablewrap"><table>
+    <thead><tr>
+      <th class="rank">#</th><th>model / combo</th><th class="detcol">details</th>
+      <th>solved ✓</th><th>icons hit</th><th>p50</th><th>$/1k</th><th></th>
+    </tr></thead><tbody>${rows}</tbody></table></div>`;
+
+  document.getElementById('deadnote').innerHTML = dead.length
+    ? '⚠︎ <b style="color:var(--warn)">Not ranked:</b> ' + dead.map(r=>`<b>${r.name}</b> — ${DEAD[r.name]}`).join(' · ')
+    : '';
 }
-async function loadExits() {
-  let e; try { e = await fetch('data/exits.json?_='+Date.now()).then(r=>r.json()); } catch { return; }
-  const card = (k,v,sub)=>`<div class="card"><div class="k">${k}</div><div class="v">${v}</div>${sub?`<div class="mut" style="font-size:12px;margin-top:2px">${sub}</div>`:''}</div>`;
+
+async function loadExits(){
+  let e; try{ e = await fetch('data/exits.json?_='+Date.now()).then(r=>r.json()); }catch{ return; }
+  const card=(k,v,sub)=>`<div class="card"><div class="k">${k}</div><div class="v">${v}</div>${sub?`<div class="dim" style="font-size:12px;margin-top:2px">${sub}</div>`:''}</div>`;
   document.getElementById('exitcards').innerHTML =
-    card('Clean exits', (e.clean_pct??'—')+'%', `${e.clean_exits}/${e.exits_sampled} Tor exits`) +
-    card('Captcha rate', (e.captcha_rate_pct??'—')+'%', `${e.captcha_detected}/${e.scrapes_attempted} fetches`) +
-    card('Scrape success', (e.success_pct??'—')+'%', `${e.scrapes_success}/${e.scrapes_attempted}`) +
-    card('Hard blocks', (e.block_pct??'—')+'%', `${e.hard_blocks} of ${e.scrapes_attempted}`);
-  document.getElementById('exitnote').innerHTML = e.note ? `<b>How to reach ~0 captchas:</b> ${e.note}` : '';
+    card('No-captcha fetches', (100-(e.captcha_rate_pct??0)).toFixed(0)+'%', `${e.scrapes_attempted-e.captcha_detected}/${e.scrapes_attempted} · $0 each`) +
+    card('Hit a captcha', (e.captcha_rate_pct??'—')+'%', `${e.captcha_detected}/${e.scrapes_attempted} fetches`) +
+    card('Clean exits', `${e.clean_exits}/${e.exits_sampled}`, `Tor exit nodes sampled`) +
+    card('Hard blocked', (e.block_pct??'—')+'%', `${e.hard_blocks}/${e.scrapes_attempted}`);
+  document.getElementById('exitnote').innerHTML =
+    `<b>Sample:</b> ${e.source||'small Tor run'} — too few to quote a hard rate, treat as directional. ` +
+    (e.note ? `<b>The lever:</b> a residential / mobile IP (instead of a datacenter/Tor exit) plus a stable real-Chrome fingerprint pushes the captcha rate toward ~0 — far more valuable than a faster solver.` : '');
 }
-load(); setInterval(load, 60000);
-loadExits(); setInterval(loadExits, 60000);
+
+load(); setInterval(load,60000);
+loadExits(); setInterval(loadExits,60000);
 </script>
 </body>
 </html>
