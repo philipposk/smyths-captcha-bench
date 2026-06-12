@@ -113,6 +113,28 @@
       "costReal": true
     },
     {
+      "name": "gemini-2.5-flash",
+      "legendAcc": 0,
+      "locateAcc": 0.59,
+      "solveAcc": 0.351,
+      "orderedSolveAcc": 0.324,
+      "p50ms": 2837,
+      "avgTokens": 733,
+      "avgCalls": 1.9,
+      "estPer1000Usd": 0,
+      "free": true,
+      "errors": 0,
+      "n": 37,
+      "providers": {
+        "gemini-native2": 3,
+        "gemini": 3,
+        "gemini-native-lite1": 20,
+        "gemini-native-lite2": 22,
+        "gemini-lite": 19,
+        "gemini-native1": 2
+      }
+    },
+    {
       "name": "qwen-solo",
       "legendAcc": 0,
       "locateAcc": 0.77,
@@ -214,25 +236,6 @@
         "openrouter": 74
       },
       "costReal": true
-    },
-    {
-      "name": "gemini",
-      "legendAcc": 0,
-      "locateAcc": 0.027,
-      "solveAcc": 0,
-      "orderedSolveAcc": 0,
-      "p50ms": 1284,
-      "avgTokens": 41,
-      "avgCalls": 0.1,
-      "estPer1000Usd": 0,
-      "free": true,
-      "errors": 0,
-      "n": 37,
-      "providers": {
-        "gemini": 2,
-        "gemini-native2": 1,
-        "gemini-native1": 1
-      }
     }
   ]
 }

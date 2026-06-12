@@ -97,6 +97,19 @@
   .note code{background:#0d1016;border:1px solid var(--line);border-radius:5px;padding:1px 5px;color:var(--mut)}
   .empty{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:30px;text-align:center;color:var(--mut)}
   footer{color:var(--dim);margin-top:30px;font-size:13px;border-top:1px solid var(--line);padding-top:16px}
+
+  /* sortable headers */
+  th.sortable{cursor:pointer;user-select:none} th.sortable:hover{color:var(--txt)}
+  th.sortable .arr{opacity:0;font-size:10px;margin-left:3px} th.sortable.act{color:var(--txt)} th.sortable.act .arr{opacity:1;color:var(--accent)}
+  /* cost-translation tooltip on $/1k */
+  .cinfo{position:relative;cursor:help;border-bottom:1px dotted var(--dim)}
+  .cinfo .ctip{position:absolute;right:-6px;bottom:150%;transform:translateY(6px) scale(.96);opacity:0;pointer-events:none;
+    width:300px;white-space:normal;text-align:left;z-index:30;
+    background:#0f1320;border:1px solid #2b3346;border-radius:11px;padding:11px 13px;font-size:12.5px;line-height:1.6;color:var(--mut);
+    box-shadow:0 14px 34px rgba(0,0,0,.55);transition:opacity .15s,transform .18s}
+  .cinfo .ctip b{color:var(--txt)} .cinfo .ctip .hd{color:var(--accent);font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.4px;display:block;margin-bottom:5px}
+  .cinfo .ctip:after{content:"";position:absolute;top:100%;right:14px;border:7px solid transparent;border-top-color:#0f1320}
+  .cinfo:hover .ctip{opacity:1;transform:translateY(0) scale(1)}
 </style>
 </head>
 <body>
@@ -155,7 +168,8 @@ const DETAILS = {
   'glm-4.6v':          'OpenRouter API · Zhipu · paid. Decent but very slow (~23s/puzzle).',
   'gpt-5.4':           'OpenRouter API · OpenAI · paid. Mid accuracy on tiny icons.',
   'qwen3-vl-235b':     'OpenRouter API · big Qwen · oddly weaker than the 32B on this task.',
-  'qwen-solo':         'Local · Ollama on your own machine · $0. Best of the free options.',
+  'gemini-2.5-flash':  'Gemini free tier (~500–1,000 req/day) · Google · $0. Best free option — reads the legend + locates decently.',
+  'qwen-solo':         'Local · Ollama on your own machine · $0. Runs fully offline.',
   'shape-match':       'Pure computer-vision · no model at all · $0. Finds doodles, can’t order them.',
   'color-cv':          'CV finds doodles + Moondream cloud names them. Partly paid.',
   'qwen+moondream':    'Local Qwen locates + Moondream cloud classifies. Partly paid.',
@@ -163,9 +177,8 @@ const DETAILS = {
   'claude-sonnet-4.6': 'OpenRouter API · Anthropic · paid. Weak at clicking small icons.'
 };
 // runs that couldn't be fairly scored (dead key / quota) — shown honestly, NOT ranked as a 0%.
-const DEAD = {
-  'gemini': 'Free-tier Gemini key hit its quota mid-run — only ~0.1 successful calls per puzzle. The 0% is a dead key, not the model’s ability. Re-run with a fresh key to score it.'
-};
+// (gemini-2.5-flash re-ran cleanly on a fresh day's free quota → now a real ranked row.)
+const DEAD = {};
 // Filippos’s picks — crown + cartoon tooltip on these rows.
 const PICKS = {
   'qwen3-vl-32b': {t:'Filippos’s selection', s:'best value · ~2¢ / 1,000'},
@@ -174,27 +187,39 @@ const PICKS = {
 
 const fmtPct = (x) => (x==null ? '—' : (x*100).toFixed(1)+'%');
 const bar = (x) => `<span class="bar"><i style="width:${Math.round((x||0)*100)}%"></i></span>`;
-const money = (x) => (!x ? '$0' : (x<0.01 ? '<$0.01' : '$'+x.toFixed(x<1?3:2)));
+const money = (x) => (x==null ? '—' : (!x ? '$0' : (x<0.01 ? '$'+x.toFixed(4) : '$'+x.toFixed(x<1?3:2))));
 const ago = (ms) => { if(!ms) return '—'; const s=Math.round((Date.now()-ms)/1000); if(s<90) return s+'s ago'; const m=Math.round(s/60); if(m<90) return m+'m ago'; return Math.round(m/60)+'h ago'; };
 const detail = (r) => DETAILS[r.name] || (Object.keys(r.providers||{}).join(', ') || 'classical CV · $0');
 
-async function load(){
-  let d; try{ d = await fetch('data/results.json?_='+Date.now()).then(r=>r.json()); }catch{ return; }
-  const all = d.leaderboard || [];
-  const dead = all.filter(r => DEAD[r.name]);
-  const lb = all.filter(r => !DEAD[r.name]);   // rank only fairly-scored runs
+// ---- state ----
+let LB = [], DEADROWS = [];
+let captchaRate = 0.165;                 // updated from exits.json
+const SCRAPES_PER_DAY = 3000, DAYS = 30;
+let sortKey = 'orderedSolveAcc', sortDir = -1;   // -1 = descending
 
-  document.getElementById('corpus').textContent = d.corpus ?? '—';
-  document.getElementById('nmodels').textContent = lb.length || '—';
-  document.getElementById('updated').textContent = ago(d.updated);
-  document.getElementById('best').textContent = lb.length ? fmtPct(lb[0].orderedSolveAcc) : '—';
+// $/1k-puzzles → real $ per 1,000 URLs scraped → $/month at 3k/day. Shown on hover over $/1k.
+function costTip(r){
+  const perK = r.estPer1000Usd||0;
+  if(!perK) return `<span class="hd">cost</span>Free to run — <b>$0</b> at any volume (local / free tier).`;
+  const perKurls = perK*captchaRate, perDay = perKurls*SCRAPES_PER_DAY/1000, perMonth = perDay*DAYS;
+  return `<span class="hd">what it really costs</span>`+
+    `<b>${money(perK)}</b> per 1,000 <i>solved puzzles</i>.<br>`+
+    `Only ~${Math.round(captchaRate*1000)} of every 1,000 URLs hit a captcha (${(captchaRate*100).toFixed(1)}%), so → <b>${money(perKurls)} per 1,000 URLs scraped</b>.<br>`+
+    `At ${SCRAPES_PER_DAY.toLocaleString()} scrapes/day → <b>${money(perMonth)}/month</b>.`;
+}
 
-  const cheap = lb.filter(r => (r.estPer1000Usd||0) <= 0.50*6 && r.orderedSolveAcc >= 0.85)  // $/1k-puzzles → ~×0.16 captcha rate ≈ $/1k-scrapes target
-                  .sort((a,b)=>(a.estPer1000Usd||0)-(b.estPer1000Usd||0))[0];
-  document.getElementById('cheap').innerHTML = cheap ? `${cheap.name}<br><small>${fmtPct(cheap.orderedSolveAcc)} · ${money(cheap.estPer1000Usd)}/1k</small>` : '—';
+const COLS = [
+  {key:'orderedSolveAcc', label:'solved ✓', cls:'solv'},
+  {key:'solveAcc',        label:'found',    cls:''},
+  {key:'locateAcc',       label:'icons hit',cls:'bar'},
+  {key:'p50ms',           label:'p50',      cls:''},
+  {key:'estPer1000Usd',   label:'$/1k',     cls:''},
+];
 
+function renderBoard(){
   const board = document.getElementById('board');
-  if(!lb.length){ board.innerHTML = `<div class="empty">No results yet.</div>`; return; }
+  if(!LB.length){ board.innerHTML = `<div class="empty">No results yet.</div>`; return; }
+  const lb = LB.slice().sort((a,b)=> sortDir*(((a[sortKey]??0)-(b[sortKey]??0))) );
 
   const rows = lb.map((r,i)=>{
     const isFree=(r.estPer1000Usd||0)===0;
@@ -205,35 +230,63 @@ async function load(){
       <td class="name">${r.name}</td>
       <td class="detcol det">${detail(r)}</td>
       <td><span class="solv">${fmtPct(r.orderedSolveAcc)}</span></td>
+      <td class="num">${fmtPct(r.solveAcc)}</td>
       <td class="num">${fmtPct(r.locateAcc)}${bar(r.locateAcc)}</td>
       <td class="num">${(r.p50ms/1000).toFixed(1)}s</td>
-      <td class="num">${money(r.estPer1000Usd)}</td>
+      <td class="num"><span class="cinfo">${money(r.estPer1000Usd)}<span class="ctip">${costTip(r)}</span></span></td>
       <td><span class="pill ${isFree?'free':'paid'}">${isFree?'free':'paid'}</span></td>
     </tr>`;
   }).join('');
 
+  const arr = sortDir<0 ? '▼' : '▲';
+  const th = COLS.map(c=>`<th class="sortable num ${c.key===sortKey?'act':''}" data-sort="${c.key}">${c.label}<span class="arr">${arr}</span></th>`).join('');
   board.innerHTML = `<div class="tablewrap"><table>
-    <thead><tr>
-      <th class="rank">#</th><th>model / combo</th><th class="detcol">details</th>
-      <th>solved ✓</th><th>icons hit</th><th>p50</th><th>$/1k</th><th></th>
-    </tr></thead><tbody>${rows}</tbody></table></div>`;
+    <thead><tr><th class="rank">#</th><th>model / combo</th><th class="detcol">details</th>${th}<th></th></tr></thead>
+    <tbody>${rows}</tbody></table></div>`;
 
-  document.getElementById('deadnote').innerHTML = dead.length
-    ? '⚠︎ <b style="color:var(--warn)">Not ranked:</b> ' + dead.map(r=>`<b>${r.name}</b> — ${DEAD[r.name]}`).join(' · ')
+  board.querySelectorAll('th.sortable').forEach(h=>h.addEventListener('click',()=>{
+    const k=h.dataset.sort;
+    if(sortKey===k) sortDir=-sortDir; else { sortKey=k; sortDir=-1; }
+    renderBoard();
+  }));
+}
+
+async function load(){
+  let d; try{ d = await fetch('data/results.json?_='+Date.now()).then(r=>r.json()); }catch{ return; }
+  const all = d.leaderboard || [];
+  DEADROWS = all.filter(r => DEAD[r.name]);
+  LB = all.filter(r => !DEAD[r.name]);
+
+  document.getElementById('corpus').textContent = d.corpus ?? '—';
+  document.getElementById('nmodels').textContent = LB.length || '—';
+  document.getElementById('updated').textContent = ago(d.updated);
+  const best = LB.slice().sort((a,b)=>(b.orderedSolveAcc||0)-(a.orderedSolveAcc||0))[0];
+  document.getElementById('best').textContent = best ? fmtPct(best.orderedSolveAcc) : '—';
+
+  const cheap = LB.filter(r => (r.estPer1000Usd||0) <= 0.50*6 && r.orderedSolveAcc >= 0.85)
+                  .sort((a,b)=>(a.estPer1000Usd||0)-(b.estPer1000Usd||0))[0];
+  document.getElementById('cheap').innerHTML = cheap ? `${cheap.name}<br><small>${fmtPct(cheap.orderedSolveAcc)} · ${money(cheap.estPer1000Usd)}/1k</small>` : '—';
+
+  document.getElementById('deadnote').innerHTML = DEADROWS.length
+    ? '⚠︎ <b style="color:var(--warn)">Not ranked:</b> ' + DEADROWS.map(r=>`<b>${r.name}</b> — ${DEAD[r.name]}`).join(' · ')
     : '';
+  renderBoard();
 }
 
 async function loadExits(){
   let e; try{ e = await fetch('data/exits.json?_='+Date.now()).then(r=>r.json()); }catch{ return; }
+  if(e.captcha_rate_pct!=null) captchaRate = e.captcha_rate_pct/100;
+  const noCap = (100 - (e.captcha_rate_pct??0)).toFixed(1);   // sums to 100 with the captcha %
   const card=(k,v,sub)=>`<div class="card"><div class="k">${k}</div><div class="v">${v}</div>${sub?`<div class="dim" style="font-size:12px;margin-top:2px">${sub}</div>`:''}</div>`;
   document.getElementById('exitcards').innerHTML =
-    card('No-captcha fetches', (100-(e.captcha_rate_pct??0)).toFixed(0)+'%', `${e.scrapes_attempted-e.captcha_detected}/${e.scrapes_attempted} · $0 each`) +
+    card('No-captcha fetches', noCap+'%', `${e.scrapes_attempted-e.captcha_detected}/${e.scrapes_attempted} · $0 each`) +
     card('Hit a captcha', (e.captcha_rate_pct??'—')+'%', `${e.captcha_detected}/${e.scrapes_attempted} fetches`) +
     card('Clean exits', `${e.clean_exits}/${e.exits_sampled}`, `Tor exit nodes sampled`) +
     card('Hard blocked', (e.block_pct??'—')+'%', `${e.hard_blocks}/${e.scrapes_attempted}`);
   document.getElementById('exitnote').innerHTML =
     `<b>Sample:</b> ${e.source||'small Tor run'} — too few to quote a hard rate, treat as directional. ` +
     (e.note ? `<b>The lever:</b> a residential / mobile IP (instead of a datacenter/Tor exit) plus a stable real-Chrome fingerprint pushes the captcha rate toward ~0 — far more valuable than a faster solver.` : '');
+  if(LB.length) renderBoard();   // refresh $/1k tooltips now that the real rate is known
 }
 
 load(); setInterval(load,60000);
