@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Real captchas — what the solver actually faces</title>
+<meta name="description" content="Real Smyths hCaptcha doodle puzzles the live Tor solver encountered — clean puzzles, failed attempts, and a few passes.">
+<link rel="icon" href="favicon.svg">
+<style>
+  :root{ --bg:#0b0d11; --panel:#13161d; --panel2:#171b23; --line:#222734; --txt:#eef2f8; --mut:#93a0b4; --dim:#6b7585;
+    --good:#46d6a6; --warn:#f4b740; --bad:#ff6a6a; --accent:#7aa9ff; --shadow:0 8px 30px rgba(0,0,0,.45); }
+  *{box-sizing:border-box}
+  body{margin:0;background:radial-gradient(1100px 480px at 78% -8%, rgba(122,169,255,.10), transparent 60%),var(--bg);
+    color:var(--txt);font:15px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1080px;margin:0 auto;padding:30px 18px 70px}
+  a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
+  .mut{color:var(--mut)} .dim{color:var(--dim)}
+  .nav{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+  .nav a{font-size:13px;font-weight:600;color:var(--mut);background:var(--panel);border:1px solid var(--line);padding:6px 13px;border-radius:999px}
+  .nav a.on{color:var(--txt);border-color:#33415a;background:var(--panel2)}
+  h1{font-size:26px;margin:12px 0 6px;letter-spacing:-.3px;font-weight:750}
+  .sub{color:var(--mut);margin:0 0 16px;max-width:76ch}
+  .key{display:flex;gap:16px;flex-wrap:wrap;align-items:center;font-size:13px;color:var(--mut);
+    background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:11px 15px;margin:0 0 12px}
+  .pill{font-size:11px;font-weight:700;border-radius:5px;padding:1px 7px}
+  .pill.ok{background:rgba(70,214,166,.16);color:var(--good)} .pill.no{background:rgba(255,106,106,.16);color:var(--bad)}
+  .pill.re{background:rgba(122,169,255,.14);color:var(--accent)}
+  .filters{display:flex;gap:7px;margin:0 0 16px;flex-wrap:wrap}
+  .filters button{font-size:12.5px;font-weight:600;color:var(--mut);background:var(--panel);border:1px solid var(--line);padding:5px 12px;border-radius:999px;cursor:pointer}
+  .filters button.on{color:var(--txt);border-color:#33415a;background:var(--panel2)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:11px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden;transition:transform .1s,border-color .1s}
+  .card:hover{transform:scale(1.03);border-color:#3a4a63;box-shadow:0 6px 18px rgba(0,0,0,.5)}
+  .card img{width:100%;display:block;background:#0c0e13;aspect-ratio:.9;object-fit:cover}
+  .card .cap{padding:6px 9px;display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--dim)}
+  .empty{background:var(--panel);border:1px dashed var(--line);border-radius:14px;padding:36px;text-align:center;color:var(--mut)}
+  footer{color:var(--dim);margin-top:26px;font-size:13px;border-top:1px solid var(--line);padding-top:16px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="nav">
+    <a href="./">◂ Captcha leaderboard</a>
+    <a href="gallery.html">Where models clicked</a>
+    <a href="exit-study.html">Tor exit study</a>
+    <a href="shootout.html">Solver shootout</a>
+    <a href="real-captchas.html" class="on">Real captchas</a>
+  </div>
+
+  <h1>Real captchas the solver actually faces</h1>
+  <p class="sub">Actual Smyths hCaptcha <b>doodle</b> puzzles hit during the live Tor runs — faint hand-drawn icons scribbled on a photo, with a strip up top saying <i>"select in this order."</i> A mix of clean puzzles, the solver's failed attempts, and a few passes. This is the raw material behind the <a href="shootout.html">shootout</a> and <a href="gallery.html">click overlays</a>.</p>
+
+  <div class="key">
+    <span><span class="pill ok">solved</span> solver cleared it</span>
+    <span><span class="pill no">failed</span> solver got it wrong</span>
+    <span><span class="pill re">real</span> raw capture — a numbered ① mark = a click the solver placed (usually a failed try)</span>
+  </div>
+
+  <div class="filters" id="filters">
+    <button data-f="all" class="on">All</button>
+    <button data-f="solved">Solved</button>
+    <button data-f="failed">Failed</button>
+    <button data-f="real">Raw captures</button>
+  </div>
+
+  <div id="grid"></div>
+
+  <footer>
+    Captured by the solver's <code>captures.js</code> + manual snapshots · optimized thumbnails ·
+    <span class="dim">no URLs, IPs, or product data — just the public challenge image</span>
+  </footer>
+</div>
+<script>
+let ITEMS = [], filter = 'all';
+const PILL = { solved:'<span class="pill ok">solved</span>', failed:'<span class="pill no">failed</span>', real:'<span class="pill re">real</span>' };
+function render(){
+  const g = document.getElementById('grid');
+  const show = ITEMS.filter(it => filter==='all' || it.verdict===filter);
+  g.innerHTML = show.length ? `<div class="grid">` + show.map(it=>
+    `<div class="card"><img src="data/real-captchas/${it.img}?_=${ITEMS._v||1}" loading="lazy" alt="captcha">
+      <div class="cap"><span>${it.verdict==='real'?'puzzle':it.verdict}</span>${PILL[it.verdict]||''}</div></div>`
+  ).join('') + `</div>` : `<div class="empty">No captchas in this filter.</div>`;
+}
+document.getElementById('filters').addEventListener('click', e=>{
+  const b = e.target.closest('button'); if(!b) return;
+  filter = b.dataset.f;
+  document.querySelectorAll('#filters button').forEach(x=>x.classList.toggle('on', x===b));
+  render();
+});
+(async()=>{
+  try{ const m = await fetch('data/real-captchas/manifest.json?_='+Date.now()).then(r=>r.json());
+    ITEMS = m.items||[]; ITEMS._v = m.updated||1; render(); }
+  catch{ document.getElementById('grid').innerHTML = `<div class="empty">No captures yet.</div>`; }
+})();
+</script>
+</body>
+</html>

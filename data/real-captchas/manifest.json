@@ -1,0 +1,138 @@
+{
+  "updated": 0,
+  "note": "Real Smyths captchas the live solver faced. Composites carry the solver verdict; the manual captures show the raw puzzle (a numbered ① mark = a click the solver placed, usually on a failed attempt).",
+  "items": [
+    {
+      "img": "cap01.jpg",
+      "verdict": "solved"
+    },
+    {
+      "img": "cap02.jpg",
+      "verdict": "failed"
+    },
+    {
+      "img": "cap03.jpg",
+      "verdict": "failed"
+    },
+    {
+      "img": "cap04.jpg",
+      "verdict": "solved"
+    },
+    {
+      "img": "cap05.jpg",
+      "verdict": "failed"
+    },
+    {
+      "img": "cap06.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap07.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap08.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap09.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap10.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap11.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap12.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap13.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap14.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap15.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap16.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap17.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap18.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap19.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap20.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap21.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap22.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap23.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap24.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap25.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap26.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap27.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap28.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap29.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap30.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap31.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap32.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap33.jpg",
+      "verdict": "real"
+    }
+  ]
+}
