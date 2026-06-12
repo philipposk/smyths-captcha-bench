@@ -65,11 +65,12 @@
     <a href="./">◂ Captcha leaderboard</a>
     <a href="gallery.html">Where models clicked</a>
     <a href="exit-study.html" class="on">Tor exit study</a>
+    <a href="shootout.html">Solver shootout</a>
   </div>
 
   <span class="badge"><span class="pulse"></span> LIVE · 3-day run</span>
   <h1>How many Tor exits get captcha'd?</h1>
-  <p class="sub">Scraping <b>3,000 random Smyths products/day</b> across <b>every region</b> (UK · IE · DE · AT · CH · FR · NL) over Tor, for 3 days — measuring how often an exit hits the captcha wall, with real confidence intervals. Solver limited to <b>qwen3-vl-32b + shape-match + color-cv</b>.</p>
+  <p class="sub">Scraping <b>3,000 random Smyths products/day</b> across <b>every region</b> (UK · IE · DE · AT · CH · FR · NL) over Tor, for 3 days — measuring how often an exit hits the captcha wall, with real confidence intervals. Solver: <b>qwen3-vl-32b</b> (the value-winner from the leaderboard); its free challengers shape-match &amp; color-cv get the head-to-head on the <a href="shootout.html">Solver shootout</a> tab.</p>
 
   <div class="about">
     <h2>Why this exists</h2>
@@ -120,6 +121,10 @@ async function load(){
     card('Exit captcha rate', ov.exits_n? pct(ov.captcha_rate_pct) : '—', ov.captcha_ci? `95% CI ${pct(ov.captcha_ci[0])}–${pct(ov.captcha_ci[1])} · n=${ov.exits_n}` : 'collecting…') +
     card('Bad exits', ov.exits&&ov.exits.windows? `${(ov.exits.hostile_windows/ov.exits.windows*100).toFixed(0)}%` : '—', ov.exits&&ov.exits.windows? `${ov.exits.hostile_windows}/${ov.exits.windows} exits hit a wall` : 'collecting…') +
     card('Product success', ov.attempted? pct(ov.success_pct) : '—', 'parsed OK after clearing') +
+    (function(){ const c=ov.captchas||{}; return card('Captchas solved',
+      c.detected ? `${c.solved}/${c.detected}` : '0',
+      c.detected ? `${Math.round((c.solved/c.detected)*100)}% cleared by qwen3-vl-32b · saved for the shootout`
+                 : 'none handed to the solver yet (most hostile exits are hard blocks, not doodles)'); })() +
     paceCard(ov);
 
   if(days.length){

@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Solver shootout — qwen3-vl-32b vs shape-match vs color-cv</title>
+<meta name="description" content="Three captcha-solving methods head-to-head on the same real Smyths puzzles: one paid-but-cheap vision model vs two free computer-vision methods.">
+<link rel="icon" href="favicon.svg">
+<style>
+  :root{ --bg:#0b0d11; --panel:#13161d; --panel2:#171b23; --line:#222734; --txt:#eef2f8; --mut:#93a0b4; --dim:#6b7585;
+    --good:#46d6a6; --warn:#f4b740; --bad:#ff6a6a; --accent:#7aa9ff; --shadow:0 8px 30px rgba(0,0,0,.45); }
+  *{box-sizing:border-box}
+  body{margin:0;background:radial-gradient(1100px 480px at 78% -8%, rgba(122,169,255,.10), transparent 60%),var(--bg);
+    color:var(--txt);font:15px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1080px;margin:0 auto;padding:30px 18px 70px}
+  a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
+  .mut{color:var(--mut)} .dim{color:var(--dim)}
+  .nav{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+  .nav a{font-size:13px;font-weight:600;color:var(--mut);background:var(--panel);border:1px solid var(--line);padding:6px 13px;border-radius:999px}
+  .nav a.on{color:var(--txt);border-color:#33415a;background:var(--panel2)}
+  .badge{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:600;color:var(--accent);background:rgba(122,169,255,.12);border:1px solid rgba(122,169,255,.25);padding:4px 11px;border-radius:999px}
+  h1{font-size:26px;margin:12px 0 6px;letter-spacing:-.3px;font-weight:750}
+  .sub{color:var(--mut);margin:0 0 18px;max-width:76ch}
+  .about{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:15px 18px;margin:0 0 22px;box-shadow:var(--shadow)}
+  .about h2{font-size:13px;text-transform:uppercase;letter-spacing:.6px;color:var(--mut);margin:0 0 8px}
+  .about p{margin:0 0 8px} .about p:last-child{margin:0} .about b{color:var(--txt)}
+  /* three method cards */
+  .three{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;margin:0 0 10px}
+  @media(max-width:720px){ .three{grid-template-columns:1fr} }
+  .mc{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 17px;position:relative;overflow:hidden}
+  .mc.win{border-color:rgba(70,214,166,.45);box-shadow:0 0 0 1px rgba(70,214,166,.15)}
+  .mc .tag{position:absolute;top:0;right:0;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:3px 9px;border-radius:0 0 0 10px}
+  .mc.win .tag{background:rgba(70,214,166,.16);color:var(--good)} .mc.free .tag{background:rgba(244,183,64,.14);color:var(--warn)}
+  .mc h3{margin:2px 0 2px;font-size:17px;font-weight:750}
+  .mc .kind{font-size:12px;color:var(--dim);margin-bottom:11px}
+  .mc .big{font-size:34px;font-weight:800;line-height:1;letter-spacing:-1px}
+  .mc .big small{font-size:13px;color:var(--mut);font-weight:600;letter-spacing:0}
+  .mc .row{display:flex;justify-content:space-between;font-size:13px;margin-top:9px;color:var(--mut)}
+  .mc .row b{color:var(--txt);font-variant-numeric:tabular-nums}
+  .mc .verdict{font-size:12.5px;color:var(--mut);margin-top:12px;padding-top:11px;border-top:1px solid var(--line);line-height:1.5}
+  /* found-vs-solved gap */
+  h2.sec{font-size:18px;margin:30px 0 6px}
+  .secsub{color:var(--dim);font-size:13.5px;margin:0 0 14px;max-width:74ch}
+  .gap{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 20px;box-shadow:var(--shadow)}
+  .grow{display:grid;grid-template-columns:140px 1fr;gap:11px 14px;align-items:center;margin-bottom:13px}
+  .grow:last-child{margin-bottom:0}
+  .gname{font-weight:700;font-size:13.5px}
+  .bars{position:relative}
+  .bar{height:13px;border-radius:7px;position:relative;margin:3px 0}
+  .bar .fill{position:absolute;left:0;top:0;bottom:0;border-radius:7px}
+  .bar.found .fill{background:rgba(122,169,255,.45)} .bar.solv .fill{background:var(--good)}
+  .barlbl{font-size:11px;color:var(--dim);display:flex;justify-content:space-between}
+  .leak{font-size:11.5px;color:var(--warn);margin-top:2px}
+  /* overlay matrix */
+  .matrixwrap{overflow-x:auto;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px;box-shadow:var(--shadow)}
+  .matrix{display:grid;gap:7px;align-items:stretch;min-width:680px}
+  .corner{display:flex;align-items:flex-end;font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:.4px;padding:0 0 4px 2px}
+  .mhead{position:sticky;top:0;background:var(--panel);display:flex;flex-direction:column;justify-content:flex-end;gap:3px;padding:2px 2px 4px}
+  .mhead .nm{font-weight:750;font-size:12.5px;color:var(--txt)} .mhead .sc{font-size:11px;font-weight:700;color:var(--good);background:rgba(70,214,166,.13);padding:0 6px;border-radius:5px;align-self:flex-start}
+  .mhead.free .sc{color:var(--warn);background:rgba(244,183,64,.13)}
+  .rhead{display:flex;flex-direction:column;justify-content:center;gap:5px;padding-right:8px}
+  .rhead .legimg{width:100%;max-height:38px;object-fit:contain;background:#fff;border:1px solid var(--line);border-radius:6px;padding:2px 5px}
+  .rhead .rn{font-size:11px;color:var(--mut);font-weight:600}
+  .cell{background:#0c0e13;border:1px solid var(--line);border-radius:9px;overflow:hidden;aspect-ratio:1/1;position:relative;transition:transform .1s,border-color .1s}
+  .cell:hover{transform:scale(1.06);border-color:#3a4a63;z-index:5;box-shadow:0 6px 18px rgba(0,0,0,.5)}
+  .cell img{width:100%;height:100%;object-fit:cover;display:block}
+  .key{display:flex;gap:18px;flex-wrap:wrap;align-items:center;font-size:13px;color:var(--mut);margin:12px 2px 0}
+  .dot{display:inline-block;width:11px;height:11px;border-radius:50%;vertical-align:-1px;margin-right:6px;box-shadow:0 0 0 2px rgba(255,255,255,.08)}
+  /* live capture */
+  .empty{background:var(--panel);border:1px dashed var(--line);border-radius:14px;padding:34px;text-align:center;color:var(--mut);line-height:1.6}
+  .empty b{color:var(--txt)}
+  .capgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+  .capcard{background:var(--panel);border:1px solid var(--line);border-radius:11px;overflow:hidden}
+  .capcard img{width:100%;display:block;background:#0c0e13}
+  .capcard .cap{font-size:11px;padding:6px 9px;display:flex;justify-content:space-between;align-items:center}
+  .pill{font-size:10px;font-weight:700;border-radius:5px;padding:1px 6px}
+  .pill.ok{background:rgba(70,214,166,.16);color:var(--good)} .pill.no{background:rgba(255,106,106,.16);color:var(--bad)}
+  footer{color:var(--dim);margin-top:26px;font-size:13px;border-top:1px solid var(--line);padding-top:16px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="nav">
+    <a href="./">◂ Captcha leaderboard</a>
+    <a href="gallery.html">Where models clicked</a>
+    <a href="exit-study.html">Tor exit study</a>
+    <a href="shootout.html" class="on">Solver shootout</a>
+  </div>
+
+  <span class="badge">3-method head-to-head</span>
+  <h1>Which method clears the captcha — and can a free one do it?</h1>
+  <p class="sub">The Tor exit study runs <b>qwen3-vl-32b</b> live (a cheap vision model). Its two free challengers — <b>shape-match</b> and <b>color-cv</b>, both pure computer-vision, no AI bill — are scored on the <b>same real Smyths puzzles</b>. Here's how all three do, and exactly where the free ones break.</p>
+
+  <div class="about">
+    <h2>The three methods, in plain English</h2>
+    <p><b>qwen3-vl-32b</b> — a vision AI. It reads the legend strip (<i>"click these icons, in this order"</i>), finds each doodle in the photo, and clicks them in sequence. Costs a fraction of a cent per puzzle.</p>
+    <p><b>shape-match</b> — free. Cuts each icon out of the legend and looks for a matching shape in the photo. No AI, no cost.</p>
+    <p><b>color-cv</b> — free. Finds the hand-drawn doodles by their ink colour standing out from the photo. Also no AI.</p>
+    <p class="dim">A puzzle only counts as <b>solved</b> if every doodle is clicked <b>in the right order</b>. "Found" = located the drawings at all. The gap between the two is where the free methods lose.</p>
+  </div>
+
+  <h2 class="sec">Head-to-head <span class="dim" style="font-size:13px;font-weight:400">· same <span id="npz">37</span> real puzzles</span></h2>
+  <div class="three" id="cards"></div>
+  <p class="dim" style="font-size:12px;margin:8px 2px 0" id="benchnote"></p>
+
+  <h2 class="sec">Why the free methods miss</h2>
+  <p class="secsub">Both free methods <b>find</b> roughly half the doodles but <b>solve</b> far fewer — because finding a drawing isn't enough, you have to click them in the legend's order. That ordering step is what the vision model gets and the CV methods don't.</p>
+  <div class="gap" id="gap"></div>
+
+  <h2 class="sec">Where each one clicked</h2>
+  <p class="secsub">The same five puzzles through each method. <span style="color:#00ff00">Green</span> = the correct doodle; <span style="color:#ff3030">red</span> = where the method clicked. Overlapping = a hit; scattered red = a miss.</p>
+  <div id="board"></div>
+  <div class="key">
+    <span><span class="dot" style="background:#00ff00"></span>correct doodle (answer)</span>
+    <span><span class="dot" style="background:#ff3030"></span>where the method clicked</span>
+  </div>
+
+  <h2 class="sec">Live Tor-encountered captchas <span class="dim" style="font-size:13px;font-weight:400">· the real test</span></h2>
+  <p class="secsub">The 37 above are a fixed lab set. These are the <b>actual captchas the live Tor run hit</b> — saved with qwen's real click attempt and whether it cleared. As they accumulate, all three methods replay on them here for a real-world head-to-head.</p>
+  <div id="live"></div>
+
+  <footer>
+    Bench: <code>bin/bench-solve.js</code> over saved real puzzles · click points stored, so this page never needs a paid re-run ·
+    <span class="dim">live captures from the 3-day Tor exit study</span>
+  </footer>
+</div>
+<script>
+const METHODS = [
+  { key:'qwen3-vl-32b', label:'qwen3-vl-32b', kind:'vision AI · paid (cheap)', cls:'win',  tag:'winner',
+    verdict:'Reads the legend order, so it actually solves. ~$0.12 per 1,000 puzzles — basically free at scrape volume.' },
+  { key:'shape-match',  label:'shape-match',  kind:'computer vision · locate-only', cls:'free', tag:'challenger',
+    verdict:'Finds about half the doodles by shape, but has no idea what order to click them — so most attempts fail. The locate step itself is free.' },
+  { key:'color-cv',     label:'color-cv',     kind:'computer vision · locate-only', cls:'free', tag:'challenger',
+    verdict:'Spots doodles by ink colour. Same ordering wall as shape-match. ⚠ Bench shows $2.12/1k — that cost is the legend-reading step, not the locate; to be re-verified on the next run.' },
+];
+const pct = x => x==null?'—':(x*100).toFixed(1)+'%';
+const ms  = x => x==null?'—':(x>=1000?(x/1000).toFixed(1)+'s':Math.round(x)+'ms');
+const usd = x => x==null?'—':(x===0?'$0':'$'+(+x).toFixed(x<1?3:2));
+
+async function load(){
+  let res={}, ov={};
+  try{ res = await fetch('data/results.json?_='+Date.now()).then(r=>r.json()); }catch{}
+  try{ ov  = await fetch('data/overlays.json?_='+Date.now()).then(r=>r.json()); }catch{}
+  const by = {}; (res.leaderboard||[]).forEach(r=>by[r.name]=r);
+  const n = (by['qwen3-vl-32b']||{}).n || 37;
+  document.getElementById('npz').textContent = n;
+
+  // three method cards
+  document.getElementById('cards').innerHTML = METHODS.map(m=>{
+    const r = by[m.key]||{};
+    return `<div class="mc ${m.cls}"><span class="tag">${m.tag}</span>
+      <h3>${m.label}</h3><div class="kind">${m.kind}</div>
+      <div class="big">${pct(r.orderedSolveAcc)}<small> solved</small></div>
+      <div class="row"><span>found the doodles</span><b>${pct(r.solveAcc)}</b></div>
+      <div class="row"><span>located on photo</span><b>${pct(r.locateAcc)}</b></div>
+      <div class="row"><span>speed (median)</span><b>${ms(r.p50ms)}</b></div>
+      <div class="row"><span>cost / 1,000</span><b>${usd(r.estPer1000Usd)}</b></div>
+      <div class="verdict">${m.verdict}</div></div>`;
+  }).join('');
+  document.getElementById('benchnote').innerHTML =
+    `Scores are real bench runs over ${n} saved Smyths puzzles. shape-match and color-cv score identically — both stall at the ordering step. ` +
+    `<b>Caveat:</b> their cost columns disagree ($0 vs $2.12) only because each bench config paired the CV locate with a different legend-reader; the locate itself is free. The next bench run unifies that.`;
+
+  // found-vs-solved gap bars
+  const maxV = 1;
+  document.getElementById('gap').innerHTML = METHODS.map(m=>{
+    const r = by[m.key]||{}; const f=r.solveAcc||0, s=r.orderedSolveAcc||0; const leak=Math.max(0,f-s);
+    return `<div class="grow"><div class="gname">${m.label}</div><div class="bars">
+      <div class="bar found"><div class="fill" style="width:${(f/maxV*100).toFixed(1)}%"></div></div>
+      <div class="barlbl"><span>found the doodles</span><span>${pct(f)}</span></div>
+      <div class="bar solv"><div class="fill" style="width:${(s/maxV*100).toFixed(1)}%"></div></div>
+      <div class="barlbl"><span>actually solved (right order)</span><span>${pct(s)}</span></div>
+      ${leak>0.02?`<div class="leak">↳ ${pct(leak)} found but clicked in the wrong order — pure ordering loss</div>`:''}
+    </div></div>`;
+  }).join('');
+
+  // overlay matrix: puzzles (rows) × the 3 methods (cols)
+  const puzzles = ov.puzzles||[];
+  const imgp = (id,cfg)=>`data/overlays/${id}__${cfg}.png?_=${Date.now()}`;
+  const head = `<div class="corner">puzzle ↓ · method →</div>` + METHODS.map(m=>{
+    const r=by[m.key]||{}; const s=r.orderedSolveAcc!=null?(r.orderedSolveAcc*100).toFixed(0)+'%':'—';
+    return `<div class="mhead ${m.cls==='free'?'free':''}"><span class="nm">${m.label}</span><span class="sc">${s}</span></div>`;
+  }).join('');
+  const rows = puzzles.map(p=>
+    `<div class="rhead"><img class="legimg" src="${imgp(p.id,'legend')}" alt="legend" onerror="this.style.display='none'"><span class="rn">${p.n||'?'} doodles · in order</span></div>` +
+    METHODS.map(m=>`<div class="cell"><img src="${imgp(p.id,m.key)}" alt="${m.label} on ${p.id}" loading="lazy" onerror="this.parentElement.style.opacity=.25"></div>`).join('')
+  ).join('');
+  document.getElementById('board').innerHTML = puzzles.length
+    ? `<div class="matrixwrap"><div class="matrix" style="grid-template-columns:150px repeat(${METHODS.length},1fr)">${head}${rows}</div></div>`
+    : `<div class="empty">Overlay images not found.</div>`;
+
+  // live captures
+  let cap=null; try{ cap = await fetch('data/shootout-live.json?_='+Date.now()).then(r=>r.json()); }catch{}
+  const live = document.getElementById('live');
+  if(cap && cap.items && cap.items.length){
+    live.innerHTML = `<div class="capgrid">` + cap.items.map(it=>
+      `<div class="capcard"><img src="${it.image}" loading="lazy" alt="captcha">
+        <div class="cap"><span class="dim">${it.tag||''} ${it.region?'· '+it.region.toUpperCase():''}</span>
+        <span class="pill ${it.solved?'ok':'no'}">${it.solved?'qwen solved':'qwen failed'}</span></div></div>`
+    ).join('') + `</div>`;
+  } else {
+    live.innerHTML = `<div class="empty"><b>No Tor-encountered captchas processed yet.</b><br>
+      Days 2–3 of the exit study now save every real captcha qwen faces — the puzzle image, its click attempt, and whether it cleared the wall.<br>
+      Once a batch is captured, all three methods replay on those exact puzzles and the grid fills in here.</div>`;
+  }
+}
+load();
+</script>
+</body>
+</html>
