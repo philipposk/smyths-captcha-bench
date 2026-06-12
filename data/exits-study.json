@@ -1,5 +1,5 @@
 {
-  "updated": 1781253099645,
+  "updated": 1781253283706,
   "regions": [
     "uk",
     "ie",
@@ -26,8 +26,8 @@
         "solved": 0,
         "failed": 0
       },
-      "attempted": 1716,
-      "exits_n": 116,
+      "attempted": 1717,
+      "exits_n": 117,
       "captcha": 1,
       "block": 0,
       "captcha_rate_pct": 0.9,
@@ -36,7 +36,7 @@
         4.7
       ],
       "block_rate_pct": 0,
-      "success_pct": 88.6,
+      "success_pct": 88.5,
       "by_region": {
         "uk": {
           "attempted": 210,
@@ -59,8 +59,8 @@
           "success_pct": 86.7
         },
         "fr": {
-          "attempted": 254,
-          "success_pct": 90.9
+          "attempted": 255,
+          "success_pct": 90.6
         },
         "nl": {
           "attempted": 251,
@@ -68,18 +68,18 @@
         }
       },
       "exits": {
-        "windows": 116,
-        "clean_windows": 115,
+        "windows": 117,
+        "clean_windows": 116,
         "hostile_windows": 1
       },
-      "duration_min": 175.1,
-      "sec_per_fetch": 6.1,
-      "fetches_per_hour": 588
+      "duration_min": 177,
+      "sec_per_fetch": 6.2,
+      "fetches_per_hour": 582
     }
   ],
   "overall": {
-    "attempted": 1716,
-    "exits_n": 116,
+    "attempted": 1717,
+    "exits_n": 117,
     "captcha": 1,
     "block": 0,
     "captcha_rate_pct": 0.9,
@@ -88,7 +88,7 @@
       4.7
     ],
     "block_rate_pct": 0,
-    "success_pct": 88.6,
+    "success_pct": 88.5,
     "by_region": {
       "uk": {
         "attempted": 210,
@@ -111,8 +111,8 @@
         "success_pct": 86.7
       },
       "fr": {
-        "attempted": 254,
-        "success_pct": 90.9
+        "attempted": 255,
+        "success_pct": 90.6
       },
       "nl": {
         "attempted": 251,
@@ -120,13 +120,13 @@
       }
     },
     "exits": {
-      "windows": 116,
-      "clean_windows": 115,
+      "windows": 117,
+      "clean_windows": 116,
       "hostile_windows": 1
     },
-    "duration_min": 175.1,
-    "sec_per_fetch": 6.1,
-    "fetches_per_hour": 588,
+    "duration_min": 177,
+    "sec_per_fetch": 6.2,
+    "fetches_per_hour": 582,
     "captchas": {
       "detected": 0,
       "solved": 0,
