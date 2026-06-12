@@ -27,9 +27,16 @@
   .about h2{font-size:13px;text-transform:uppercase;letter-spacing:.6px;color:var(--mut);margin:0 0 8px}
   .about p{margin:0 0 8px} .about p:last-child{margin:0} .about b{color:var(--txt)}
   .cards{display:flex;gap:12px;flex-wrap:wrap;margin:0 0 22px}
-  .card{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:13px 16px;min-width:150px;flex:1}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:13px 16px;min-width:150px;flex:1;position:relative}
   .card .k{color:var(--dim);font-size:11px;text-transform:uppercase;letter-spacing:.6px}
   .card .v{font-size:23px;font-weight:750;margin-top:3px} .card .v small{font-size:13px;color:var(--mut);font-weight:600}
+  /* lane tooltip on the Scrape-pace card */
+  .tip{position:relative;cursor:help}
+  .tip .qq{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;border:1px solid var(--line);color:var(--mut);font-size:10px;font-weight:700;margin-left:5px;vertical-align:1px}
+  .tip .pop{position:absolute;right:0;left:auto;bottom:calc(100% + 9px);width:300px;max-width:78vw;background:#0a0c10;border:1px solid #2c3650;border-radius:11px;padding:12px 14px;font-size:12.5px;line-height:1.55;color:var(--txt);box-shadow:0 14px 40px rgba(0,0,0,.6);opacity:0;visibility:hidden;transform:translateY(5px);transition:.13s;z-index:30;font-weight:400;text-transform:none;letter-spacing:0}
+  .tip:hover .pop{opacity:1;visibility:visible;transform:translateY(0)}
+  .tip .pop b{color:var(--accent)} .tip .pop .row{display:block;color:var(--mut);margin-top:6px}
+  .tip .pop:after{content:"";position:absolute;right:20px;left:auto;top:100%;border:6px solid transparent;border-top-color:#2c3650}
   h2.sec{font-size:18px;margin:28px 0 10px}
   /* per-day bars with CI whiskers */
   .days{display:flex;gap:20px;align-items:flex-end;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:22px 22px 14px;box-shadow:var(--shadow);min-height:230px}
@@ -94,12 +101,24 @@ async function load(){
   let d; try{ d=await fetch('data/exits-study.json?_='+Date.now()).then(r=>r.json()); }catch{ return; }
   const days=d.days||[], ov=d.overall||{};
   const card=(k,v,sub)=>`<div class="card"><div class="k">${k}</div><div class="v">${v}</div>${sub?`<div class="dim" style="font-size:12px;margin-top:2px">${sub}</div>`:''}</div>`;
+  // Scrape-pace card carries a hover tooltip: this run is 1 lane (1 browser + 1 Tor exit); a fleet
+  // scales ~linearly. Lane picks are this machine's (M2 8-core/16GB) per hydrascrape's 1-core+1.5GB rule.
+  const paceCard=(ov)=>{
+    const ph=ov.fetches_per_hour||0, v=ph?ph.toLocaleString()+'/h':'—';
+    const x=n=>ph?Math.round(ph*n).toLocaleString()+'/h':'—';
+    const sub=ov.attempted?`~${ov.sec_per_fetch}s per URL · ${fmtDur(ov.duration_min)} so far`:'timing…';
+    return `<div class="card"><div class="k tip">Scrape pace <span class="qq">i</span>`+
+      `<span class="pop">Measured on <b>1 lane</b> — one browser + one Tor exit. Add lanes to scale ~linearly; each ≈ 1 CPU core + ~1.5&nbsp;GB RAM.`+
+      `<span class="row">This Mac (M2, 8-core / 16&nbsp;GB): <b>~3 lanes</b> while you keep working → ${x(3)}, <b>~6</b> if you push it → ${x(6)}.</span>`+
+      `<span class="row">9+ lanes wants a bigger box (12-core / 32&nbsp;GB).</span></span>`+
+      `</div><div class="v">${v}</div><div class="dim" style="font-size:12px;margin-top:2px">${sub}</div></div>`;
+  };
   document.getElementById('cards').innerHTML =
     card('Product fetches', (ov.attempted||0).toLocaleString(), `target ${(d.target_per_day*3||9000).toLocaleString()} over 3 days · ${ov.exits_n||0} exits sampled`) +
     card('Exit captcha rate', ov.exits_n? pct(ov.captcha_rate_pct) : '—', ov.captcha_ci? `95% CI ${pct(ov.captcha_ci[0])}–${pct(ov.captcha_ci[1])} · n=${ov.exits_n}` : 'collecting…') +
     card('Bad exits', ov.exits&&ov.exits.windows? `${(ov.exits.hostile_windows/ov.exits.windows*100).toFixed(0)}%` : '—', ov.exits&&ov.exits.windows? `${ov.exits.hostile_windows}/${ov.exits.windows} exits hit a wall` : 'collecting…') +
     card('Product success', ov.attempted? pct(ov.success_pct) : '—', 'parsed OK after clearing') +
-    card('Scrape pace', ov.fetches_per_hour? ov.fetches_per_hour.toLocaleString()+'/h' : '—', ov.attempted? `~${ov.sec_per_fetch}s per URL · ${fmtDur(ov.duration_min)} so far` : 'timing…');
+    paceCard(ov);
 
   if(days.length){
     const maxHi = Math.max(...days.map(x=>(x.captcha_ci?x.captcha_ci[1]:x.captcha_rate_pct)||0), 5);
