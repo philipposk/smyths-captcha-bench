@@ -34,10 +34,10 @@
   /* per-day bars with CI whiskers */
   .days{display:flex;gap:20px;align-items:flex-end;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:22px 22px 14px;box-shadow:var(--shadow);min-height:230px}
   .daycol{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;height:200px;justify-content:flex-end}
-  .barwrap{position:relative;width:54px;flex:1;display:flex;align-items:flex-end}
-  .barfill{width:100%;background:linear-gradient(180deg,#f4b740,#e0922f);border-radius:6px 6px 0 0;position:relative}
-  .ci{position:absolute;left:50%;transform:translateX(-50%);width:2px;background:rgba(255,255,255,.5)}
-  .ci:before,.ci:after{content:"";position:absolute;left:-5px;width:12px;height:2px;background:rgba(255,255,255,.6)}
+  .barwrap{position:relative;width:54px;flex:1;overflow:hidden}
+  .barfill{position:absolute;left:0;bottom:0;width:100%;background:linear-gradient(180deg,#f4b740,#e0922f);border-radius:6px 6px 0 0}
+  .ci{position:absolute;left:50%;transform:translateX(-50%);width:2px;background:rgba(255,255,255,.55)}
+  .ci:before,.ci:after{content:"";position:absolute;left:-5px;width:12px;height:2px;background:rgba(255,255,255,.7)}
   .ci:before{top:0} .ci:after{bottom:0}
   .dval{font-weight:750;font-size:15px} .dlbl{font-size:12px;color:var(--mut);text-align:center}
   table{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-top:8px}
@@ -101,14 +101,15 @@ async function load(){
 
   if(days.length){
     const maxHi = Math.max(...days.map(x=>(x.captcha_ci?x.captcha_ci[1]:x.captcha_rate_pct)||0), 5);
+    const sc = v => Math.max(0, Math.min(100, (v||0)/maxHi*100));   // value → % of plot height
     document.getElementById('days').innerHTML = days.map(x=>{
       const r=x.captcha_rate_pct||0, ci=x.captcha_ci||[r,r];
-      const h=Math.max(3, r/maxHi*100), lo=ci[0]/maxHi*100, hi=ci[1]/maxHi*100;
       return `<div class="daycol">
         <div class="dval">${pct(r)}</div>
-        <div class="barwrap"><div class="barfill" style="height:${h}%">
-          <div class="ci" style="bottom:${(lo-r)/Math.max(r,1)*0}px;top:${(maxHi-hi)/maxHi*200 - (200-200)}px;height:${(hi-lo)/maxHi*200}px"></div>
-        </div></div>
+        <div class="barwrap">
+          <div class="barfill" style="height:${Math.max(2,sc(r))}%"></div>
+          <div class="ci" style="bottom:${sc(ci[0])}%;height:${Math.max(2,sc(ci[1])-sc(ci[0]))}%"></div>
+        </div>
         <div class="dlbl">Day ${x.day}<br><span class="dim">${(x.attempted||0).toLocaleString()} fetches</span></div>
       </div>`;
     }).join('');
