@@ -1,5 +1,5 @@
 {
-  "updated": 1781301885130,
+  "updated": 1781302066739,
   "partial": true,
   "note": "Each arm scraped the same URL sample on its OWN Tor (own exits), in parallel. Arms differ only in the locate method; legend reading is qwen/vlm in all. Aggregate comparison, not a same-captcha test. Captcha counts are solve ATTEMPTS (a method that keeps failing logs several).",
   "arms": [
@@ -9,18 +9,18 @@
       "locate": "vlm",
       "kind": "vision AI · paid (cheap)",
       "partial": true,
-      "fetches": 1524,
-      "success_pct": 42.9,
-      "block_pct": 8.6,
-      "exits_n": 366,
+      "fetches": 1545,
+      "success_pct": 42.3,
+      "block_pct": 8.5,
+      "exits_n": 373,
       "captchas": {
         "detected": 21,
         "solved": 2,
         "failed": 19
       },
       "solve_rate_pct": 9.5,
-      "rotations": 365,
-      "duration_min": 199.7,
+      "rotations": 372,
+      "duration_min": 202.6,
       "fetches_per_hour": 458,
       "items": [
         {
@@ -56,19 +56,19 @@
       "locate": "vlm",
       "kind": "vision AI · paid",
       "partial": true,
-      "fetches": 2118,
-      "success_pct": 94.6,
-      "block_pct": 4.5,
-      "exits_n": 138,
+      "fetches": 2139,
+      "success_pct": 93.6,
+      "block_pct": 5.5,
+      "exits_n": 145,
       "captchas": {
         "detected": 20,
         "solved": 9,
         "failed": 11
       },
       "solve_rate_pct": 45,
-      "rotations": 137,
-      "duration_min": 199.7,
-      "fetches_per_hour": 636,
+      "rotations": 144,
+      "duration_min": 202.7,
+      "fetches_per_hour": 633,
       "items": [
         {
           "image": "data/shootout/gemini/gemini_doodle_a02_solved.png",
@@ -112,20 +112,37 @@
       "locate": "match",
       "kind": "computer vision · free locate",
       "partial": true,
-      "fetches": 1856,
+      "fetches": 1865,
       "success_pct": 85.1,
       "block_pct": 14.3,
-      "exits_n": 181,
+      "exits_n": 182,
       "captchas": {
-        "detected": 56,
+        "detected": 61,
         "solved": 3,
-        "failed": 53
+        "failed": 58
       },
-      "solve_rate_pct": 5.4,
-      "rotations": 180,
-      "duration_min": 199.2,
-      "fetches_per_hour": 559,
+      "solve_rate_pct": 4.9,
+      "rotations": 181,
+      "duration_min": 202.7,
+      "fetches_per_hour": 552,
       "items": [
+        {
+          "image": "data/shootout/shape/shape_doodle_a01_failed.png",
+          "solved": false,
+          "legend": [
+            "brain",
+            "paw print"
+          ]
+        },
+        {
+          "image": "data/shootout/shape/shape_doodle_a02_failed.png",
+          "solved": false,
+          "legend": [
+            "ink bottle",
+            "bicycle",
+            "paw print"
+          ]
+        },
         {
           "image": "data/shootout/shape/shape_doodle_a02_solved.png",
           "solved": true,
@@ -133,24 +150,6 @@
             "bird",
             "key",
             "book"
-          ]
-        },
-        {
-          "image": "data/shootout/shape/shape_doodle_a01_failed.png",
-          "solved": false,
-          "legend": [
-            "robot",
-            "trophy",
-            "balloons"
-          ]
-        },
-        {
-          "image": "data/shootout/shape/shape_doodle_a02_failed.png",
-          "solved": false,
-          "legend": [
-            "lollipop",
-            "teddy bear",
-            "skewers"
           ]
         },
         {
@@ -169,19 +168,19 @@
       "locate": "blob",
       "kind": "computer vision · free locate",
       "partial": true,
-      "fetches": 1347,
-      "success_pct": 46.5,
+      "fetches": 1366,
+      "success_pct": 45.9,
       "block_pct": 1,
-      "exits_n": 304,
+      "exits_n": 311,
       "captchas": {
         "detected": 82,
         "solved": 4,
         "failed": 78
       },
       "solve_rate_pct": 4.9,
-      "rotations": 303,
-      "duration_min": 198.3,
-      "fetches_per_hour": 408,
+      "rotations": 310,
+      "duration_min": 201.2,
+      "fetches_per_hour": 407,
       "items": [
         {
           "image": "data/shootout/color/color_doodle_a02_failed.png",
