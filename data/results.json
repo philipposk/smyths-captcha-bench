@@ -1,7 +1,8 @@
 {
-  "updated": 1781231260071,
+  "updated": 1781232297296,
   "corpus": 37,
   "hitRadius": 80,
+  "costNote": "Paid $/1k from real OpenRouter spend; local/free=$0.",
   "leaderboard": [
     {
       "name": "gemini-3-flash",
@@ -9,10 +10,28 @@
       "locateAcc": 1,
       "solveAcc": 1,
       "orderedSolveAcc": 0.973,
-      "p50ms": 3869,
+      "p50ms": 3623,
       "avgTokens": 2437,
       "avgCalls": 2,
       "estPer1000Usd": 1.42,
+      "free": false,
+      "errors": 0,
+      "n": 37,
+      "providers": {
+        "openrouter": 74
+      },
+      "costReal": true
+    },
+    {
+      "name": "gemini-3.5-flash",
+      "legendAcc": 0,
+      "locateAcc": 0.991,
+      "solveAcc": 0.973,
+      "orderedSolveAcc": 0.946,
+      "p50ms": 8327,
+      "avgTokens": 3338,
+      "avgCalls": 2,
+      "estPer1000Usd": 12.85,
       "free": false,
       "errors": 0,
       "n": 37,
@@ -26,29 +45,11 @@
       "legendAcc": 0,
       "locateAcc": 1,
       "solveAcc": 1,
-      "orderedSolveAcc": 0.946,
-      "p50ms": 2527,
-      "avgTokens": 764,
+      "orderedSolveAcc": 0.919,
+      "p50ms": 2499,
+      "avgTokens": 763,
       "avgCalls": 2,
       "estPer1000Usd": 0.12,
-      "free": false,
-      "errors": 0,
-      "n": 37,
-      "providers": {
-        "openrouter": 74
-      },
-      "costReal": true
-    },
-    {
-      "name": "gemini-3.5-flash",
-      "legendAcc": 0,
-      "locateAcc": 0.986,
-      "solveAcc": 0.973,
-      "orderedSolveAcc": 0.946,
-      "p50ms": 8279,
-      "avgTokens": 3358,
-      "avgCalls": 2,
-      "estPer1000Usd": 12.85,
       "free": false,
       "errors": 0,
       "n": 37,
@@ -62,9 +63,9 @@
       "legendAcc": 0,
       "locateAcc": 0.959,
       "solveAcc": 0.946,
-      "orderedSolveAcc": 0.811,
-      "p50ms": 23762,
-      "avgTokens": 2045,
+      "orderedSolveAcc": 0.757,
+      "p50ms": 23249,
+      "avgTokens": 1997,
       "avgCalls": 2,
       "estPer1000Usd": 1.35,
       "free": false,
@@ -78,10 +79,10 @@
     {
       "name": "gpt-5.4",
       "legendAcc": 0,
-      "locateAcc": 0.896,
-      "solveAcc": 0.784,
-      "orderedSolveAcc": 0.676,
-      "p50ms": 2909,
+      "locateAcc": 0.842,
+      "solveAcc": 0.703,
+      "orderedSolveAcc": 0.622,
+      "p50ms": 2874,
       "avgTokens": 877,
       "avgCalls": 2,
       "estPer1000Usd": 3.12,
@@ -96,11 +97,11 @@
     {
       "name": "qwen3-vl-235b",
       "legendAcc": 0,
-      "locateAcc": 0.712,
-      "solveAcc": 0.649,
-      "orderedSolveAcc": 0.595,
-      "p50ms": 6001,
-      "avgTokens": 784,
+      "locateAcc": 0.604,
+      "solveAcc": 0.541,
+      "orderedSolveAcc": 0.486,
+      "p50ms": 5082,
+      "avgTokens": 780,
       "avgCalls": 2,
       "estPer1000Usd": 0.3,
       "free": false,
@@ -180,24 +181,6 @@
       }
     },
     {
-      "name": "claude-sonnet-4.6",
-      "legendAcc": 0,
-      "locateAcc": 0.207,
-      "solveAcc": 0.108,
-      "orderedSolveAcc": 0.081,
-      "p50ms": 7401,
-      "avgTokens": 1021,
-      "avgCalls": 2,
-      "estPer1000Usd": 5.05,
-      "free": false,
-      "errors": 0,
-      "n": 37,
-      "providers": {
-        "openrouter": 74
-      },
-      "costReal": true
-    },
-    {
       "name": "moondream-cloud",
       "legendAcc": 0,
       "locateAcc": 0.311,
@@ -213,6 +196,24 @@
       "providers": {
         "moondream": 147
       }
+    },
+    {
+      "name": "claude-sonnet-4.6",
+      "legendAcc": 0,
+      "locateAcc": 0.14,
+      "solveAcc": 0.027,
+      "orderedSolveAcc": 0.027,
+      "p50ms": 5986,
+      "avgTokens": 1023,
+      "avgCalls": 2,
+      "estPer1000Usd": 5.05,
+      "free": false,
+      "errors": 0,
+      "n": 37,
+      "providers": {
+        "openrouter": 74
+      },
+      "costReal": true
     },
     {
       "name": "gemini",
@@ -233,6 +234,5 @@
         "gemini-native1": 1
       }
     }
-  ],
-  "costNote": "Paid $/1k from real OpenRouter spend (37-puzzle bench, extrapolated). Local/free configs = $0."
+  ]
 }
