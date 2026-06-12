@@ -1,5 +1,5 @@
 {
-  "updated": 1781256348398,
+  "updated": 1781256530653,
   "partial": true,
   "note": "Each arm scraped the same URL sample on its OWN Tor (own exits), in parallel. Arms differ only in the locate method; legend reading is qwen/vlm in all. Aggregate comparison, not a same-captcha test. Captcha counts are solve ATTEMPTS (a method that keeps failing logs several).",
   "arms": [
@@ -9,19 +9,19 @@
       "locate": "vlm",
       "kind": "vision AI · paid (cheap)",
       "partial": true,
-      "fetches": 890,
-      "success_pct": 84.2,
-      "block_pct": 14.6,
-      "exits_n": 88,
+      "fetches": 929,
+      "success_pct": 84.8,
+      "block_pct": 14,
+      "exits_n": 90,
       "captchas": {
         "detected": 3,
         "solved": 3,
         "failed": 0
       },
       "solve_rate_pct": 100,
-      "rotations": 87,
-      "duration_min": 94.2,
-      "fetches_per_hour": 567,
+      "rotations": 89,
+      "duration_min": 97.3,
+      "fetches_per_hour": 573,
       "items": [
         {
           "image": "data/shootout/qwen/qwen_doodle_a01_solved.png",
@@ -40,19 +40,19 @@
       "locate": "match",
       "kind": "computer vision · free locate",
       "partial": true,
-      "fetches": 891,
+      "fetches": 921,
       "success_pct": 92.4,
-      "block_pct": 6.6,
-      "exits_n": 63,
+      "block_pct": 6.4,
+      "exits_n": 65,
       "captchas": {
         "detected": 26,
         "solved": 4,
         "failed": 22
       },
       "solve_rate_pct": 15.4,
-      "rotations": 62,
-      "duration_min": 93.4,
-      "fetches_per_hour": 572,
+      "rotations": 64,
+      "duration_min": 96.5,
+      "fetches_per_hour": 573,
       "items": [
         {
           "image": "data/shootout/shape/shape_doodle_a02_solved.png",
@@ -87,36 +87,36 @@
       "locate": "blob",
       "kind": "computer vision · free locate",
       "partial": true,
-      "fetches": 760,
-      "success_pct": 81.4,
-      "block_pct": 17.4,
-      "exits_n": 83,
+      "fetches": 785,
+      "success_pct": 82,
+      "block_pct": 16.8,
+      "exits_n": 84,
       "captchas": {
-        "detected": 32,
+        "detected": 34,
         "solved": 2,
-        "failed": 30
+        "failed": 32
       },
-      "solve_rate_pct": 6.3,
-      "rotations": 82,
-      "duration_min": 92.4,
-      "fetches_per_hour": 493,
+      "solve_rate_pct": 5.9,
+      "rotations": 83,
+      "duration_min": 96.6,
+      "fetches_per_hour": 488,
       "items": [
         {
           "image": "data/shootout/color/color_doodle_a02_failed.png",
           "solved": false,
           "legend": [
-            "factory",
-            "speech bubble",
-            "fan"
+            "pedestrian crossing",
+            "coin",
+            "hammer"
           ]
         },
         {
           "image": "data/shootout/color/color_doodle_a01_failed.png",
           "solved": false,
           "legend": [
-            "building",
-            "speech bubble",
-            "fan"
+            "pedestal",
+            "coin",
+            "hammer"
           ]
         },
         {
