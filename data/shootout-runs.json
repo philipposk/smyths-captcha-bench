@@ -1,5 +1,5 @@
 {
-  "updated": 1781307152736,
+  "updated": 1781307334254,
   "partial": true,
   "note": "Each arm scraped the same URL sample on its OWN Tor (own exits), in parallel. Arms differ only in the locate method; legend reading is qwen/vlm in all. Aggregate comparison, not a same-captcha test. Captcha counts are solve ATTEMPTS (a method that keeps failing logs several).",
   "arms": [
@@ -9,19 +9,19 @@
       "locate": "vlm",
       "kind": "vision AI · paid (cheap)",
       "partial": true,
-      "fetches": 2082,
-      "success_pct": 31.4,
-      "block_pct": 6.3,
-      "exits_n": 579,
+      "fetches": 2101,
+      "success_pct": 31.1,
+      "block_pct": 6.2,
+      "exits_n": 587,
       "captchas": {
         "detected": 21,
         "solved": 2,
         "failed": 19
       },
       "solve_rate_pct": 9.5,
-      "rotations": 578,
-      "duration_min": 287.3,
-      "fetches_per_hour": 435,
+      "rotations": 586,
+      "duration_min": 290.5,
+      "fetches_per_hour": 434,
       "items": [
         {
           "image": "data/shootout/qwen/qwen_doodle_a01_failed.png",
@@ -113,20 +113,28 @@
       "locate": "match",
       "kind": "computer vision · free locate",
       "partial": true,
-      "fetches": 2783,
+      "fetches": 2818,
       "success_pct": 85.1,
-      "block_pct": 14.1,
-      "exits_n": 269,
+      "block_pct": 14,
+      "exits_n": 271,
       "captchas": {
-        "detected": 68,
-        "solved": 4,
+        "detected": 69,
+        "solved": 5,
         "failed": 64
       },
-      "solve_rate_pct": 5.9,
-      "rotations": 268,
-      "duration_min": 287.4,
-      "fetches_per_hour": 581,
+      "solve_rate_pct": 7.2,
+      "rotations": 270,
+      "duration_min": 290.5,
+      "fetches_per_hour": 582,
       "items": [
+        {
+          "image": "data/shootout/shape/shape_doodle_a01_solved.png",
+          "solved": true,
+          "legend": [
+            "dice",
+            "owl"
+          ]
+        },
         {
           "image": "data/shootout/shape/shape_doodle_a02_failed.png",
           "solved": false,
@@ -142,14 +150,6 @@
           "legend": [
             "turtle",
             "magnet"
-          ]
-        },
-        {
-          "image": "data/shootout/shape/shape_doodle_a01_solved.png",
-          "solved": true,
-          "legend": [
-            "lollipop",
-            "bowling pins"
           ]
         },
         {
@@ -169,18 +169,18 @@
       "locate": "blob",
       "kind": "computer vision · free locate",
       "partial": true,
-      "fetches": 1897,
-      "success_pct": 33.1,
+      "fetches": 1917,
+      "success_pct": 32.7,
       "block_pct": 0.7,
-      "exits_n": 514,
+      "exits_n": 522,
       "captchas": {
         "detected": 82,
         "solved": 4,
         "failed": 78
       },
       "solve_rate_pct": 4.9,
-      "rotations": 513,
-      "duration_min": 285.9,
+      "rotations": 521,
+      "duration_min": 289.1,
       "fetches_per_hour": 398,
       "items": [
         {
