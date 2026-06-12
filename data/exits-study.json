@@ -1,3 +1,120 @@
-{ "updated": 0, "regions": ["uk","ie","de","at","ch","fr","nl"], "target_per_day": 3000,
+{
+  "updated": 1781242640400,
+  "regions": [
+    "uk",
+    "ie",
+    "de",
+    "at",
+    "ch",
+    "fr",
+    "nl"
+  ],
+  "target_per_day": 3000,
   "solver": "qwen3-vl-32b + shape-match + color-cv",
-  "note": "Day 1 starting — results stream in as fetches land.", "days": [], "overall": {} }
+  "note": "Real browser fetches over Tor; “captcha” = the Imperva wall showed on first try, “block” = it could not be cleared. Exit windows ≈ distinct Tor exits (one per rotation).",
+  "days": [
+    {
+      "day": 1,
+      "date": null,
+      "captchas_solved": 0,
+      "attempted": 10,
+      "exits_n": 1,
+      "captcha": 0,
+      "block": 0,
+      "captcha_rate_pct": 0,
+      "captcha_ci": [
+        0,
+        79.3
+      ],
+      "block_rate_pct": 0,
+      "success_pct": 90,
+      "by_region": {
+        "ie": {
+          "attempted": 1,
+          "captcha_rate_pct": 0,
+          "block_rate_pct": 0,
+          "success_pct": 100
+        },
+        "de": {
+          "attempted": 1,
+          "captcha_rate_pct": 0,
+          "block_rate_pct": 0,
+          "success_pct": 100
+        },
+        "ch": {
+          "attempted": 1,
+          "captcha_rate_pct": 0,
+          "block_rate_pct": 0,
+          "success_pct": 100
+        },
+        "fr": {
+          "attempted": 2,
+          "captcha_rate_pct": 0,
+          "block_rate_pct": 0,
+          "success_pct": 100
+        },
+        "nl": {
+          "attempted": 5,
+          "captcha_rate_pct": 0,
+          "block_rate_pct": 0,
+          "success_pct": 80
+        }
+      },
+      "exits": {
+        "windows": 1,
+        "clean_windows": 1,
+        "hostile_windows": 0
+      }
+    }
+  ],
+  "overall": {
+    "attempted": 10,
+    "exits_n": 1,
+    "captcha": 0,
+    "block": 0,
+    "captcha_rate_pct": 0,
+    "captcha_ci": [
+      0,
+      79.3
+    ],
+    "block_rate_pct": 0,
+    "success_pct": 90,
+    "by_region": {
+      "ie": {
+        "attempted": 1,
+        "captcha_rate_pct": 0,
+        "block_rate_pct": 0,
+        "success_pct": 100
+      },
+      "de": {
+        "attempted": 1,
+        "captcha_rate_pct": 0,
+        "block_rate_pct": 0,
+        "success_pct": 100
+      },
+      "ch": {
+        "attempted": 1,
+        "captcha_rate_pct": 0,
+        "block_rate_pct": 0,
+        "success_pct": 100
+      },
+      "fr": {
+        "attempted": 2,
+        "captcha_rate_pct": 0,
+        "block_rate_pct": 0,
+        "success_pct": 100
+      },
+      "nl": {
+        "attempted": 5,
+        "captcha_rate_pct": 0,
+        "block_rate_pct": 0,
+        "success_pct": 80
+      }
+    },
+    "exits": {
+      "windows": 1,
+      "clean_windows": 1,
+      "hostile_windows": 0
+    }
+  }
+}
