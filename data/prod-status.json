@@ -1,13 +1,13 @@
 {
-  "updated": 1781291279103,
+  "updated": 1781291521525,
   "branch": "feat/production-reliability-pipeline",
   "note": "Production run: scrape every URL or log exactly why not. rotate fresh exit → escalate qwen→gemini-3.1-flash-lite → deferred retries → structured error log.",
   "overall": {
     "requested": 3000,
-    "scraped": 224,
+    "scraped": 274,
     "unscraped": 0,
-    "accounted_pct": 7.5,
-    "scraped_pct": 7.5,
+    "accounted_pct": 9.1,
+    "scraped_pct": 9.1,
     "errorsByCategory": {}
   },
   "days": [
@@ -16,7 +16,7 @@
       "status": "running",
       "date": null,
       "requested": 3000,
-      "scraped": 224,
+      "scraped": 274,
       "unscraped": 0,
       "captchas": {},
       "errorsByCategory": {},
