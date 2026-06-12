@@ -1,5 +1,5 @@
 {
-  "updated": 1781293522298,
+  "updated": 1781293884838,
   "partial": true,
   "note": "Each arm scraped the same URL sample on its OWN Tor (own exits), in parallel. Arms differ only in the locate method; legend reading is qwen/vlm in all. Aggregate comparison, not a same-captcha test. Captcha counts are solve ATTEMPTS (a method that keeps failing logs several).",
   "arms": [
@@ -9,19 +9,19 @@
       "locate": "vlm",
       "kind": "vision AI · paid (cheap)",
       "partial": true,
-      "fetches": 643,
-      "success_pct": 79.6,
-      "block_pct": 19.9,
-      "exits_n": 76,
+      "fetches": 705,
+      "success_pct": 81.3,
+      "block_pct": 18.2,
+      "exits_n": 79,
       "captchas": {
         "detected": 2,
         "solved": 2,
         "failed": 0
       },
       "solve_rate_pct": 100,
-      "rotations": 75,
-      "duration_min": 60.3,
-      "fetches_per_hour": 640,
+      "rotations": 78,
+      "duration_min": 66.3,
+      "fetches_per_hour": 638,
       "items": [
         {
           "image": "data/shootout/qwen/qwen_doodle_a01_solved.png",
@@ -40,27 +40,27 @@
       "locate": "vlm",
       "kind": "vision AI · paid",
       "partial": true,
-      "fetches": 648,
-      "success_pct": 98.9,
+      "fetches": 695,
+      "success_pct": 99,
       "block_pct": 0,
-      "exits_n": 33,
+      "exits_n": 35,
       "captchas": {
-        "detected": 6,
-        "solved": 3,
-        "failed": 3
+        "detected": 9,
+        "solved": 4,
+        "failed": 5
       },
-      "solve_rate_pct": 50,
-      "rotations": 32,
-      "duration_min": 60.3,
-      "fetches_per_hour": 644,
+      "solve_rate_pct": 44.4,
+      "rotations": 34,
+      "duration_min": 66.3,
+      "fetches_per_hour": 629,
       "items": [
         {
-          "image": "data/shootout/gemini/gemini_doodle_a01_failed.png",
-          "solved": false,
+          "image": "data/shootout/gemini/gemini_doodle_a01_solved.png",
+          "solved": true,
           "legend": [
-            "ping pong paddle",
-            "carrot",
-            "leaf"
+            "stars",
+            "person",
+            "bicycle"
           ]
         },
         {
@@ -73,11 +73,12 @@
           ]
         },
         {
-          "image": "data/shootout/gemini/gemini_doodle_a01_solved.png",
-          "solved": true,
+          "image": "data/shootout/gemini/gemini_doodle_a01_failed.png",
+          "solved": false,
           "legend": [
-            "bell",
-            "number 9"
+            "bus",
+            "motorcycle",
+            "bicycle"
           ]
         },
         {
@@ -96,19 +97,19 @@
       "locate": "match",
       "kind": "computer vision · free locate",
       "partial": true,
-      "fetches": 650,
-      "success_pct": 98.9,
+      "fetches": 718,
+      "success_pct": 99,
       "block_pct": 0,
-      "exits_n": 33,
+      "exits_n": 36,
       "captchas": {
         "detected": 3,
         "solved": 1,
         "failed": 2
       },
       "solve_rate_pct": 33.3,
-      "rotations": 32,
-      "duration_min": 60.2,
-      "fetches_per_hour": 647,
+      "rotations": 35,
+      "duration_min": 66.3,
+      "fetches_per_hour": 649,
       "items": [
         {
           "image": "data/shootout/shape/shape_doodle_a01_solved.png",
@@ -143,34 +144,42 @@
       "locate": "blob",
       "kind": "computer vision · free locate",
       "partial": true,
-      "fetches": 380,
-      "success_pct": 96.3,
-      "block_pct": 2.6,
-      "exits_n": 22,
+      "fetches": 400,
+      "success_pct": 95.8,
+      "block_pct": 3.3,
+      "exits_n": 24,
       "captchas": {
-        "detected": 66,
-        "solved": 2,
-        "failed": 64
+        "detected": 76,
+        "solved": 3,
+        "failed": 73
       },
-      "solve_rate_pct": 3,
-      "rotations": 21,
-      "duration_min": 57.8,
-      "fetches_per_hour": 394,
+      "solve_rate_pct": 3.9,
+      "rotations": 23,
+      "duration_min": 64.9,
+      "fetches_per_hour": 370,
       "items": [
+        {
+          "image": "data/shootout/color/color_doodle_a01_solved.png",
+          "solved": true,
+          "legend": [
+            "bell",
+            "toolbox"
+          ]
+        },
         {
           "image": "data/shootout/color/color_doodle_a02_failed.png",
           "solved": false,
           "legend": [
-            "coffee bean",
-            "train"
+            "tooth",
+            "cloud"
           ]
         },
         {
           "image": "data/shootout/color/color_doodle_a01_failed.png",
           "solved": false,
           "legend": [
-            "coffee bean",
-            "train"
+            "ink bottle",
+            "bicycle"
           ]
         },
         {
