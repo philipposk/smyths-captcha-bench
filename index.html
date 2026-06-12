@@ -51,22 +51,23 @@
   .card .v{font-size:23px;font-weight:750;margin-top:3px;letter-spacing:-.3px}
   .card .v small{font-size:13px;font-weight:600;color:var(--mut)}
 
-  /* table */
+  /* table — sized to fit without horizontal scroll */
   .tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow)}
-  table{width:100%;border-collapse:collapse;background:var(--panel);min-width:760px}
-  th,td{padding:12px 13px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
-  th:first-child,td:first-child{text-align:center}
+  table{width:100%;border-collapse:collapse;background:var(--panel);min-width:620px}
+  th,td{padding:10px 9px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+  th:first-child,td:first-child{text-align:center;padding-left:12px}
+  th:last-child,td:last-child{padding-right:12px}
   th:nth-child(2),td:nth-child(2),th.detcol,td.detcol{text-align:left}
   th{color:var(--dim);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.5px;
     position:sticky;top:0;background:var(--panel2);z-index:1}
   tbody tr{transition:background .12s} tbody tr:hover{background:#181d27}
   tr:last-child td{border-bottom:none}
   .rank{color:var(--dim);font-variant-numeric:tabular-nums;font-weight:600}
-  .name{font-weight:680;font-size:15px}
-  .det{color:var(--mut);font-size:12.5px;white-space:normal;max-width:240px;line-height:1.4}
+  .name{font-weight:680;font-size:14.5px;white-space:normal}
+  .det{color:var(--mut);font-size:12px;white-space:normal;width:200px;max-width:200px;line-height:1.4}
   .num{font-variant-numeric:tabular-nums}
   .solv{color:var(--good);font-weight:750;font-size:15px}
-  .bar{height:6px;border-radius:4px;background:#222936;overflow:hidden;display:inline-block;width:64px;vertical-align:middle;margin-left:8px}
+  .bar{height:6px;border-radius:4px;background:#222936;overflow:hidden;display:inline-block;width:40px;vertical-align:middle;margin-left:6px}
   .bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--good),#6ae0b8)}
   .pill{display:inline-block;padding:2px 9px;border-radius:999px;font-size:12px;font-weight:650}
   .pill.free{background:rgba(70,214,166,.15);color:var(--good)}
@@ -114,17 +115,18 @@
   /* a tiny ↕ caret on every sortable header (the convention) so it reads as clickable even without the gag */
   th.sortable .arr{opacity:0} th.sortable:after{content:"↕";font-size:10px;margin-left:3px;opacity:.4} th.sortable.act:after{content:""} th.sortable.act .arr{opacity:1}
 
-  /* playful one-time "CLICKABLE" comic nudge pointing at the headers */
-  @keyframes bobx{0%,100%{transform:translateX(0)}50%{transform:translateX(-9px)}}
-  @keyframes hintin{from{opacity:0;transform:translateX(46px)}to{opacity:1;transform:translateX(0)}}
-  .sorthint{position:absolute;top:46px;right:8px;z-index:26;display:flex;align-items:center;gap:4px;pointer-events:none;animation:hintin .5s ease both}
-  .sorthint.hide{opacity:0;transition:opacity .5s}
-  .sorthint .lbl{font-family:"Comic Sans MS","Comic Sans",cursive;font-weight:700;color:#ffd24d;font-size:17px;line-height:1.05;text-shadow:0 2px 7px rgba(0,0,0,.7);transform:rotate(-5deg);white-space:nowrap;text-align:center}
-  .sorthint .lbl small{display:block;font:600 11px/1.2 "Comic Sans MS","Comic Sans",cursive;color:#cbb87a;transform:rotate(2deg)}
-  .sorthint svg{animation:bobx 1.15s ease-in-out infinite;flex:none}
-  /* comic "best free pick" note on the gemini-2.5-flash row */
-  .gnote{font-family:"Comic Sans MS","Comic Sans",cursive;color:#67dcb6;font-weight:700;font-size:12.5px;margin-left:9px;white-space:nowrap;transform:rotate(-2deg);display:inline-block;text-shadow:0 1px 3px rgba(0,0,0,.5)}
-  .gnote .a{color:#ffd24d}
+  /* comic side-notes — live in the LEFT gutter, OUTSIDE the table, pointing right at their target.
+     Out of table flow (absolute) so they never affect column widths. Hidden when no gutter room. */
+  @keyframes bobx{0%,100%{transform:translateX(0)}50%{transform:translateX(7px)}}
+  @keyframes hintin{from{opacity:0;transform:translateX(-40px)}to{opacity:1;transform:translateX(0)}}
+  .gut{position:absolute;right:100%;margin-right:4px;z-index:26;display:flex;flex-direction:column;align-items:flex-end;gap:1px;pointer-events:none;text-align:right;animation:hintin .5s ease both}
+  .gut.hide{opacity:0;transition:opacity .5s}
+  .gut .lbl{font-family:"Comic Sans MS","Comic Sans",cursive;font-weight:700;line-height:1.05;text-shadow:0 2px 7px rgba(0,0,0,.7);white-space:nowrap}
+  .gut .lbl small{display:block;font:600 10px/1.2 "Comic Sans MS","Comic Sans",cursive}
+  .gut svg{animation:bobx 1.15s ease-in-out infinite;flex:none}
+  #sorthint .lbl{color:#ffd24d;font-size:14px;transform:rotate(-4deg)} #sorthint .lbl small{color:#cbb87a}
+  #gnote .lbl{color:#67dcb6;font-size:13px;transform:rotate(-3deg)} #gnote .lbl small{color:#ffd24d}
+  @media(max-width:1100px){ .gut{display:none} }
 </style>
 </head>
 <body>
@@ -183,7 +185,7 @@ const DETAILS = {
   'glm-4.6v':          'OpenRouter API · Zhipu · paid. Decent but very slow (~23s/puzzle).',
   'gpt-5.4':           'OpenRouter API · OpenAI · paid. Mid accuracy on tiny icons.',
   'qwen3-vl-235b':     'OpenRouter API · big Qwen · oddly weaker than the 32B on this task.',
-  'gemini-2.5-flash':  'Gemini free tier (~500–1,000 req/day) · Google · $0. Best free option — reads the legend + locates decently.',
+  'gemini-2.5-flash':  'Gemini free tier · Google · $0. Best free option. Free quota ≈ 500–1,500 captcha solves/day before it caps.',
   'qwen-solo':         'Local · Ollama on your own machine · $0. Runs fully offline.',
   'shape-match':       'Pure computer-vision · no model at all · $0. Finds doodles, can’t order them.',
   'color-cv':          'CV finds doodles + Moondream cloud names them. Partly paid.',
@@ -240,10 +242,9 @@ function renderBoard(){
     const isFree=(r.estPer1000Usd||0)===0;
     const pick = PICKS[r.name];
     const crown = pick ? `<span class="crown">👑<span class="tip">${pick.t}<small>${pick.s}</small></span></span>` : '';
-    const gnote = r.name==='gemini-2.5-flash' ? `<span class="gnote">👈 <span class="a">actually the best pick</span> — free, ~500/day</span>` : '';
-    return `<tr class="${i===0?'top1':''}">
+    return `<tr class="${i===0?'top1':''}" data-name="${r.name}">
       <td><span class="rank">${i+1}</span>${crown}</td>
-      <td class="name">${r.name}${gnote}</td>
+      <td class="name">${r.name}</td>
       <td class="detcol det">${detail(r)}</td>
       <td><span class="solv">${fmtPct(r.orderedSolveAcc)}</span></td>
       <td class="num">${fmtPct(r.solveAcc)}</td>
@@ -266,22 +267,37 @@ function renderBoard(){
     if(sortKey===k) sortDir=-sortDir; else { sortKey=k; sortDir=-1; }
     renderBoard();
   }));
+  ensureGutNotes();
 }
 
 let hintShown=false;
+// arched comic arrow pointing RIGHT (label sits left of it, in the gutter, → into the table)
+const RARROW = `<svg width="62" height="30" viewBox="0 0 62 30" fill="none"><path d="M3 8 C18 2, 40 4, 57 22" stroke="CLR" stroke-width="3.5" stroke-linecap="round" fill="none"/><path d="M57 22 L46 19 M57 22 L52 11" stroke="CLR" stroke-width="3.5" stroke-linecap="round"/></svg>`;
+const gutTop = (wrap, el) => { const wr=wrap.getBoundingClientRect(), er=el.getBoundingClientRect(); return er.top - wr.top + er.height/2 - 20; };
 function dismissHint(){ const h=document.getElementById('sorthint'); if(h){ h.classList.add('hide'); setTimeout(()=>h.remove(),500); } }
+function ensureGutNotes(){
+  const wrap=document.getElementById('boardwrap'); if(!wrap) return;
+  const grow=wrap.querySelector('tr[data-name="gemini-2.5-flash"]');
+  let g=document.getElementById('gnote');
+  if(grow){
+    if(!g){ g=document.createElement('div'); g.id='gnote'; g.className='gut';
+      g.innerHTML=`<span class="lbl">best FREE pick<small>~500–1.5k/day</small></span>${RARROW.replace(/CLR/g,'#67dcb6')}`;
+      wrap.appendChild(g); }
+    g.style.top = gutTop(wrap, grow)+'px';
+  } else if(g){ g.remove(); }
+  const sh=document.getElementById('sorthint'), thead=wrap.querySelector('thead tr');
+  if(sh && thead) sh.style.top = gutTop(wrap, thead)+'px';
+}
 function showSortHint(){
   if(hintShown) return; hintShown=true;
-  const wrap=document.getElementById('boardwrap'); if(!wrap) return;
-  const el=document.createElement('div'); el.id='sorthint'; el.className='sorthint';
-  el.innerHTML=`<span class="lbl">CLICKABLE!<small>sort any column ↕</small></span>
-    <svg width="104" height="50" viewBox="0 0 104 50" fill="none">
-      <path d="M100 10 C78 1, 44 4, 14 33" stroke="#ffd24d" stroke-width="4" stroke-linecap="round" fill="none"/>
-      <path d="M14 33 L30 26 M14 33 L24 43" stroke="#ffd24d" stroke-width="4" stroke-linecap="round"/>
-    </svg>`;
+  const wrap=document.getElementById('boardwrap'), thead=wrap&&wrap.querySelector('thead tr'); if(!thead) return;
+  const el=document.createElement('div'); el.id='sorthint'; el.className='gut';
+  el.innerHTML=`<span class="lbl">CLICKABLE!<small>sort any column ↕</small></span>${RARROW.replace(/CLR/g,'#ffd24d')}`;
   wrap.appendChild(el);
-  setTimeout(dismissHint, 9000);   // auto-fade so it never nags
+  el.style.top = gutTop(wrap, thead)+'px';
+  setTimeout(dismissHint, 9000);
 }
+window.addEventListener('resize', ()=>{ if(document.getElementById('board')) ensureGutNotes(); });
 
 async function load(){
   let d; try{ d = await fetch('data/results.json?_='+Date.now()).then(r=>r.json()); }catch{ return; }
