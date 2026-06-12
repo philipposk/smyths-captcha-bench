@@ -1,5 +1,5 @@
 {
-  "updated": 1781293999857,
+  "updated": 1781294181571,
   "regions": [
     "uk",
     "ie",
@@ -27,15 +27,15 @@
         "failed": 0
       },
       "attempted": 1770,
-      "exits_n": 135,
+      "exits_n": 136,
       "captcha": 1,
-      "block": 15,
+      "block": 16,
       "captcha_rate_pct": 0.7,
       "captcha_ci": [
         0.1,
-        4.1
+        4
       ],
-      "block_rate_pct": 11.1,
+      "block_rate_pct": 11.8,
       "success_pct": 85.9,
       "by_region": {
         "uk": {
@@ -68,26 +68,26 @@
         }
       },
       "exits": {
-        "windows": 135,
+        "windows": 136,
         "clean_windows": 119,
-        "hostile_windows": 16
+        "hostile_windows": 17
       },
-      "duration_min": 855.6,
-      "sec_per_fetch": 29,
+      "duration_min": 859.7,
+      "sec_per_fetch": 29.1,
       "fetches_per_hour": 124
     }
   ],
   "overall": {
     "attempted": 1770,
-    "exits_n": 135,
+    "exits_n": 136,
     "captcha": 1,
-    "block": 15,
+    "block": 16,
     "captcha_rate_pct": 0.7,
     "captcha_ci": [
       0.1,
-      4.1
+      4
     ],
-    "block_rate_pct": 11.1,
+    "block_rate_pct": 11.8,
     "success_pct": 85.9,
     "by_region": {
       "uk": {
@@ -120,12 +120,12 @@
       }
     },
     "exits": {
-      "windows": 135,
+      "windows": 136,
       "clean_windows": 119,
-      "hostile_windows": 16
+      "hostile_windows": 17
     },
-    "duration_min": 855.6,
-    "sec_per_fetch": 29,
+    "duration_min": 859.7,
+    "sec_per_fetch": 29.1,
     "fetches_per_hour": 124,
     "captchas": {
       "detected": 0,
