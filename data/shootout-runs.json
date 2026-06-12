@@ -1,5 +1,5 @@
 {
-  "updated": 1781295160280,
+  "updated": 1781295341917,
   "partial": true,
   "note": "Each arm scraped the same URL sample on its OWN Tor (own exits), in parallel. Arms differ only in the locate method; legend reading is qwen/vlm in all. Aggregate comparison, not a same-captcha test. Captcha counts are solve ATTEMPTS (a method that keeps failing logs several).",
   "arms": [
@@ -9,19 +9,19 @@
       "locate": "vlm",
       "kind": "vision AI · paid (cheap)",
       "partial": true,
-      "fetches": 811,
-      "success_pct": 80.6,
-      "block_pct": 16.2,
-      "exits_n": 92,
+      "fetches": 829,
+      "success_pct": 78.9,
+      "block_pct": 15.8,
+      "exits_n": 99,
       "captchas": {
         "detected": 21,
         "solved": 2,
         "failed": 19
       },
       "solve_rate_pct": 9.5,
-      "rotations": 91,
-      "duration_min": 87.7,
-      "fetches_per_hour": 555,
+      "rotations": 98,
+      "duration_min": 90.6,
+      "fetches_per_hour": 549,
       "items": [
         {
           "image": "data/shootout/qwen/qwen_doodle_a01_failed.png",
@@ -56,19 +56,19 @@
       "locate": "vlm",
       "kind": "vision AI · paid",
       "partial": true,
-      "fetches": 912,
-      "success_pct": 99,
+      "fetches": 948,
+      "success_pct": 99.1,
       "block_pct": 0,
-      "exits_n": 46,
+      "exits_n": 48,
       "captchas": {
         "detected": 11,
         "solved": 5,
         "failed": 6
       },
       "solve_rate_pct": 45.5,
-      "rotations": 45,
-      "duration_min": 87.6,
-      "fetches_per_hour": 625,
+      "rotations": 47,
+      "duration_min": 90.7,
+      "fetches_per_hour": 627,
       "items": [
         {
           "image": "data/shootout/gemini/gemini_doodle_a02_solved.png",
@@ -114,20 +114,37 @@
       "locate": "match",
       "kind": "computer vision · free locate",
       "partial": true,
-      "fetches": 897,
+      "fetches": 923,
       "success_pct": 85.3,
-      "block_pct": 13.9,
-      "exits_n": 86,
+      "block_pct": 14,
+      "exits_n": 90,
       "captchas": {
-        "detected": 3,
-        "solved": 1,
-        "failed": 2
+        "detected": 5,
+        "solved": 2,
+        "failed": 3
       },
-      "solve_rate_pct": 33.3,
-      "rotations": 85,
-      "duration_min": 87.6,
-      "fetches_per_hour": 615,
+      "solve_rate_pct": 40,
+      "rotations": 89,
+      "duration_min": 90.7,
+      "fetches_per_hour": 611,
       "items": [
+        {
+          "image": "data/shootout/shape/shape_doodle_a02_solved.png",
+          "solved": true,
+          "legend": [
+            "butterfly",
+            "teddy bear"
+          ]
+        },
+        {
+          "image": "data/shootout/shape/shape_doodle_a01_failed.png",
+          "solved": false,
+          "legend": [
+            "suitcase",
+            "tree",
+            "flower"
+          ]
+        },
         {
           "image": "data/shootout/shape/shape_doodle_a01_solved.png",
           "solved": true,
@@ -143,15 +160,6 @@
             "snake",
             "scissors"
           ]
-        },
-        {
-          "image": "data/shootout/shape/shape_doodle_a01_failed.png",
-          "solved": false,
-          "legend": [
-            "ink bottle",
-            "wine glass",
-            "building"
-          ]
         }
       ]
     },
@@ -161,34 +169,34 @@
       "locate": "blob",
       "kind": "computer vision · free locate",
       "partial": true,
-      "fetches": 620,
-      "success_pct": 96.9,
-      "block_pct": 2.1,
-      "exits_n": 34,
+      "fetches": 646,
+      "success_pct": 97.1,
+      "block_pct": 2,
+      "exits_n": 36,
       "captchas": {
-        "detected": 80,
+        "detected": 81,
         "solved": 4,
-        "failed": 76
+        "failed": 77
       },
-      "solve_rate_pct": 5,
-      "rotations": 33,
-      "duration_min": 86.2,
-      "fetches_per_hour": 432,
+      "solve_rate_pct": 4.9,
+      "rotations": 35,
+      "duration_min": 88.8,
+      "fetches_per_hour": 436,
       "items": [
+        {
+          "image": "data/shootout/color/color_doodle_a01_failed.png",
+          "solved": false,
+          "legend": [
+            "pepper",
+            "ink bottle"
+          ]
+        },
         {
           "image": "data/shootout/color/color_doodle_a02_solved.png",
           "solved": true,
           "legend": [
             "bowling pins",
             "test tube"
-          ]
-        },
-        {
-          "image": "data/shootout/color/color_doodle_a01_failed.png",
-          "solved": false,
-          "legend": [
-            "apple",
-            "basketball"
           ]
         },
         {
