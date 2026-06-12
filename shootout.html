@@ -66,6 +66,20 @@
   .cell img{width:100%;height:100%;object-fit:cover;display:block}
   .key{display:flex;gap:18px;flex-wrap:wrap;align-items:center;font-size:13px;color:var(--mut);margin:12px 2px 0}
   .dot{display:inline-block;width:11px;height:11px;border-radius:50%;vertical-align:-1px;margin-right:6px;box-shadow:0 0 0 2px rgba(255,255,255,.08)}
+  /* 3-arm comparison table */
+  table.cmp{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  table.cmp th,table.cmp td{padding:11px 13px;text-align:right;border-bottom:1px solid var(--line);font-size:13.5px;white-space:nowrap;font-variant-numeric:tabular-nums}
+  table.cmp th:first-child,table.cmp td:first-child{text-align:left}
+  table.cmp th{color:var(--dim);font-size:11px;text-transform:uppercase;letter-spacing:.4px}
+  table.cmp tr:last-child td{border-bottom:none}
+  table.cmp td .mname{font-weight:700} table.cmp td .mloc{font-size:11px;color:var(--dim)}
+  table.cmp .best{color:var(--good);font-weight:750}
+  .armcap{margin-top:16px}
+  .armcap h4{font-size:13px;margin:0 0 8px;font-weight:700} .armcap h4 .loc{color:var(--dim);font-weight:400;font-size:12px}
+  .strip{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:9px}
+  .shot{background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+  .shot img{width:100%;display:block;background:#0c0e13;max-height:150px;object-fit:cover}
+  .shot .cap{font-size:10.5px;padding:5px 8px;display:flex;justify-content:space-between;align-items:center}
   /* live capture */
   .empty{background:var(--panel);border:1px dashed var(--line);border-radius:14px;padding:34px;text-align:center;color:var(--mut);line-height:1.6}
   .empty b{color:var(--txt)}
@@ -115,9 +129,10 @@
     <span><span class="dot" style="background:#ff3030"></span>where the method clicked</span>
   </div>
 
-  <h2 class="sec">Live Tor-encountered captchas <span class="dim" style="font-size:13px;font-weight:400">· the real test</span></h2>
-  <p class="secsub">The 37 above are a fixed lab set. These are the <b>actual captchas the live Tor run hit</b> — saved with qwen's real click attempt and whether it cleared. As they accumulate, all three methods replay on them here for a real-world head-to-head.</p>
-  <div id="live"></div>
+  <h2 class="sec">Live 3-arm run <span class="dim" style="font-size:13px;font-weight:400">· same URLs, separate Tors, in parallel</span></h2>
+  <p class="secsub">The 37 above are a fixed lab set. This is the <b>real-world run</b>: all three methods scrape the <b>same URL sample</b>, each on its <b>own Tor</b> (its own exits), at the same time. It's not a same-captcha test — each arm meets different exits — but it shows how each method actually performs end-to-end: how many captchas it cleared, how many products it got, how fast, how reliably.</p>
+  <div id="runs"></div>
+  <div id="live" style="margin-top:18px"></div>
 
   <footer>
     Bench: <code>bin/bench-solve.js</code> over saved real puzzles · click points stored, so this page never needs a paid re-run ·
@@ -189,19 +204,44 @@ async function load(){
     ? `<div class="matrixwrap"><div class="matrix" style="grid-template-columns:150px repeat(${METHODS.length},1fr)">${head}${rows}</div></div>`
     : `<div class="empty">Overlay images not found.</div>`;
 
-  // live captures
-  let cap=null; try{ cap = await fetch('data/shootout-live.json?_='+Date.now()).then(r=>r.json()); }catch{}
-  const live = document.getElementById('live');
-  if(cap && cap.items && cap.items.length){
-    live.innerHTML = `<div class="capgrid">` + cap.items.map(it=>
-      `<div class="capcard"><img src="${it.image}" loading="lazy" alt="captcha">
-        <div class="cap"><span class="dim">${it.tag||''} ${it.region?'· '+it.region.toUpperCase():''}</span>
-        <span class="pill ${it.solved?'ok':'no'}">${it.solved?'qwen solved':'qwen failed'}</span></div></div>`
-    ).join('') + `</div>`;
+  // live 3-arm run
+  let runs=null; try{ runs = await fetch('data/shootout-runs.json?_='+Date.now()).then(r=>r.json()); }catch{}
+  const runsEl = document.getElementById('runs'), live = document.getElementById('live');
+  if(runs && runs.arms && runs.arms.length){
+    const A = runs.arms;
+    const p = x => x==null?'—':x+'%';
+    // best-in-column helpers (higher is better for these)
+    const best = (key) => Math.max(...A.map(a=>a[key]==null?-1:a[key]));
+    const cell = (a,key,fmt) => `<td class="${a[key]!=null && a[key]===best(key)?'best':''}">${fmt(a[key])}</td>`;
+    runsEl.innerHTML = `<table class="cmp"><thead><tr>
+        <th>method</th><th>URLs</th><th>exits</th><th>captchas hit</th><th>solved</th>
+        <th>solve rate</th><th>products OK</th><th>speed</th></tr></thead><tbody>` +
+      A.map(a=>`<tr>
+        <td><span class="mname">${a.label}</span> <span class="mloc">${a.locate}</span></td>
+        <td>${(a.fetches||0).toLocaleString()}</td>
+        <td>${a.exits_n||0}</td>
+        <td>${a.captchas?a.captchas.detected:0}</td>
+        <td>${a.captchas?a.captchas.solved:0}</td>
+        ${cell(a,'solve_rate_pct',p)}
+        ${cell(a,'success_pct',p)}
+        <td>${a.fetches_per_hour?a.fetches_per_hour.toLocaleString()+'/h':'—'}</td>
+      </tr>`).join('') + `</tbody></table>
+      <p class="dim" style="font-size:12px;margin:8px 2px 0">${runs.note||''}${runs.updated?' · updated '+new Date(runs.updated).toISOString().slice(0,16).replace('T',' '):''}</p>`;
+
+    // per-arm captured captchas (real puzzles each arm faced + its attempt)
+    const withImgs = A.filter(a=>a.items&&a.items.length);
+    live.innerHTML = withImgs.length ? withImgs.map(a=>
+      `<div class="armcap"><h4>${a.label} <span class="loc">— what it actually faced (${a.items.length})</span></h4>
+        <div class="strip">`+ a.items.map(it=>
+          `<div class="shot"><img src="${it.image}" loading="lazy" alt="captcha">
+            <div class="cap"><span class="dim">${(it.legend||[]).slice(0,3).join(', ')||'doodle'}</span>
+            <span class="pill ${it.solved?'ok':'no'}">${it.solved?'solved':'failed'}</span></div></div>`
+        ).join('') + `</div></div>`
+    ).join('') : `<div class="empty">No captchas were thrown during this run yet — most Tor exits loaded products with no challenge. Captured puzzles (with each arm's attempt) appear here as the runs hit them.</div>`;
   } else {
-    live.innerHTML = `<div class="empty"><b>No Tor-encountered captchas processed yet.</b><br>
-      Days 2–3 of the exit study now save every real captcha qwen faces — the puzzle image, its click attempt, and whether it cleared the wall.<br>
-      Once a batch is captured, all three methods replay on those exact puzzles and the grid fills in here.</div>`;
+    runsEl.innerHTML = `<div class="empty"><b>No live run yet.</b><br>
+      Kick one off with <code>scripts/shootout-run.sh &lt;N&gt;</code> — all three methods scrape the same URLs on separate Tors in parallel, and this fills with each arm's captcha solve-rate, product success, speed, and the real puzzles it faced.</div>`;
+    live.innerHTML = '';
   }
 }
 load();
