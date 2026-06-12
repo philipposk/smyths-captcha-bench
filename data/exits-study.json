@@ -1,5 +1,5 @@
 {
-  "updated": 1781248541635,
+  "updated": 1781248723298,
   "regions": [
     "uk",
     "ie",
@@ -10,113 +10,127 @@
     "nl"
   ],
   "target_per_day": 3000,
-  "solver": "qwen3-vl-32b + shape-match + color-cv",
+  "solver": "qwen3-vl-32b (vlm)",
+  "solver_candidates": [
+    "qwen3-vl-32b (vlm)",
+    "shape-match (CV)",
+    "color-cv (CV)"
+  ],
   "note": "Real browser fetches over Tor; “captcha” = the Imperva wall showed on first try, “block” = it could not be cleared. Exit windows ≈ distinct Tor exits (one per rotation).",
   "days": [
     {
       "day": 1,
       "date": null,
-      "captchas_solved": 0,
-      "attempted": 1094,
-      "exits_n": 76,
+      "captchas": {
+        "detected": 0,
+        "solved": 0,
+        "failed": 0
+      },
+      "attempted": 1109,
+      "exits_n": 81,
       "captcha": 1,
       "block": 0,
-      "captcha_rate_pct": 1.3,
+      "captcha_rate_pct": 1.2,
       "captcha_ci": [
         0.2,
-        7.1
+        6.7
       ],
       "block_rate_pct": 0,
-      "success_pct": 88,
+      "success_pct": 86.8,
       "by_region": {
         "uk": {
-          "attempted": 130,
-          "success_pct": 85.4
+          "attempted": 131,
+          "success_pct": 84.7
         },
         "ie": {
-          "attempted": 129,
-          "success_pct": 90.7
+          "attempted": 130,
+          "success_pct": 90
         },
         "de": {
-          "attempted": 176,
-          "success_pct": 88.6
+          "attempted": 180,
+          "success_pct": 86.7
         },
         "at": {
-          "attempted": 139,
-          "success_pct": 89.9
+          "attempted": 142,
+          "success_pct": 88
         },
         "ch": {
-          "attempted": 185,
-          "success_pct": 88.1
+          "attempted": 189,
+          "success_pct": 86.2
         },
         "fr": {
-          "attempted": 164,
-          "success_pct": 90.2
+          "attempted": 165,
+          "success_pct": 89.7
         },
         "nl": {
-          "attempted": 171,
-          "success_pct": 83.6
+          "attempted": 172,
+          "success_pct": 83.1
         }
       },
       "exits": {
-        "windows": 76,
-        "clean_windows": 75,
+        "windows": 81,
+        "clean_windows": 80,
         "hostile_windows": 1
       },
-      "duration_min": 99.1,
-      "sec_per_fetch": 5.4,
-      "fetches_per_hour": 662
+      "duration_min": 102.1,
+      "sec_per_fetch": 5.5,
+      "fetches_per_hour": 652
     }
   ],
   "overall": {
-    "attempted": 1094,
-    "exits_n": 76,
+    "attempted": 1109,
+    "exits_n": 81,
     "captcha": 1,
     "block": 0,
-    "captcha_rate_pct": 1.3,
+    "captcha_rate_pct": 1.2,
     "captcha_ci": [
       0.2,
-      7.1
+      6.7
     ],
     "block_rate_pct": 0,
-    "success_pct": 88,
+    "success_pct": 86.8,
     "by_region": {
       "uk": {
-        "attempted": 130,
-        "success_pct": 85.4
+        "attempted": 131,
+        "success_pct": 84.7
       },
       "ie": {
-        "attempted": 129,
-        "success_pct": 90.7
+        "attempted": 130,
+        "success_pct": 90
       },
       "de": {
-        "attempted": 176,
-        "success_pct": 88.6
+        "attempted": 180,
+        "success_pct": 86.7
       },
       "at": {
-        "attempted": 139,
-        "success_pct": 89.9
+        "attempted": 142,
+        "success_pct": 88
       },
       "ch": {
-        "attempted": 185,
-        "success_pct": 88.1
+        "attempted": 189,
+        "success_pct": 86.2
       },
       "fr": {
-        "attempted": 164,
-        "success_pct": 90.2
+        "attempted": 165,
+        "success_pct": 89.7
       },
       "nl": {
-        "attempted": 171,
-        "success_pct": 83.6
+        "attempted": 172,
+        "success_pct": 83.1
       }
     },
     "exits": {
-      "windows": 76,
-      "clean_windows": 75,
+      "windows": 81,
+      "clean_windows": 80,
       "hostile_windows": 1
     },
-    "duration_min": 99.1,
-    "sec_per_fetch": 5.4,
-    "fetches_per_hour": 662
+    "duration_min": 102.1,
+    "sec_per_fetch": 5.5,
+    "fetches_per_hour": 652,
+    "captchas": {
+      "detected": 0,
+      "solved": 0,
+      "failed": 0
+    }
   }
 }
