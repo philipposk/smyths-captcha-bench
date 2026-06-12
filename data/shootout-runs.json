@@ -1,5 +1,5 @@
 {
-  "updated": 1781276146822,
+  "updated": 1781289005708,
   "partial": false,
   "note": "Each arm scraped the same URL sample on its OWN Tor (own exits), in parallel. Arms differ only in the locate method; legend reading is qwen/vlm in all. Aggregate comparison, not a same-captcha test. Captcha counts are solve ATTEMPTS (a method that keeps failing logs several).",
   "arms": [
