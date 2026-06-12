@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Captcha solver bench — live model ranking</title>
-<meta name="description" content="Live ranking of vision models on a real hCaptcha 'doodle' task: same puzzles, every model, scored on whether it clicks the right drawings in the right order — plus speed and cost.">
+<meta name="description" content="Which AI solves the captcha cheapest">
 <link rel="icon" href="favicon.svg">
 <style>
   :root{
@@ -282,7 +282,16 @@ function renderBoard(){
 let hintShown=false;
 // arched comic arrow pointing RIGHT (label sits left of it, in the gutter, → into the table)
 const RARROW = `<svg width="62" height="30" viewBox="0 0 62 30" fill="none"><path d="M3 8 C18 2, 40 4, 57 22" stroke="CLR" stroke-width="3.5" stroke-linecap="round" fill="none"/><path d="M57 22 L46 19 M57 22 L52 11" stroke="CLR" stroke-width="3.5" stroke-linecap="round"/></svg>`;
-const gutTop = (wrap, el) => { const wr=wrap.getBoundingClientRect(), er=el.getBoundingClientRect(); return er.top - wr.top + er.height/2 - 20; };
+// Place a gutter note so its ARROWHEAD (which sits ~8px above the note's bottom edge, since the
+// arrow svg is the last child and its tip is near the svg's lower edge) lands on the vertical
+// CENTRE of the target row/header — so it always points at the right thing, at any sort order/size.
+const ARROW_TIP_FROM_BOTTOM = 8;
+function pointGutAt(el, target){
+  const wrap=document.getElementById('boardwrap'); if(!wrap||!el||!target) return;
+  const wr=wrap.getBoundingClientRect(), tr=target.getBoundingClientRect();
+  const rowCentre = tr.top - wr.top + tr.height/2;
+  el.style.top = Math.round(rowCentre - el.offsetHeight + ARROW_TIP_FROM_BOTTOM) + 'px';
+}
 function dismissHint(){ const h=document.getElementById('sorthint'); if(h){ h.classList.add('hide'); setTimeout(()=>h.remove(),500); } }
 function ensureGutNotes(){
   const wrap=document.getElementById('boardwrap'); if(!wrap) return;
@@ -292,10 +301,10 @@ function ensureGutNotes(){
     if(!g){ g=document.createElement('div'); g.id='gnote'; g.className='gut';
       g.innerHTML=`<button class="gx" title="dismiss" onclick="this.closest('#gnote').remove()">×</button><span class="lbl">best FREE pick<small>~500–1.5k/day</small></span>${RARROW.replace(/CLR/g,'#67dcb6')}`;
       wrap.appendChild(g); }
-    g.style.top = gutTop(wrap, grow)+'px';
+    pointGutAt(g, grow);
   } else if(g){ g.remove(); }
   const sh=document.getElementById('sorthint'), thead=wrap.querySelector('thead tr');
-  if(sh && thead) sh.style.top = gutTop(wrap, thead)+'px';
+  if(sh && thead) pointGutAt(sh, thead);
 }
 function showSortHint(){
   if(hintShown) return; hintShown=true;
@@ -303,9 +312,7 @@ function showSortHint(){
   const el=document.createElement('div'); el.id='sorthint'; el.className='gut';
   el.innerHTML=`<span class="lbl">Sort by:<small>click any column ↕</small></span>${RARROW.replace(/CLR/g,'#ffd24d')}`;
   wrap.appendChild(el);
-  // sit ON the header row (the arrow points right at the column titles), not the first data row
-  const r=thead.getBoundingClientRect(), wr=wrap.getBoundingClientRect();
-  el.style.top = (r.top - wr.top + r.height/2 - el.offsetHeight/2)+'px';
+  pointGutAt(el, thead);   // arrowhead lands on the header row
   setTimeout(dismissHint, 12000);
 }
 window.addEventListener('resize', ()=>{ if(document.getElementById('board')) ensureGutNotes(); });
