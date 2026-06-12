@@ -1,5 +1,5 @@
 {
-  "updated": 1781256165954,
+  "updated": 1781256348398,
   "partial": true,
   "note": "Each arm scraped the same URL sample on its OWN Tor (own exits), in parallel. Arms differ only in the locate method; legend reading is qwen/vlm in all. Aggregate comparison, not a same-captcha test. Captcha counts are solve ATTEMPTS (a method that keeps failing logs several).",
   "arms": [
@@ -9,19 +9,19 @@
       "locate": "vlm",
       "kind": "vision AI · paid (cheap)",
       "partial": true,
-      "fetches": 849,
-      "success_pct": 83.4,
-      "block_pct": 15.3,
-      "exits_n": 86,
+      "fetches": 890,
+      "success_pct": 84.2,
+      "block_pct": 14.6,
+      "exits_n": 88,
       "captchas": {
         "detected": 3,
         "solved": 3,
         "failed": 0
       },
       "solve_rate_pct": 100,
-      "rotations": 85,
-      "duration_min": 91.2,
-      "fetches_per_hour": 559,
+      "rotations": 87,
+      "duration_min": 94.2,
+      "fetches_per_hour": 567,
       "items": [
         {
           "image": "data/shootout/qwen/qwen_doodle_a01_solved.png",
@@ -40,44 +40,43 @@
       "locate": "match",
       "kind": "computer vision · free locate",
       "partial": true,
-      "fetches": 870,
-      "success_pct": 92.2,
-      "block_pct": 6.8,
-      "exits_n": 62,
+      "fetches": 891,
+      "success_pct": 92.4,
+      "block_pct": 6.6,
+      "exits_n": 63,
       "captchas": {
-        "detected": 22,
-        "solved": 3,
-        "failed": 19
+        "detected": 26,
+        "solved": 4,
+        "failed": 22
       },
-      "solve_rate_pct": 13.6,
-      "rotations": 61,
-      "duration_min": 90.2,
-      "fetches_per_hour": 579,
+      "solve_rate_pct": 15.4,
+      "rotations": 62,
+      "duration_min": 93.4,
+      "fetches_per_hour": 572,
       "items": [
         {
-          "image": "data/shootout/shape/shape_doodle_a02_failed.png",
-          "solved": false,
+          "image": "data/shootout/shape/shape_doodle_a02_solved.png",
+          "solved": true,
           "legend": [
-            "pineapple",
-            "fire extinguisher",
-            "gear"
+            "alarm clock",
+            "balloon"
           ]
         },
         {
           "image": "data/shootout/shape/shape_doodle_a01_failed.png",
           "solved": false,
           "legend": [
-            "wifi router",
-            "bottle",
-            "handbag"
+            "key",
+            "coin",
+            "leaf"
           ]
         },
         {
-          "image": "data/shootout/shape/shape_doodle_a02_solved.png",
-          "solved": true,
+          "image": "data/shootout/shape/shape_doodle_a02_failed.png",
+          "solved": false,
           "legend": [
-            "scale",
-            "hand"
+            "watering can",
+            "bug"
           ]
         }
       ]
@@ -88,44 +87,44 @@
       "locate": "blob",
       "kind": "computer vision · free locate",
       "partial": true,
-      "fetches": 756,
-      "success_pct": 81.3,
-      "block_pct": 17.5,
-      "exits_n": 82,
+      "fetches": 760,
+      "success_pct": 81.4,
+      "block_pct": 17.4,
+      "exits_n": 83,
       "captchas": {
-        "detected": 26,
+        "detected": 32,
         "solved": 2,
-        "failed": 24
+        "failed": 30
       },
-      "solve_rate_pct": 7.7,
-      "rotations": 81,
-      "duration_min": 90.5,
-      "fetches_per_hour": 501,
+      "solve_rate_pct": 6.3,
+      "rotations": 82,
+      "duration_min": 92.4,
+      "fetches_per_hour": 493,
       "items": [
-        {
-          "image": "data/shootout/color/color_doodle_a01_solved.png",
-          "solved": true,
-          "legend": [
-            "coin purse",
-            "rooster"
-          ]
-        },
         {
           "image": "data/shootout/color/color_doodle_a02_failed.png",
           "solved": false,
           "legend": [
-            "ink bottle",
-            "bicycle",
-            "laptop"
+            "factory",
+            "speech bubble",
+            "fan"
           ]
         },
         {
           "image": "data/shootout/color/color_doodle_a01_failed.png",
           "solved": false,
           "legend": [
-            "ink bottle",
-            "bicycle",
-            "laptop"
+            "building",
+            "speech bubble",
+            "fan"
+          ]
+        },
+        {
+          "image": "data/shootout/color/color_doodle_a01_solved.png",
+          "solved": true,
+          "legend": [
+            "coin purse",
+            "rooster"
           ]
         }
       ]
