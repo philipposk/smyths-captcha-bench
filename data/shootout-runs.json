@@ -1,5 +1,5 @@
 {
-  "updated": 1781297342384,
+  "updated": 1781297524051,
   "partial": true,
   "note": "Each arm scraped the same URL sample on its OWN Tor (own exits), in parallel. Arms differ only in the locate method; legend reading is qwen/vlm in all. Aggregate comparison, not a same-captcha test. Captcha counts are solve ATTEMPTS (a method that keeps failing logs several).",
   "arms": [
@@ -9,19 +9,19 @@
       "locate": "vlm",
       "kind": "vision AI · paid (cheap)",
       "partial": true,
-      "fetches": 1044,
-      "success_pct": 62.6,
-      "block_pct": 12.5,
-      "exits_n": 181,
+      "fetches": 1062,
+      "success_pct": 61.6,
+      "block_pct": 12.3,
+      "exits_n": 188,
       "captchas": {
         "detected": 21,
         "solved": 2,
         "failed": 19
       },
       "solve_rate_pct": 9.5,
-      "rotations": 180,
-      "duration_min": 123.9,
-      "fetches_per_hour": 506,
+      "rotations": 187,
+      "duration_min": 127,
+      "fetches_per_hour": 502,
       "items": [
         {
           "image": "data/shootout/qwen/qwen_doodle_a01_failed.png",
@@ -56,29 +56,20 @@
       "locate": "vlm",
       "kind": "vision AI · paid",
       "partial": true,
-      "fetches": 1316,
+      "fetches": 1339,
       "success_pct": 99.1,
       "block_pct": 0,
-      "exits_n": 66,
+      "exits_n": 67,
       "captchas": {
-        "detected": 15,
+        "detected": 17,
         "solved": 7,
-        "failed": 8
+        "failed": 10
       },
-      "solve_rate_pct": 46.7,
-      "rotations": 65,
-      "duration_min": 124,
-      "fetches_per_hour": 637,
+      "solve_rate_pct": 41.2,
+      "rotations": 66,
+      "duration_min": 125.9,
+      "fetches_per_hour": 638,
       "items": [
-        {
-          "image": "data/shootout/gemini/gemini_doodle_a01_solved.png",
-          "solved": true,
-          "legend": [
-            "skateboard",
-            "football",
-            "hand grenade"
-          ]
-        },
         {
           "image": "data/shootout/gemini/gemini_doodle_a02_failed.png",
           "solved": false,
@@ -92,9 +83,16 @@
           "image": "data/shootout/gemini/gemini_doodle_a01_failed.png",
           "solved": false,
           "legend": [
-            "bus",
-            "motorcycle",
-            "bicycle"
+            "scales"
+          ]
+        },
+        {
+          "image": "data/shootout/gemini/gemini_doodle_a01_solved.png",
+          "solved": true,
+          "legend": [
+            "skateboard",
+            "football",
+            "hand grenade"
           ]
         },
         {
@@ -114,27 +112,26 @@
       "locate": "match",
       "kind": "computer vision · free locate",
       "partial": true,
-      "fetches": 1211,
-      "success_pct": 88.4,
-      "block_pct": 10.9,
-      "exits_n": 105,
+      "fetches": 1239,
+      "success_pct": 88.6,
+      "block_pct": 10.7,
+      "exits_n": 106,
       "captchas": {
-        "detected": 23,
+        "detected": 24,
         "solved": 2,
-        "failed": 21
+        "failed": 22
       },
-      "solve_rate_pct": 8.7,
-      "rotations": 104,
-      "duration_min": 122.9,
-      "fetches_per_hour": 591,
+      "solve_rate_pct": 8.3,
+      "rotations": 105,
+      "duration_min": 127,
+      "fetches_per_hour": 586,
       "items": [
         {
           "image": "data/shootout/shape/shape_doodle_a02_failed.png",
           "solved": false,
           "legend": [
-            "watermelon slice",
-            "magnifying glass",
-            "trash can"
+            "atom",
+            "tablet"
           ]
         },
         {
@@ -169,18 +166,18 @@
       "locate": "blob",
       "kind": "computer vision · free locate",
       "partial": true,
-      "fetches": 860,
-      "success_pct": 72.9,
+      "fetches": 880,
+      "success_pct": 71.3,
       "block_pct": 1.5,
-      "exits_n": 117,
+      "exits_n": 124,
       "captchas": {
         "detected": 82,
         "solved": 4,
         "failed": 78
       },
       "solve_rate_pct": 4.9,
-      "rotations": 116,
-      "duration_min": 122.5,
+      "rotations": 123,
+      "duration_min": 125.5,
       "fetches_per_hour": 421,
       "items": [
         {
