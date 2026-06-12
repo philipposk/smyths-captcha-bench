@@ -1,5 +1,5 @@
 {
-  "updated": 1781300613269,
+  "updated": 1781300795275,
   "partial": true,
   "note": "Each arm scraped the same URL sample on its OWN Tor (own exits), in parallel. Arms differ only in the locate method; legend reading is qwen/vlm in all. Aggregate comparison, not a same-captcha test. Captcha counts are solve ATTEMPTS (a method that keeps failing logs several).",
   "arms": [
@@ -9,19 +9,19 @@
       "locate": "vlm",
       "kind": "vision AI · paid (cheap)",
       "partial": true,
-      "fetches": 1389,
-      "success_pct": 47.1,
-      "block_pct": 9.4,
-      "exits_n": 313,
+      "fetches": 1406,
+      "success_pct": 46.5,
+      "block_pct": 9.3,
+      "exits_n": 320,
       "captchas": {
         "detected": 21,
         "solved": 2,
         "failed": 19
       },
       "solve_rate_pct": 9.5,
-      "rotations": 312,
-      "duration_min": 178.4,
-      "fetches_per_hour": 467,
+      "rotations": 319,
+      "duration_min": 181.5,
+      "fetches_per_hour": 465,
       "items": [
         {
           "image": "data/shootout/qwen/qwen_doodle_a01_failed.png",
@@ -56,18 +56,18 @@
       "locate": "vlm",
       "kind": "vision AI · paid",
       "partial": true,
-      "fetches": 1930,
+      "fetches": 1963,
       "success_pct": 99,
       "block_pct": 0,
-      "exits_n": 97,
+      "exits_n": 99,
       "captchas": {
         "detected": 20,
         "solved": 9,
         "failed": 11
       },
       "solve_rate_pct": 45,
-      "rotations": 96,
-      "duration_min": 178.5,
+      "rotations": 98,
+      "duration_min": 181.6,
       "fetches_per_hour": 649,
       "items": [
         {
@@ -112,19 +112,19 @@
       "locate": "match",
       "kind": "computer vision · free locate",
       "partial": true,
-      "fetches": 1668,
-      "success_pct": 83.6,
-      "block_pct": 15.8,
+      "fetches": 1669,
+      "success_pct": 83.5,
+      "block_pct": 15.9,
       "exits_n": 172,
       "captchas": {
-        "detected": 44,
+        "detected": 50,
         "solved": 2,
-        "failed": 42
+        "failed": 48
       },
-      "solve_rate_pct": 4.5,
+      "solve_rate_pct": 4,
       "rotations": 171,
-      "duration_min": 178,
-      "fetches_per_hour": 562,
+      "duration_min": 180.2,
+      "fetches_per_hour": 556,
       "items": [
         {
           "image": "data/shootout/shape/shape_doodle_a02_failed.png",
@@ -140,8 +140,8 @@
           "image": "data/shootout/shape/shape_doodle_a01_failed.png",
           "solved": false,
           "legend": [
-            "snake",
-            "envelope"
+            "butterfly",
+            "nuclear sign"
           ]
         },
         {
@@ -168,18 +168,18 @@
       "locate": "blob",
       "kind": "computer vision · free locate",
       "partial": true,
-      "fetches": 1207,
-      "success_pct": 51.9,
+      "fetches": 1228,
+      "success_pct": 51.1,
       "block_pct": 1.1,
-      "exits_n": 251,
+      "exits_n": 259,
       "captchas": {
         "detected": 82,
         "solved": 4,
         "failed": 78
       },
       "solve_rate_pct": 4.9,
-      "rotations": 250,
-      "duration_min": 177.1,
+      "rotations": 258,
+      "duration_min": 180.1,
       "fetches_per_hour": 409,
       "items": [
         {
