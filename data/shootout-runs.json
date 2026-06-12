@@ -1,5 +1,5 @@
 {
-  "updated": 1781293340122,
+  "updated": 1781293522298,
   "partial": true,
   "note": "Each arm scraped the same URL sample on its OWN Tor (own exits), in parallel. Arms differ only in the locate method; legend reading is qwen/vlm in all. Aggregate comparison, not a same-captcha test. Captcha counts are solve ATTEMPTS (a method that keeps failing logs several).",
   "arms": [
@@ -9,27 +9,27 @@
       "locate": "vlm",
       "kind": "vision AI · paid (cheap)",
       "partial": true,
-      "fetches": 611,
-      "success_pct": 78.6,
-      "block_pct": 20.9,
-      "exits_n": 74,
+      "fetches": 643,
+      "success_pct": 79.6,
+      "block_pct": 19.9,
+      "exits_n": 76,
       "captchas": {
-        "detected": 1,
-        "solved": 1,
+        "detected": 2,
+        "solved": 2,
         "failed": 0
       },
       "solve_rate_pct": 100,
-      "rotations": 73,
-      "duration_min": 57.3,
+      "rotations": 75,
+      "duration_min": 60.3,
       "fetches_per_hour": 640,
       "items": [
         {
           "image": "data/shootout/qwen/qwen_doodle_a01_solved.png",
           "solved": true,
           "legend": [
-            "coins",
-            "trash can",
-            "beach ball"
+            "lollipop",
+            "birdhouse",
+            "hamburger"
           ]
         }
       ]
@@ -40,19 +40,19 @@
       "locate": "vlm",
       "kind": "vision AI · paid",
       "partial": true,
-      "fetches": 613,
-      "success_pct": 99,
+      "fetches": 648,
+      "success_pct": 98.9,
       "block_pct": 0,
-      "exits_n": 31,
+      "exits_n": 33,
       "captchas": {
         "detected": 6,
         "solved": 3,
         "failed": 3
       },
       "solve_rate_pct": 50,
-      "rotations": 30,
-      "duration_min": 57.3,
-      "fetches_per_hour": 642,
+      "rotations": 32,
+      "duration_min": 60.3,
+      "fetches_per_hour": 644,
       "items": [
         {
           "image": "data/shootout/gemini/gemini_doodle_a01_failed.png",
@@ -96,19 +96,19 @@
       "locate": "match",
       "kind": "computer vision · free locate",
       "partial": true,
-      "fetches": 620,
+      "fetches": 650,
       "success_pct": 98.9,
       "block_pct": 0,
-      "exits_n": 32,
+      "exits_n": 33,
       "captchas": {
         "detected": 3,
         "solved": 1,
         "failed": 2
       },
       "solve_rate_pct": 33.3,
-      "rotations": 31,
-      "duration_min": 57.3,
-      "fetches_per_hour": 649,
+      "rotations": 32,
+      "duration_min": 60.2,
+      "fetches_per_hour": 647,
       "items": [
         {
           "image": "data/shootout/shape/shape_doodle_a01_solved.png",
@@ -146,40 +146,39 @@
       "fetches": 380,
       "success_pct": 96.3,
       "block_pct": 2.6,
-      "exits_n": 21,
+      "exits_n": 22,
       "captchas": {
-        "detected": 60,
+        "detected": 66,
         "solved": 2,
-        "failed": 58
+        "failed": 64
       },
-      "solve_rate_pct": 3.3,
-      "rotations": 20,
-      "duration_min": 55.6,
-      "fetches_per_hour": 410,
+      "solve_rate_pct": 3,
+      "rotations": 21,
+      "duration_min": 57.8,
+      "fetches_per_hour": 394,
       "items": [
         {
-          "image": "data/shootout/color/color_doodle_a02_solved.png",
-          "solved": true,
+          "image": "data/shootout/color/color_doodle_a02_failed.png",
+          "solved": false,
           "legend": [
-            "paw print",
-            "battery"
+            "coffee bean",
+            "train"
           ]
         },
         {
           "image": "data/shootout/color/color_doodle_a01_failed.png",
           "solved": false,
           "legend": [
-            "battery",
-            "carrot"
+            "coffee bean",
+            "train"
           ]
         },
         {
-          "image": "data/shootout/color/color_doodle_a02_failed.png",
-          "solved": false,
+          "image": "data/shootout/color/color_doodle_a02_solved.png",
+          "solved": true,
           "legend": [
-            "lantern",
-            "ring",
-            "bug"
+            "paw print",
+            "battery"
           ]
         }
       ]
