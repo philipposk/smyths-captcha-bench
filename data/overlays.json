@@ -1,11 +1,34 @@
 {
-  "note": "Clean puzzles (no failed-attempt markers). Strong API winners shown with bold markers; free/local candidates keep their original overlays. Click points are now saved, so refreshing this gallery never needs a paid re-run again.",
-  "configs": ["gemini-3-flash", "qwen3-vl-32b", "qwen-solo", "shape-match", "color-cv", "qwen+moondream", "moondream-cloud"],
+  "note": "Clean puzzles only (no failed-attempt markers). All models shown with bold markers — green = the right doodle, red = where the model clicked; overlap = a hit. Click points are saved, so refreshing this gallery never needs a paid re-run.",
+  "configs": [
+    "gemini-3-flash",
+    "qwen3-vl-32b",
+    "gemini-2.5-flash",
+    "qwen-solo",
+    "shape-match",
+    "color-cv",
+    "moondream-cloud"
+  ],
   "puzzles": [
-    { "id": "shot05", "n": 3 },
-    { "id": "shot03", "n": 2 },
-    { "id": "shot07", "n": 2 },
-    { "id": "shot08", "n": 3 },
-    { "id": "shot02", "n": 2 }
+    {
+      "id": "shot05",
+      "n": 3
+    },
+    {
+      "id": "shot03",
+      "n": 2
+    },
+    {
+      "id": "shot07",
+      "n": 2
+    },
+    {
+      "id": "shot08",
+      "n": 3
+    },
+    {
+      "id": "shot02",
+      "n": 2
+    }
   ]
 }
