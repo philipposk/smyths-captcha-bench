@@ -174,7 +174,7 @@
   <div class="note" id="deadnote"></div>
 
   <h2 class="sec">Exit health — the bigger lever</h2>
-  <p class="mut" style="margin:4px 0 4px;max-width:72ch;font-size:14px">The puzzle only appears on low-trust connections. Most fetches never see one — so the real win is <b>avoiding</b> captchas, not solving them faster. Numbers below are a <b>small, one-afternoon sample</b> — directional, not a guarantee.</p>
+  <p class="mut" id="exitlede" style="margin:4px 0 4px;max-width:72ch;font-size:14px">The puzzle only appears on low-trust connections. Most fetches never see one — so the real win is <b>avoiding</b> captchas, not solving them faster.</p>
   <div class="cards" id="exitcards"></div>
   <div id="exitnote" class="note" style="margin-top:4px"></div>
 
@@ -334,19 +334,35 @@ async function load(){
 }
 
 async function loadExits(){
-  let e; try{ e = await fetch('data/exits.json?_='+Date.now()).then(r=>r.json()); }catch{ return; }
-  if(e.captcha_rate_pct!=null) captchaRate = e.captcha_rate_pct/100;
-  const noCap = (100 - (e.captcha_rate_pct??0)).toFixed(1);   // sums to 100 with the captcha %
   const card=(k,v,sub)=>`<div class="card"><div class="k">${k}</div><div class="v">${v}</div>${sub?`<div class="dim" style="font-size:12px;margin-top:2px">${sub}</div>`:''}</div>`;
-  document.getElementById('exitcards').innerHTML =
-    card('No-captcha fetches', noCap+'%', `${e.scrapes_attempted-e.captcha_detected}/${e.scrapes_attempted} · $0 each`) +
-    card('Hit a captcha', (e.captcha_rate_pct??'—')+'%', `${e.captcha_detected}/${e.scrapes_attempted} fetches`) +
-    card('Clean exits', `${e.clean_exits}/${e.exits_sampled}`, `Tor exit nodes sampled`) +
-    card('Hard blocked', (e.block_pct??'—')+'%', `${e.hard_blocks}/${e.scrapes_attempted}`);
-  document.getElementById('exitnote').innerHTML =
-    `<b>Sample:</b> ${e.source||'small Tor run'} — too few to quote a hard rate, treat as directional. ` +
-    (e.note ? `<b>The lever:</b> a residential / mobile IP (instead of a datacenter/Tor exit) plus a stable real-Chrome fingerprint pushes the captcha rate toward ~0 — far more valuable than a faster solver.` : '');
-  if(LB.length) renderBoard();   // refresh $/1k tooltips now that the real rate is known
+  const lever = `<b>The lever:</b> a residential / mobile IP (instead of a datacenter/Tor exit) plus a stable real-Chrome fingerprint pushes the captcha rate toward ~0 — far more valuable than a faster solver.`;
+  // Prefer the LIVE 3-day study; fall back to the old one-afternoon sample until it has data.
+  let s=null,e=null;
+  try{ s = await fetch('data/exits-study.json?_='+Date.now()).then(r=>r.json()); }catch{}
+  const ov = s && s.overall && s.overall.exits_n ? s.overall : null;
+  if(ov){
+    // NB: cost tooltips keep the stable per-URL baseline (16.5%); the study measures per-EXIT
+    // hostility, a different denominator, and is noisy early — don't let it swing $/month.
+    document.getElementById('exitlede').innerHTML = `The puzzle only fires on low-trust connections — so the real win is <b>avoiding</b> captchas, not solving them faster. A <b>3-day run across every region</b> is now measuring this properly; these numbers <b>update live</b> as it goes.`;
+    document.getElementById('exitcards').innerHTML =
+      card('Exits sampled', (ov.exits_n).toLocaleString(), `${(ov.attempted||0).toLocaleString()} product fetches`) +
+      card('Exit captcha rate', ov.captcha_rate_pct.toFixed(1)+'%', ov.captcha_ci? `95% CI ${ov.captcha_ci[0]}–${ov.captcha_ci[1]}%` : '') +
+      card('Clean exits', ov.exits&&ov.exits.windows? (ov.exits.clean_windows/ov.exits.windows*100).toFixed(0)+'%' : '—', ov.exits? `${ov.exits.clean_windows}/${ov.exits.windows} exits no wall` : '') +
+      card('Product success', (ov.success_pct??0).toFixed(1)+'%', 'parsed OK after clearing');
+    document.getElementById('exitnote').innerHTML = `<b>Live · day ${(s.days||[]).length} of 3</b> — full per-day + per-region breakdown on the <a href="exit-study.html">Tor exit study tab →</a> · ${lever}`;
+  } else {
+    try{ e = await fetch('data/exits.json?_='+Date.now()).then(r=>r.json()); }catch{ return; }
+    if(e.captcha_rate_pct!=null) captchaRate = e.captcha_rate_pct/100;
+    const noCap = (100 - (e.captcha_rate_pct??0)).toFixed(1);
+    document.getElementById('exitlede').innerHTML = `The puzzle only fires on low-trust connections — so the real win is <b>avoiding</b> captchas, not solving them faster. A <b>3-day study is starting</b> — these will switch to live numbers shortly.`;
+    document.getElementById('exitcards').innerHTML =
+      card('No-captcha fetches', noCap+'%', `${e.scrapes_attempted-e.captcha_detected}/${e.scrapes_attempted} · $0 each`) +
+      card('Hit a captcha', (e.captcha_rate_pct??'—')+'%', `${e.captcha_detected}/${e.scrapes_attempted} fetches`) +
+      card('Clean exits', `${e.clean_exits}/${e.exits_sampled}`, `Tor exit nodes sampled`) +
+      card('Hard blocked', (e.block_pct??'—')+'%', `${e.hard_blocks}/${e.scrapes_attempted}`);
+    document.getElementById('exitnote').innerHTML = `<b>Sample:</b> ${e.source||'small Tor run'} — too few to quote a hard rate; the live 3-day study (<a href="exit-study.html">tab →</a>) replaces this. ${lever}`;
+  }
+  if(LB.length) renderBoard();   // refresh $/1k tooltips with the live captcha rate
 }
 
 load(); setInterval(load,60000);
