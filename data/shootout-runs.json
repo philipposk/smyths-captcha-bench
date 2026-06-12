@@ -1,5 +1,5 @@
 {
-  "updated": 1781255983779,
+  "updated": 1781256165954,
   "partial": true,
   "note": "Each arm scraped the same URL sample on its OWN Tor (own exits), in parallel. Arms differ only in the locate method; legend reading is qwen/vlm in all. Aggregate comparison, not a same-captcha test. Captcha counts are solve ATTEMPTS (a method that keeps failing logs several).",
   "arms": [
@@ -9,19 +9,19 @@
       "locate": "vlm",
       "kind": "vision AI · paid (cheap)",
       "partial": true,
-      "fetches": 806,
-      "success_pct": 82.6,
-      "block_pct": 16.1,
-      "exits_n": 84,
+      "fetches": 849,
+      "success_pct": 83.4,
+      "block_pct": 15.3,
+      "exits_n": 86,
       "captchas": {
         "detected": 3,
         "solved": 3,
         "failed": 0
       },
       "solve_rate_pct": 100,
-      "rotations": 83,
-      "duration_min": 88.1,
-      "fetches_per_hour": 549,
+      "rotations": 85,
+      "duration_min": 91.2,
+      "fetches_per_hour": 559,
       "items": [
         {
           "image": "data/shootout/qwen/qwen_doodle_a01_solved.png",
@@ -40,27 +40,27 @@
       "locate": "match",
       "kind": "computer vision · free locate",
       "partial": true,
-      "fetches": 868,
-      "success_pct": 92.4,
-      "block_pct": 6.6,
+      "fetches": 870,
+      "success_pct": 92.2,
+      "block_pct": 6.8,
       "exits_n": 62,
       "captchas": {
-        "detected": 16,
+        "detected": 22,
         "solved": 3,
-        "failed": 13
+        "failed": 19
       },
-      "solve_rate_pct": 18.8,
+      "solve_rate_pct": 13.6,
       "rotations": 61,
-      "duration_min": 85.8,
-      "fetches_per_hour": 607,
+      "duration_min": 90.2,
+      "fetches_per_hour": 579,
       "items": [
         {
           "image": "data/shootout/shape/shape_doodle_a02_failed.png",
           "solved": false,
           "legend": [
-            "monster",
-            "snake",
-            "scales"
+            "pineapple",
+            "fire extinguisher",
+            "gear"
           ]
         },
         {
@@ -68,8 +68,8 @@
           "solved": false,
           "legend": [
             "wifi router",
-            "airplane",
-            "umbrella"
+            "bottle",
+            "handbag"
           ]
         },
         {
@@ -88,19 +88,19 @@
       "locate": "blob",
       "kind": "computer vision · free locate",
       "partial": true,
-      "fetches": 728,
-      "success_pct": 80.6,
-      "block_pct": 18.1,
-      "exits_n": 81,
+      "fetches": 756,
+      "success_pct": 81.3,
+      "block_pct": 17.5,
+      "exits_n": 82,
       "captchas": {
         "detected": 26,
         "solved": 2,
         "failed": 24
       },
       "solve_rate_pct": 7.7,
-      "rotations": 80,
-      "duration_min": 87.5,
-      "fetches_per_hour": 499,
+      "rotations": 81,
+      "duration_min": 90.5,
+      "fetches_per_hour": 501,
       "items": [
         {
           "image": "data/shootout/color/color_doodle_a01_solved.png",
