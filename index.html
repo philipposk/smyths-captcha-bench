@@ -109,6 +109,7 @@
     background:#0f1320;border:1px solid #2b3346;border-radius:11px;padding:11px 13px;font-size:12.5px;line-height:1.6;color:var(--mut);
     box-shadow:0 14px 34px rgba(0,0,0,.55);transition:opacity .15s,transform .18s}
   .cinfo .ctip b{color:var(--txt)} .cinfo .ctip .hd{color:var(--accent);font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.4px;display:block;margin-bottom:5px}
+  .cinfo .ctip .math{display:block;margin-top:8px;padding-top:7px;border-top:1px dashed #2b3346;color:var(--dim);font-size:10.5px;line-height:1.5;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
   .cinfo .ctip:after{content:"";position:absolute;top:100%;right:14px;border:7px solid transparent;border-top-color:#0f1320}
   .cinfo:hover .ctip{opacity:1;transform:translateY(0) scale(1)}
 
@@ -239,7 +240,10 @@ function costTip(r){
   return `<span class="hd">what it really costs</span>`+
     `<b>${money(perK)}</b> per 1,000 <i>solved puzzles</i>.<br>`+
     `Only ~${Math.round(captchaRate*1000)} of every 1,000 URLs hit a captcha (${(captchaRate*100).toFixed(1)}%), so → <b>${money(perKurls)} per 1,000 URLs scraped</b>.<br>`+
-    `At ${SCRAPES_PER_DAY.toLocaleString()} scrapes/day → <b>${money(perMonth)}/month</b>.`;
+    `At ${SCRAPES_PER_DAY.toLocaleString()} scrapes/day → <b>${money(perMonth)}/month</b>.`+
+    `<span class="math">✎ check math: $/mo = $/1k-puzzles × captcha-rate × ${SCRAPES_PER_DAY/1000*DAYS} `+
+    `= ${money(perK)} × ${(captchaRate*100).toFixed(1)}% × ${SCRAPES_PER_DAY/1000*DAYS} = ${money(perMonth)}. `+
+    `(${SCRAPES_PER_DAY/1000*DAYS} = ${SCRAPES_PER_DAY.toLocaleString()}/day ÷1k × ${DAYS}&nbsp;days). captcha-rate is live from the study.</span>`;
 }
 
 const COLS = [

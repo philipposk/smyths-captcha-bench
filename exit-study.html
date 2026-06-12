@@ -36,6 +36,7 @@
   .tip .pop{position:absolute;right:0;left:auto;bottom:calc(100% + 9px);width:300px;max-width:78vw;background:#0a0c10;border:1px solid #2c3650;border-radius:11px;padding:12px 14px;font-size:12.5px;line-height:1.55;color:var(--txt);box-shadow:0 14px 40px rgba(0,0,0,.6);opacity:0;visibility:hidden;transform:translateY(5px);transition:.13s;z-index:30;font-weight:400;text-transform:none;letter-spacing:0}
   .tip:hover .pop{opacity:1;visibility:visible;transform:translateY(0)}
   .tip .pop b{color:var(--accent)} .tip .pop .row{display:block;color:var(--mut);margin-top:6px}
+  .tip .pop .math{display:block;margin-top:9px;padding-top:7px;border-top:1px dashed #2c3650;color:var(--dim);font-size:10.5px;line-height:1.45;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
   .tip .pop:after{content:"";position:absolute;right:20px;left:auto;top:100%;border:6px solid transparent;border-top-color:#2c3650}
   h2.sec{font-size:18px;margin:28px 0 10px}
   /* per-day bars with CI whiskers */
@@ -110,7 +111,8 @@ async function load(){
     return `<div class="card"><div class="k tip">Scrape pace <span class="qq">i</span>`+
       `<span class="pop">Measured on <b>1 lane</b> — one browser + one Tor exit. Add lanes to scale ~linearly; each ≈ 1 CPU core + ~1.5&nbsp;GB RAM.`+
       `<span class="row">This Mac (M2, 8-core / 16&nbsp;GB): <b>~3 lanes</b> while you keep working → ${x(3)}, <b>~6</b> if you push it → ${x(6)}.</span>`+
-      `<span class="row">9+ lanes wants a bigger box (12-core / 32&nbsp;GB).</span></span>`+
+      `<span class="row">9+ lanes wants a bigger box (12-core / 32&nbsp;GB).</span>`+
+      `<span class="math">✎ check math: shown/h = lanes × this run's ${v}. lane ≈ 1 core + 1.5&nbsp;GB → M2 8-core/16&nbsp;GB: ~3 = eco (perf cores stay free), ~6 = 8 cores − 2 kept free.</span></span>`+
       `</div><div class="v">${v}</div><div class="dim" style="font-size:12px;margin-top:2px">${sub}</div></div>`;
   };
   document.getElementById('cards').innerHTML =
