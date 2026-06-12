@@ -1,5 +1,5 @@
 {
-  "updated": 1781307334254,
+  "updated": 1781307515924,
   "partial": true,
   "note": "Each arm scraped the same URL sample on its OWN Tor (own exits), in parallel. Arms differ only in the locate method; legend reading is qwen/vlm in all. Aggregate comparison, not a same-captcha test. Captcha counts are solve ATTEMPTS (a method that keeps failing logs several).",
   "arms": [
@@ -9,18 +9,18 @@
       "locate": "vlm",
       "kind": "vision AI · paid (cheap)",
       "partial": true,
-      "fetches": 2101,
-      "success_pct": 31.1,
+      "fetches": 2121,
+      "success_pct": 30.8,
       "block_pct": 6.2,
-      "exits_n": 587,
+      "exits_n": 594,
       "captchas": {
         "detected": 21,
         "solved": 2,
         "failed": 19
       },
       "solve_rate_pct": 9.5,
-      "rotations": 586,
-      "duration_min": 290.5,
+      "rotations": 593,
+      "duration_min": 293.4,
       "fetches_per_hour": 434,
       "items": [
         {
@@ -113,19 +113,19 @@
       "locate": "match",
       "kind": "computer vision · free locate",
       "partial": true,
-      "fetches": 2818,
-      "success_pct": 85.1,
-      "block_pct": 14,
-      "exits_n": 271,
+      "fetches": 2859,
+      "success_pct": 85.3,
+      "block_pct": 13.8,
+      "exits_n": 273,
       "captchas": {
         "detected": 69,
         "solved": 5,
         "failed": 64
       },
       "solve_rate_pct": 7.2,
-      "rotations": 270,
-      "duration_min": 290.5,
-      "fetches_per_hour": 582,
+      "rotations": 272,
+      "duration_min": 293.5,
+      "fetches_per_hour": 584,
       "items": [
         {
           "image": "data/shootout/shape/shape_doodle_a01_solved.png",
@@ -169,18 +169,18 @@
       "locate": "blob",
       "kind": "computer vision · free locate",
       "partial": true,
-      "fetches": 1917,
-      "success_pct": 32.7,
+      "fetches": 1936,
+      "success_pct": 32.4,
       "block_pct": 0.7,
-      "exits_n": 522,
+      "exits_n": 530,
       "captchas": {
         "detected": 82,
         "solved": 4,
         "failed": 78
       },
       "solve_rate_pct": 4.9,
-      "rotations": 521,
-      "duration_min": 289.1,
+      "rotations": 529,
+      "duration_min": 292.1,
       "fetches_per_hour": 398,
       "items": [
         {
