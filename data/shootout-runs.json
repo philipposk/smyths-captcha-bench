@@ -1,5 +1,5 @@
 {
-  "updated": 1781303883748,
+  "updated": 1781304065247,
   "partial": true,
   "note": "Each arm scraped the same URL sample on its OWN Tor (own exits), in parallel. Arms differ only in the locate method; legend reading is qwen/vlm in all. Aggregate comparison, not a same-captcha test. Captcha counts are solve ATTEMPTS (a method that keeps failing logs several).",
   "arms": [
@@ -9,19 +9,19 @@
       "locate": "vlm",
       "kind": "vision AI · paid (cheap)",
       "partial": true,
-      "fetches": 1734,
-      "success_pct": 37.7,
-      "block_pct": 7.6,
-      "exits_n": 445,
+      "fetches": 1753,
+      "success_pct": 37.3,
+      "block_pct": 7.5,
+      "exits_n": 453,
       "captchas": {
         "detected": 21,
         "solved": 2,
         "failed": 19
       },
       "solve_rate_pct": 9.5,
-      "rotations": 444,
-      "duration_min": 232.9,
-      "fetches_per_hour": 447,
+      "rotations": 452,
+      "duration_min": 236.1,
+      "fetches_per_hour": 446,
       "items": [
         {
           "image": "data/shootout/qwen/qwen_doodle_a01_failed.png",
@@ -56,19 +56,19 @@
       "locate": "vlm",
       "kind": "vision AI · paid",
       "partial": true,
-      "fetches": 2511,
-      "success_pct": 93.9,
-      "block_pct": 5.1,
-      "exits_n": 169,
+      "fetches": 2553,
+      "success_pct": 94,
+      "block_pct": 5,
+      "exits_n": 171,
       "captchas": {
         "detected": 21,
         "solved": 10,
         "failed": 11
       },
       "solve_rate_pct": 47.6,
-      "rotations": 168,
-      "duration_min": 233,
-      "fetches_per_hour": 647,
+      "rotations": 170,
+      "duration_min": 236,
+      "fetches_per_hour": 649,
       "items": [
         {
           "image": "data/shootout/gemini/gemini_doodle_a01_solved.png",
@@ -112,44 +112,43 @@
       "locate": "match",
       "kind": "computer vision · free locate",
       "partial": true,
-      "fetches": 2176,
-      "success_pct": 87,
-      "block_pct": 12.3,
-      "exits_n": 197,
+      "fetches": 2201,
+      "success_pct": 87.1,
+      "block_pct": 12.2,
+      "exits_n": 199,
       "captchas": {
-        "detected": 66,
+        "detected": 68,
         "solved": 4,
-        "failed": 62
+        "failed": 64
       },
-      "solve_rate_pct": 6.1,
-      "rotations": 196,
-      "duration_min": 233,
-      "fetches_per_hour": 560,
+      "solve_rate_pct": 5.9,
+      "rotations": 198,
+      "duration_min": 236,
+      "fetches_per_hour": 559,
       "items": [
-        {
-          "image": "data/shootout/shape/shape_doodle_a01_solved.png",
-          "solved": true,
-          "legend": [
-            "lollipop",
-            "bowling pins"
-          ]
-        },
         {
           "image": "data/shootout/shape/shape_doodle_a02_failed.png",
           "solved": false,
           "legend": [
-            "key",
-            "snail",
-            "ring"
+            "scale",
+            "fan",
+            "snake"
           ]
         },
         {
           "image": "data/shootout/shape/shape_doodle_a01_failed.png",
           "solved": false,
           "legend": [
-            "cookie",
-            "scale",
-            "cassette"
+            "turtle",
+            "magnet"
+          ]
+        },
+        {
+          "image": "data/shootout/shape/shape_doodle_a01_solved.png",
+          "solved": true,
+          "legend": [
+            "lollipop",
+            "bowling pins"
           ]
         },
         {
@@ -169,18 +168,18 @@
       "locate": "blob",
       "kind": "computer vision · free locate",
       "partial": true,
-      "fetches": 1564,
-      "success_pct": 40.1,
+      "fetches": 1585,
+      "success_pct": 39.6,
       "block_pct": 0.8,
-      "exits_n": 387,
+      "exits_n": 395,
       "captchas": {
         "detected": 82,
         "solved": 4,
         "failed": 78
       },
       "solve_rate_pct": 4.9,
-      "rotations": 386,
-      "duration_min": 231.4,
+      "rotations": 394,
+      "duration_min": 234.5,
       "fetches_per_hour": 406,
       "items": [
         {
