@@ -1,5 +1,5 @@
 {
-  "updated": 1781254892414,
+  "updated": 1781255074470,
   "partial": true,
   "note": "Each arm scraped the same URL sample on its OWN Tor (own exits), in parallel. Arms differ only in the locate method; legend reading is qwen/vlm in all. Aggregate comparison, not a same-captcha test. Captcha counts are solve ATTEMPTS (a method that keeps failing logs several).",
   "arms": [
@@ -9,9 +9,9 @@
       "locate": "vlm",
       "kind": "vision AI · paid (cheap)",
       "partial": true,
-      "fetches": 620,
-      "success_pct": 77.9,
-      "block_pct": 20.8,
+      "fetches": 623,
+      "success_pct": 77.7,
+      "block_pct": 20.9,
       "exits_n": 75,
       "captchas": {
         "detected": 1,
@@ -20,8 +20,8 @@
       },
       "solve_rate_pct": 100,
       "rotations": 74,
-      "duration_min": 64.7,
-      "fetches_per_hour": 575,
+      "duration_min": 73,
+      "fetches_per_hour": 512,
       "items": [
         {
           "image": "data/shootout/qwen/qwen_doodle_a01_solved.png",
@@ -39,44 +39,44 @@
       "locate": "match",
       "kind": "computer vision · free locate",
       "partial": true,
-      "fetches": 691,
-      "success_pct": 91,
-      "block_pct": 8.1,
-      "exits_n": 53,
+      "fetches": 713,
+      "success_pct": 91.2,
+      "block_pct": 8,
+      "exits_n": 54,
       "captchas": {
-        "detected": 10,
-        "solved": 2,
-        "failed": 8
+        "detected": 14,
+        "solved": 3,
+        "failed": 11
       },
-      "solve_rate_pct": 20,
-      "rotations": 52,
-      "duration_min": 67.9,
-      "fetches_per_hour": 610,
+      "solve_rate_pct": 21.4,
+      "rotations": 53,
+      "duration_min": 72.2,
+      "fetches_per_hour": 592,
       "items": [
         {
-          "image": "data/shootout/shape/shape_doodle_a02_failed.png",
-          "solved": false,
+          "image": "data/shootout/shape/shape_doodle_a02_solved.png",
+          "solved": true,
           "legend": [
-            "scissors",
-            "clock",
-            "skateboard"
+            "scale",
+            "hand"
           ]
         },
         {
           "image": "data/shootout/shape/shape_doodle_a01_failed.png",
           "solved": false,
           "legend": [
-            "money bag",
-            "bell",
-            "lantern"
+            "basketball",
+            "globe",
+            "satellite"
           ]
         },
         {
-          "image": "data/shootout/shape/shape_doodle_a02_solved.png",
-          "solved": true,
+          "image": "data/shootout/shape/shape_doodle_a02_failed.png",
+          "solved": false,
           "legend": [
-            "book",
-            "watermelon"
+            "ink bottle",
+            "ring",
+            "compass"
           ]
         }
       ]
@@ -87,35 +87,34 @@
       "locate": "blob",
       "kind": "computer vision · free locate",
       "partial": true,
-      "fetches": 604,
-      "success_pct": 77.3,
-      "block_pct": 21.4,
+      "fetches": 606,
+      "success_pct": 77.1,
+      "block_pct": 21.6,
       "exits_n": 74,
       "captchas": {
-        "detected": 12,
+        "detected": 17,
         "solved": 1,
-        "failed": 11
+        "failed": 16
       },
-      "solve_rate_pct": 8.3,
+      "solve_rate_pct": 5.9,
       "rotations": 73,
-      "duration_min": 67.5,
-      "fetches_per_hour": 537,
+      "duration_min": 72,
+      "fetches_per_hour": 505,
       "items": [
-        {
-          "image": "data/shootout/color/color_doodle_a01_failed.png",
-          "solved": false,
-          "legend": [
-            "book",
-            "pepper",
-            "teddy bear"
-          ]
-        },
         {
           "image": "data/shootout/color/color_doodle_a02_failed.png",
           "solved": false,
           "legend": [
-            "tablet",
-            "hand"
+            "ink bottle",
+            "compass"
+          ]
+        },
+        {
+          "image": "data/shootout/color/color_doodle_a01_failed.png",
+          "solved": false,
+          "legend": [
+            "ink bottle",
+            "compass"
           ]
         },
         {
