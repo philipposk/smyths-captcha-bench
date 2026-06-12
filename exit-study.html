@@ -88,6 +88,7 @@
 </div>
 <script>
 const pct=(x)=> x==null?'—':(x).toFixed(1)+'%';
+const fmtDur=(min)=> min==null?'—':(min>=60?(min/60).toFixed(1)+'h':Math.round(min)+'min');
 const ago=(ms)=>{ if(!ms) return '—'; const s=Math.round((Date.now()-ms)/1000); if(s<90)return s+'s ago'; const m=Math.round(s/60); if(m<90)return m+'m ago'; return Math.round(m/60)+'h ago';};
 async function load(){
   let d; try{ d=await fetch('data/exits-study.json?_='+Date.now()).then(r=>r.json()); }catch{ return; }
@@ -97,7 +98,8 @@ async function load(){
     card('Product fetches', (ov.attempted||0).toLocaleString(), `target ${(d.target_per_day*3||9000).toLocaleString()} over 3 days · ${ov.exits_n||0} exits sampled`) +
     card('Exit captcha rate', ov.exits_n? pct(ov.captcha_rate_pct) : '—', ov.captcha_ci? `95% CI ${pct(ov.captcha_ci[0])}–${pct(ov.captcha_ci[1])} · n=${ov.exits_n}` : 'collecting…') +
     card('Bad exits', ov.exits&&ov.exits.windows? `${(ov.exits.hostile_windows/ov.exits.windows*100).toFixed(0)}%` : '—', ov.exits&&ov.exits.windows? `${ov.exits.hostile_windows}/${ov.exits.windows} exits hit a wall` : 'collecting…') +
-    card('Product success', ov.attempted? pct(ov.success_pct) : '—', 'parsed OK after clearing');
+    card('Product success', ov.attempted? pct(ov.success_pct) : '—', 'parsed OK after clearing') +
+    card('Scrape pace', ov.fetches_per_hour? ov.fetches_per_hour.toLocaleString()+'/h' : '—', ov.attempted? `~${ov.sec_per_fetch}s per URL · ${fmtDur(ov.duration_min)} so far` : 'timing…');
 
   if(days.length){
     const maxHi = Math.max(...days.map(x=>(x.captcha_ci?x.captcha_ci[1]:x.captcha_rate_pct)||0), 5);
@@ -110,7 +112,7 @@ async function load(){
           <div class="barfill" style="height:${Math.max(2,sc(r))}%"></div>
           <div class="ci" style="bottom:${sc(ci[0])}%;height:${Math.max(2,sc(ci[1])-sc(ci[0]))}%"></div>
         </div>
-        <div class="dlbl">Day ${x.day}<br><span class="dim">${(x.attempted||0).toLocaleString()} fetches</span></div>
+        <div class="dlbl">Day ${x.day}<br><span class="dim">${(x.attempted||0).toLocaleString()} fetches · ${fmtDur(x.duration_min)}</span></div>
       </div>`;
     }).join('');
   }
