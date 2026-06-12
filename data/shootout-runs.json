@@ -1,5 +1,5 @@
 {
-  "updated": 1781292611925,
+  "updated": 1781292793919,
   "partial": true,
   "note": "Each arm scraped the same URL sample on its OWN Tor (own exits), in parallel. Arms differ only in the locate method; legend reading is qwen/vlm in all. Aggregate comparison, not a same-captcha test. Captcha counts are solve ATTEMPTS (a method that keeps failing logs several).",
   "arms": [
@@ -9,19 +9,19 @@
       "locate": "vlm",
       "kind": "vision AI · paid (cheap)",
       "partial": true,
-      "fetches": 519,
-      "success_pct": 90,
-      "block_pct": 9.6,
-      "exits_n": 42,
+      "fetches": 541,
+      "success_pct": 86.3,
+      "block_pct": 13.3,
+      "exits_n": 52,
       "captchas": {
         "detected": 0,
         "solved": 0,
         "failed": 0
       },
       "solve_rate_pct": null,
-      "rotations": 41,
-      "duration_min": 44.9,
-      "fetches_per_hour": 693,
+      "rotations": 51,
+      "duration_min": 48.2,
+      "fetches_per_hour": 674,
       "items": []
     },
     {
@@ -30,20 +30,38 @@
       "locate": "vlm",
       "kind": "vision AI · paid",
       "partial": true,
-      "fetches": 501,
+      "fetches": 518,
       "success_pct": 98.8,
       "block_pct": 0,
       "exits_n": 26,
       "captchas": {
-        "detected": 3,
+        "detected": 6,
         "solved": 3,
-        "failed": 0
+        "failed": 3
       },
-      "solve_rate_pct": 100,
+      "solve_rate_pct": 50,
       "rotations": 25,
-      "duration_min": 45.2,
-      "fetches_per_hour": 666,
+      "duration_min": 48.2,
+      "fetches_per_hour": 645,
       "items": [
+        {
+          "image": "data/shootout/gemini/gemini_doodle_a01_failed.png",
+          "solved": false,
+          "legend": [
+            "ping pong paddle",
+            "carrot",
+            "leaf"
+          ]
+        },
+        {
+          "image": "data/shootout/gemini/gemini_doodle_a02_failed.png",
+          "solved": false,
+          "legend": [
+            "bus",
+            "motorcycle",
+            "bicycle"
+          ]
+        },
         {
           "image": "data/shootout/gemini/gemini_doodle_a01_solved.png",
           "solved": true,
@@ -68,19 +86,19 @@
       "locate": "match",
       "kind": "computer vision · free locate",
       "partial": true,
-      "fetches": 490,
-      "success_pct": 98.6,
+      "fetches": 521,
+      "success_pct": 98.7,
       "block_pct": 0,
-      "exits_n": 25,
+      "exits_n": 27,
       "captchas": {
         "detected": 3,
         "solved": 1,
         "failed": 2
       },
       "solve_rate_pct": 33.3,
-      "rotations": 24,
-      "duration_min": 45.1,
-      "fetches_per_hour": 653,
+      "rotations": 26,
+      "duration_min": 48.1,
+      "fetches_per_hour": 650,
       "items": [
         {
           "image": "data/shootout/shape/shape_doodle_a01_solved.png",
@@ -115,19 +133,19 @@
       "locate": "blob",
       "kind": "computer vision · free locate",
       "partial": true,
-      "fetches": 240,
-      "success_pct": 94.2,
-      "block_pct": 4.2,
-      "exits_n": 15,
+      "fetches": 277,
+      "success_pct": 94.9,
+      "block_pct": 3.6,
+      "exits_n": 16,
       "captchas": {
         "detected": 60,
         "solved": 2,
         "failed": 58
       },
       "solve_rate_pct": 3.3,
-      "rotations": 14,
-      "duration_min": 43.7,
-      "fetches_per_hour": 329,
+      "rotations": 15,
+      "duration_min": 46.7,
+      "fetches_per_hour": 356,
       "items": [
         {
           "image": "data/shootout/color/color_doodle_a02_solved.png",
