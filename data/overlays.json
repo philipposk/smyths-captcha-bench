@@ -1,8 +1,9 @@
 {
-  "note": "Clean puzzles only (no failed-attempt markers). All models shown with bold markers — green = the right doodle, red = where the model clicked; overlap = a hit. Click points are saved, so refreshing this gallery never needs a paid re-run.",
+  "note": "Clean puzzles only (no failed-attempt markers). All models shown with bold markers \u2014 green = the right doodle, red = where the model clicked; overlap = a hit. Click points are saved, so refreshing this gallery never needs a paid re-run.",
   "configs": [
     "gemini-3-flash",
     "qwen3-vl-32b",
+    "gemini-3.1-flash-lite",
     "gemini-2.5-flash",
     "qwen-solo",
     "shape-match",

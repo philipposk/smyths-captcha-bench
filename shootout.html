@@ -25,12 +25,13 @@
   .about h2{font-size:13px;text-transform:uppercase;letter-spacing:.6px;color:var(--mut);margin:0 0 8px}
   .about p{margin:0 0 8px} .about p:last-child{margin:0} .about b{color:var(--txt)}
   /* three method cards */
-  .three{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;margin:0 0 10px}
+  .three{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:13px;margin:0 0 10px}
   @media(max-width:720px){ .three{grid-template-columns:1fr} }
   .mc{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 17px;position:relative;overflow:hidden}
   .mc.win{border-color:rgba(70,214,166,.45);box-shadow:0 0 0 1px rgba(70,214,166,.15)}
   .mc .tag{position:absolute;top:0;right:0;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:3px 9px;border-radius:0 0 0 10px}
   .mc.win .tag{background:rgba(70,214,166,.16);color:var(--good)} .mc.free .tag{background:rgba(244,183,64,.14);color:var(--warn)}
+  .mc.paid{border-color:rgba(122,169,255,.4)} .mc.paid .tag{background:rgba(122,169,255,.16);color:var(--accent)}
   .mc h3{margin:2px 0 2px;font-size:17px;font-weight:750}
   .mc .kind{font-size:12px;color:var(--dim);margin-bottom:11px}
   .mc .big{font-size:34px;font-weight:800;line-height:1;letter-spacing:-1px}
@@ -108,13 +109,14 @@
     <a href="real-captchas.html">Real captchas</a>
   </div>
 
-  <span class="badge">3-method head-to-head</span>
+  <span class="badge">4-method head-to-head</span>
   <h1>Which method clears the captcha — and can a free one do it?</h1>
-  <p class="sub">The Tor exit study runs <b>qwen3-vl-32b</b> live (a cheap vision model). Its two free challengers — <b>shape-match</b> and <b>color-cv</b>, both pure computer-vision, no AI bill — are scored on the <b>same real Smyths puzzles</b>. Here's how all three do, and exactly where the free ones break.</p>
+  <p class="sub">The Tor exit study runs <b>qwen3-vl-32b</b> live (a cheap vision model). Its challengers — two free computer-vision methods (<b>shape-match</b>, <b>color-cv</b>) and <b>gemini-3.1-flash-lite</b> (Tamás's paid entry) — are scored on the <b>same real Smyths puzzles</b>. Here's how all four do, and exactly where the free ones break.</p>
 
   <div class="about">
-    <h2>The three methods, in plain English</h2>
+    <h2>The four methods, in plain English</h2>
     <p><b>qwen3-vl-32b</b> — a vision AI. It reads the legend strip (<i>"click these icons, in this order"</i>), finds each doodle in the photo, and clicks them in sequence. Costs a fraction of a cent per puzzle.</p>
+    <p><b>gemini-3.1-flash-lite</b> — Tamás's paid vision AI. Same job as qwen, just as accurate, but costs ~6× more.</p>
     <p><b>shape-match</b> — free. Cuts each icon out of the legend and looks for a matching shape in the photo. No AI, no cost.</p>
     <p><b>color-cv</b> — free. Finds the hand-drawn doodles by their ink colour standing out from the photo. Also no AI.</p>
     <p class="dim">A puzzle only counts as <b>solved</b> if every doodle is clicked <b>in the right order</b>. "Found" = located the drawings at all. The gap between the two is where the free methods lose.</p>
@@ -137,8 +139,8 @@
     <span><span class="dot" style="background:#ff3030"></span>where the method clicked</span>
   </div>
 
-  <h2 class="sec">Live 3-arm run <span class="dim" style="font-size:13px;font-weight:400">· same URLs, separate Tors, in parallel</span></h2>
-  <p class="secsub">The 37 above are a fixed lab set. This is the <b>real-world run</b>: all three methods scrape the <b>same URL sample</b>, each on its <b>own Tor</b> (its own exits), at the same time. It's not a same-captcha test — each arm meets different exits — but it shows how each method actually performs end-to-end: how many captchas it cleared, how many products it got, how fast, how reliably.</p>
+  <h2 class="sec"><span id="runtitle">Live run</span> <span class="dim" style="font-size:13px;font-weight:400">· same URLs, separate Tors, in parallel</span></h2>
+  <p class="secsub">The <span id="npz2">37</span> above are a fixed lab set. This is the <b>real-world run</b>: every method scrapes the <b>same URL sample</b>, each on its <b>own Tor</b> (its own exits), at the same time. It's not a same-captcha test — each arm meets different exits — but it shows how each method actually performs end-to-end: how many captchas it cleared, how many products it got, how fast, how reliably.</p>
   <div id="runs"></div>
   <div id="live" style="margin-top:18px"></div>
 
@@ -151,6 +153,8 @@
 const METHODS = [
   { key:'qwen3-vl-32b', label:'qwen3-vl-32b', kind:'vision AI · paid (cheap)', cls:'win',  tag:'winner',
     verdict:'Reads the legend order, so it actually solves. ~$0.12 per 1,000 puzzles — basically free at scrape volume.' },
+  { key:'gemini-3.1-flash-lite', label:'gemini-3.1-flash-lite', kind:'vision AI · paid', cls:'paid', tag:"Tamás's pick",
+    verdict:"Tamás's entry. Ties qwen on accuracy (91.9% solved), and in the live run scraped the most products (98.7%) — but ~6× qwen's cost." },
   { key:'shape-match',  label:'shape-match',  kind:'computer vision · locate-only', cls:'free', tag:'challenger',
     verdict:'Finds about half the doodles by shape, but has no idea what order to click them — so most attempts fail. The locate step itself is free.' },
   { key:'color-cv',     label:'color-cv',     kind:'computer vision · locate-only', cls:'free', tag:'challenger',
@@ -167,6 +171,7 @@ async function load(){
   const by = {}; (res.leaderboard||[]).forEach(r=>by[r.name]=r);
   const n = (by['qwen3-vl-32b']||{}).n || 37;
   document.getElementById('npz').textContent = n;
+  { const e2=document.getElementById('npz2'); if(e2) e2.textContent = n; }
 
   // three method cards
   document.getElementById('cards').innerHTML = METHODS.map(m=>{
@@ -219,6 +224,9 @@ async function load(){
   if(runs && runs.arms && runs.arms.length){
     const A = runs.arms;
     const p = x => x==null?'—':x+'%';
+    document.getElementById('runtitle').textContent = `Live ${A.length}-arm run`;
+    window._gemArm = A.find(a=>a.name==='gemini') || null;
+    window._runTarget = Math.max(...A.map(a=>a.fetches||0));
     // best-in-column helpers (higher is better for these)
     const best = (key) => Math.max(...A.map(a=>a[key]==null?-1:a[key]));
     const cell = (a,key,fmt) => `<td class="${a[key]!=null && a[key]===best(key)?'best':''}">${fmt(a[key])}</td>`;
@@ -261,12 +269,19 @@ function placeRaceNote(){
   const runsEl=document.getElementById('runs'), row=document.getElementById('generow');
   let note=document.getElementById('racenote');
   if(!row || localStorage.getItem('racenoteDismissed')){ if(note) note.remove(); return; }
+  // message reflects the gemini arm's real state — running (with progress) vs finished (with results)
+  const g=window._gemArm, tgt=window._runTarget||0;
+  const c=g&&g.captchas?g.captchas:{detected:0,solved:0};
+  const running = g && tgt && (g.fetches||0) < tgt*0.95;
+  const msg = !g ? `🏁 <b>Tamás</b> put <b>gemini-3.1-flash-lite</b> in the race.`
+    : running ? `🏁 <b>Tamás</b> put <b>gemini-3.1-flash-lite</b> in the race — running now (${(g.fetches||0).toLocaleString()}/${tgt.toLocaleString()} URLs so far)…`
+    : `🏁 <b>Tamás's gemini-3.1-flash-lite</b> finished the race — <b>${g.success_pct==null?'—':g.success_pct+'%'}</b> products scraped${c.detected?`, ${c.solved}/${c.detected} captchas solved`:''}. 💪`;
   if(!note){
     note=document.createElement('div'); note.id='racenote'; note.className='racenote';
-    note.innerHTML=`<button class="rx" title="dismiss">×</button>🏁 <b>Tamás</b> put <b>gemini-3.1-flash-lite</b> in the race — it did great on the bench! Now running the 1,000 scrapes to see it in action.`;
     runsEl.appendChild(note);
-    note.querySelector('.rx').onclick=()=>{ localStorage.setItem('racenoteDismissed','1'); note.remove(); };
   }
+  note.innerHTML=`<button class="rx" title="dismiss">×</button>${msg}`;
+  note.querySelector('.rx').onclick=()=>{ localStorage.setItem('racenoteDismissed','1'); note.remove(); };
   const rr=row.getBoundingClientRect(), cr=runsEl.getBoundingClientRect();
   note.style.top=Math.max(0, rr.top-cr.top+rr.height/2-note.offsetHeight/2)+'px';
   note.style.right='6px';
