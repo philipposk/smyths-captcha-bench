@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Production reliability — scrape everything, or log exactly why not</title>
+<meta name="description" content="The production scraper: every requested URL is either scraped or logged with the reason and what was tried. Rotate, escalate, retry, log.">
+<link rel="icon" href="favicon.svg">
+<style>
+  :root{ --bg:#0b0d11; --panel:#13161d; --panel2:#171b23; --line:#222734; --txt:#eef2f8; --mut:#93a0b4; --dim:#6b7585;
+    --good:#46d6a6; --warn:#f4b740; --bad:#ff6a6a; --accent:#7aa9ff; --shadow:0 8px 30px rgba(0,0,0,.45); }
+  *{box-sizing:border-box}
+  body{margin:0;background:radial-gradient(1100px 480px at 78% -8%, rgba(122,169,255,.10), transparent 60%),var(--bg);
+    color:var(--txt);font:15px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1040px;margin:0 auto;padding:30px 18px 70px}
+  a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
+  .mut{color:var(--mut)} .dim{color:var(--dim)}
+  .nav{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+  .nav a{font-size:13px;font-weight:600;color:var(--mut);background:var(--panel);border:1px solid var(--line);padding:6px 13px;border-radius:999px}
+  .nav a.on{color:var(--txt);border-color:#33415a;background:var(--panel2)}
+  .badge{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:600;color:var(--good);background:rgba(70,214,166,.12);border:1px solid rgba(70,214,166,.25);padding:4px 11px;border-radius:999px}
+  .pulse{width:7px;height:7px;border-radius:50%;background:var(--good);animation:pulse 2s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(70,214,166,.55)}70%{box-shadow:0 0 0 7px rgba(70,214,166,0)}100%{box-shadow:0 0 0 0 rgba(70,214,166,0)}}
+  h1{font-size:26px;margin:12px 0 6px;letter-spacing:-.3px;font-weight:750}
+  .sub{color:var(--mut);margin:0 0 18px;max-width:76ch}
+  .cards{display:flex;gap:12px;flex-wrap:wrap;margin:0 0 22px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:13px 16px;min-width:150px;flex:1}
+  .card .k{color:var(--dim);font-size:11px;text-transform:uppercase;letter-spacing:.6px}
+  .card .v{font-size:25px;font-weight:750;margin-top:3px} .card .v small{font-size:13px;color:var(--mut);font-weight:600}
+  .card.hero .v{color:var(--good)}
+  h2.sec{font-size:18px;margin:30px 0 8px}
+  /* how-it-works steps */
+  .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:0 0 8px}
+  .step{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:13px;padding:14px 16px;box-shadow:var(--shadow)}
+  .step .n{display:inline-flex;width:24px;height:24px;border-radius:50%;background:rgba(122,169,255,.16);color:var(--accent);font-weight:750;align-items:center;justify-content:center;font-size:13px;margin-bottom:8px}
+  .step h3{margin:0 0 5px;font-size:14.5px} .step p{margin:0;font-size:13px;color:var(--mut);line-height:1.5}
+  .step b{color:var(--txt)}
+  table{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-top:8px}
+  th,td{padding:10px 12px;text-align:right;border-bottom:1px solid var(--line);font-size:13.5px;white-space:nowrap;font-variant-numeric:tabular-nums}
+  th:first-child,td:first-child{text-align:left}
+  th{color:var(--dim);font-size:11px;text-transform:uppercase;letter-spacing:.4px}
+  tr:last-child td{border-bottom:none}
+  .pill{font-size:10.5px;font-weight:700;border-radius:5px;padding:1px 7px}
+  .pill.run{background:rgba(70,214,166,.15);color:var(--good)} .pill.done{background:rgba(122,169,255,.14);color:var(--accent)}
+  .errnote{font-size:12.5px;color:var(--dim);margin-top:10px;line-height:1.6}
+  .empty{background:var(--panel);border:1px dashed var(--line);border-radius:14px;padding:30px;text-align:center;color:var(--mut)}
+  code{background:var(--panel2);border:1px solid var(--line);border-radius:5px;padding:1px 5px;font-size:12px}
+  footer{color:var(--dim);margin-top:26px;font-size:13px;border-top:1px solid var(--line);padding-top:16px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="nav">
+    <a href="./">◂ Captcha leaderboard</a>
+    <a href="gallery.html">Where models clicked</a>
+    <a href="exit-study.html">Tor exit study</a>
+    <a href="shootout.html">Solver shootout</a>
+    <a href="real-captchas.html">Real captchas</a>
+    <a href="production.html" class="on">Production</a>
+  </div>
+
+  <span class="badge"><span class="pulse"></span> LIVE · 3-day run</span>
+  <h1>Production: scrape everything, or log exactly why not</h1>
+  <p class="sub">The real worker needs <b>every</b> requested URL accounted for — either scraped, or in an error log with the reason and what was tried. This run scrapes <b>3,000 URLs/day</b> through the full reliability pipeline and reports how many it gets, and what (if anything) it couldn't.</p>
+
+  <div class="cards" id="cards"></div>
+
+  <h2 class="sec">How it works</h2>
+  <p class="sub" style="margin-bottom:12px">A captcha-walled URL isn't dropped. It runs the gauntlet — and only what's genuinely impossible (a dead link, a region outage) ends up in the log.</p>
+  <div class="steps">
+    <div class="step"><span class="n">1</span><h3>Rotate to a fresh exit</h3><p>Most failures are a <b>hostile Tor exit</b>, not a bad URL. Rotate to a new exit and retry — ~99% of exits are clean, so this alone recovers nearly everything.</p></div>
+    <div class="step"><span class="n">2</span><h3>Escalate the solver</h3><p>If a captcha won't clear, swap in a stronger model for the next round — <b>qwen3-vl-32b → gemini-3.1-flash-lite</b>. A URL isn't abandoned because one model missed.</p></div>
+    <div class="step"><span class="n">3</span><h3>Deferred retry pass</h3><p>After the main sweep, the still-failed URLs are re-run on fresh exits for a few rounds — a URL that failed on a bad exit usually loads fine on a clean one.</p></div>
+    <div class="step"><span class="n">4</span><h3>Structured error log</h3><p>Whatever's <i>still</i> unscraped gets one record: <code>{url, category, attempts, what-was-tried}</code> — shaped to drop straight into the worker's error handling.</p></div>
+  </div>
+
+  <h2 class="sec">By day</h2>
+  <div id="days"></div>
+  <div class="errnote" id="errnote"></div>
+
+  <footer>
+    Branch <code>feat/production-reliability-pipeline</code> · own Tor + worktree, 3k/day · auto-refreshes ·
+    <span class="dim">"accounted-for" = scraped + logged; not literal 100% scraped (dead URLs land in the log with their history)</span>
+  </footer>
+</div>
+<script>
+const pc = (n,d)=> d? (n/d*100).toFixed(1)+'%' : '—';
+async function load(){
+  let d; try{ d = await fetch('data/prod-status.json?_='+Date.now()).then(r=>r.json()); }catch{ document.getElementById('days').innerHTML='<div class="empty">No production run yet.</div>'; return; }
+  const o = d.overall||{};
+  const card=(k,v,sub,hero)=>`<div class="card${hero?' hero':''}"><div class="k">${k}</div><div class="v">${v}</div>${sub?`<div class="dim" style="font-size:12px;margin-top:2px">${sub}</div>`:''}</div>`;
+  document.getElementById('cards').innerHTML =
+    card('URLs requested', (o.requested||0).toLocaleString(), `target ${(3000*((d.days||[]).length||1)).toLocaleString()} over 3 days`) +
+    card('Scraped', (o.scraped||0).toLocaleString(), pc(o.scraped,o.requested)+' of requested', true) +
+    card('Logged (couldn’t scrape)', (o.unscraped||0).toLocaleString(), 'in the error log with why + what was tried') +
+    card('Accounted for', (o.accounted_pct!=null?o.accounted_pct:0)+'%', 'scraped + logged — nothing vanished');
+
+  const days = d.days||[];
+  document.getElementById('days').innerHTML = days.length
+    ? `<table><thead><tr><th>day</th><th>status</th><th>requested</th><th>scraped</th><th>logged</th><th>captchas solved</th></tr></thead><tbody>`+
+      days.map(x=>`<tr><td>Day ${x.day}</td><td><span class="pill ${x.status==='running'?'run':'done'}">${x.status}</span></td>
+        <td>${(x.requested||0).toLocaleString()}</td><td>${(x.scraped||0).toLocaleString()} <span class="dim">(${pc(x.scraped,x.requested)})</span></td>
+        <td>${(x.unscraped||0).toLocaleString()}</td><td>${x.captchas&&x.captchas.detected?`${x.captchas.solved}/${x.captchas.detected}`:'—'}</td></tr>`).join('')+
+      `</tbody></table>`
+    : `<div class="empty">Day 1 is collecting — live counts appear here.</div>`;
+
+  const cats = o.errorsByCategory||{};
+  const keys = Object.keys(cats);
+  document.getElementById('errnote').innerHTML = keys.length
+    ? `<b>Error log so far:</b> ${keys.map(k=>`${cats[k]} ${k.replace(/_/g,' ')}`).join(' · ')}. Each is one record with the URL + every exit/model tried.`
+    : (o.scraped ? 'No URLs in the error log yet — everything attempted has been scraped or is still in retry.' : '');
+}
+load(); setInterval(load, 60000);
+</script>
+</body>
+</html>
