@@ -1,5 +1,5 @@
 {
-  "updated": 1781232297296,
+  "updated": 1781269758393,
   "corpus": 37,
   "hitRadius": 80,
   "costNote": "Paid $/1k from real OpenRouter spend; local/free=$0.",
@@ -57,6 +57,23 @@
         "openrouter": 74
       },
       "costReal": true
+    },
+    {
+      "name": "gemini-3.1-flash-lite",
+      "legendAcc": 0,
+      "locateAcc": 0.991,
+      "solveAcc": 0.973,
+      "orderedSolveAcc": 0.919,
+      "p50ms": 3865,
+      "avgTokens": 2428,
+      "avgCalls": 2,
+      "estPer1000Usd": 0.7285,
+      "free": false,
+      "errors": 0,
+      "n": 37,
+      "providers": {
+        "openrouter": 74
+      }
     },
     {
       "name": "glm-4.6v",
@@ -203,23 +220,6 @@
       }
     },
     {
-      "name": "moondream-cloud",
-      "legendAcc": 0,
-      "locateAcc": 0.311,
-      "solveAcc": 0.027,
-      "orderedSolveAcc": 0.027,
-      "p50ms": 6215,
-      "avgTokens": 0,
-      "avgCalls": 4,
-      "estPer1000Usd": 3.1784,
-      "free": false,
-      "errors": 0,
-      "n": 37,
-      "providers": {
-        "moondream": 147
-      }
-    },
-    {
       "name": "claude-sonnet-4.6",
       "legendAcc": 0,
       "locateAcc": 0.14,
@@ -236,6 +236,23 @@
         "openrouter": 74
       },
       "costReal": true
+    },
+    {
+      "name": "moondream-cloud",
+      "legendAcc": 0,
+      "locateAcc": 0.311,
+      "solveAcc": 0.027,
+      "orderedSolveAcc": 0.027,
+      "p50ms": 6215,
+      "avgTokens": 0,
+      "avgCalls": 4,
+      "estPer1000Usd": 3.1784,
+      "free": false,
+      "errors": 0,
+      "n": 37,
+      "providers": {
+        "moondream": 147
+      }
     }
   ]
 }
