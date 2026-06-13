@@ -1,5 +1,5 @@
 {
-  "updated": 1781317419714,
+  "updated": 1781317465862,
   "partial": true,
   "note": "Each arm scraped the same URL sample on its OWN Tor (own exits), in parallel. Arms differ only in the locate method; legend reading is qwen/vlm in all. Aggregate comparison, not a same-captcha test. Captcha counts are solve ATTEMPTS (a method that keeps failing logs several).",
   "arms": [
@@ -72,19 +72,19 @@
       "locate": "blob",
       "kind": "computer vision · free locate",
       "partial": true,
-      "fetches": 276,
+      "fetches": 282,
       "success_pct": 98.9,
       "block_pct": 0,
-      "exits_n": 14,
+      "exits_n": 15,
       "captchas": {
         "detected": 0,
         "solved": 0,
         "failed": 0
       },
       "solve_rate_pct": null,
-      "rotations": 13,
-      "duration_min": 20.9,
-      "fetches_per_hour": 792,
+      "rotations": 14,
+      "duration_min": 21.7,
+      "fetches_per_hour": 780,
       "items": []
     }
   ]
