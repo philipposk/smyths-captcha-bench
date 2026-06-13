@@ -57,12 +57,13 @@
     <a href="shootout.html">Solver shootout</a>
     <a href="real-captchas.html">Real captchas</a>
     <a href="production.html" class="on">Production</a>
+    <a href="economics.html">Economics</a>
     <a href="timeline.html">Timeline</a>
   </div>
 
-  <span class="badge"><span class="pulse"></span> LIVE · 3-day run</span>
+  <span class="badge"><span class="pulse"></span> LIVE · running</span>
   <h1>Production: scrape everything, or log exactly why not</h1>
-  <p class="sub">The real worker needs <b>every</b> requested URL accounted for — either scraped, or in an error log with the reason and what was tried. This run scrapes <b>3,000 URLs/day</b> through the full reliability pipeline and reports how many it gets, and what (if anything) it couldn't.</p>
+  <p class="sub">The real worker needs <b>every</b> requested URL accounted for — either scraped, or in an error log with the reason and what was tried. This run <b>targets 3,000 URLs/day</b> through the full reliability pipeline and reports how many it gets, and what (if anything) it couldn't.</p>
 
   <div class="cards" id="cards"></div>
 
@@ -80,8 +81,8 @@
   <div class="errnote" id="errnote"></div>
 
   <footer>
-    Branch <code>feat/production-reliability-pipeline</code> · own Tor + worktree, 3k/day · auto-refreshes ·
-    <span class="dim">"accounted-for" = scraped + logged; not literal 100% scraped (dead URLs land in the log with their history)</span>
+    Branch <code>feat/production-reliability-pipeline</code> · own Tor + worktree, targets 3k/day · auto-refreshes ·
+    <span class="dim">goal = every URL either scraped or logged with its reason; dead URLs land in the log with their history</span>
   </footer>
 </div>
 <script>
@@ -90,11 +91,12 @@ async function load(){
   let d; try{ d = await fetch('data/prod-status.json?_='+Date.now()).then(r=>r.json()); }catch{ document.getElementById('days').innerHTML='<div class="empty">No production run yet.</div>'; return; }
   const o = d.overall||{};
   const card=(k,v,sub,hero)=>`<div class="card${hero?' hero':''}"><div class="k">${k}</div><div class="v">${v}</div>${sub?`<div class="dim" style="font-size:12px;margin-top:2px">${sub}</div>`:''}</div>`;
+  const pending = Math.max(0, (o.requested||0)-(o.scraped||0)-(o.unscraped||0));
   document.getElementById('cards').innerHTML =
-    card('URLs requested', (o.requested||0).toLocaleString(), `target ${(3000*((d.days||[]).length||1)).toLocaleString()} over 3 days`) +
+    card('URLs requested', (o.requested||0).toLocaleString(), `target ${(d.target_per_day||3000).toLocaleString()}/day`) +
     card('Scraped', (o.scraped||0).toLocaleString(), pc(o.scraped,o.requested)+' of requested', true) +
-    card('Logged (couldn’t scrape)', (o.unscraped||0).toLocaleString(), 'in the error log with why + what was tried') +
-    card('Accounted for', (o.accounted_pct!=null?o.accounted_pct:0)+'%', 'scraped + logged — nothing vanished');
+    card('Logged (couldn’t scrape)', (o.unscraped||0).toLocaleString(), 'permanent failures, with why + what was tried') +
+    card('Still in queue', pending.toLocaleString(), pending? 'not attempted yet — run in progress' : 'queue empty — run complete');
 
   const days = d.days||[];
   document.getElementById('days').innerHTML = days.length

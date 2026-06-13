@@ -108,6 +108,7 @@
     <a href="shootout.html" class="on">Solver shootout</a>
     <a href="real-captchas.html">Real captchas</a>
     <a href="production.html">Production</a>
+    <a href="economics.html">Economics</a>
     <a href="timeline.html">Timeline</a>
   </div>
 
@@ -118,7 +119,7 @@
   <div class="about">
     <h2>The four methods, in plain English</h2>
     <p><b>qwen3-vl-32b</b> — a vision AI. It reads the legend strip (<i>"click these icons, in this order"</i>), finds each doodle in the photo, and clicks them in sequence. Costs a fraction of a cent per puzzle.</p>
-    <p><b>gemini-3.1-flash-lite</b> — Tamás's paid vision AI. Same job as qwen, just as accurate, but costs ~6× more.</p>
+    <p><b>gemini-3.1-flash-lite</b> — Tamás's paid vision AI. Same job as qwen, just as accurate, but ~6× the per-solve cost (it burns more tokens) — though both are still pennies a month.</p>
     <p><b>shape-match</b> — free. Cuts each icon out of the legend and looks for a matching shape in the photo. No AI, no cost.</p>
     <p><b>color-cv</b> — free. Finds the hand-drawn doodles by their ink colour standing out from the photo. Also no AI.</p>
     <p class="dim">A puzzle only counts as <b>solved</b> if every doodle is clicked <b>in the right order</b>. "Found" = located the drawings at all. The gap between the two is where the free methods lose.</p>
@@ -150,19 +151,19 @@
 
   <footer>
     Bench: <code>bin/bench-solve.js</code> over saved real puzzles · click points stored, so this page never needs a paid re-run ·
-    <span class="dim">live captures from the 3-day Tor exit study</span>
+    <span class="dim">live captures from the Tor exit study (day 1 of 3)</span>
   </footer>
 </div>
 <script>
 const METHODS = [
   { key:'qwen3-vl-32b', label:'qwen3-vl-32b', kind:'vision AI · paid (cheap)', cls:'win',  tag:'winner',
-    verdict:'Reads the legend order, so it actually solves. ~$0.15 per 1,000 puzzles — basically free at scrape volume.' },
+    verdict:'Reads the legend order, so it actually solves. ~$0.11 per 1,000 solves — basically free at scrape volume.' },
   { key:'gemini-3.1-flash-lite', label:'gemini-3.1-flash-lite', kind:'vision AI · paid', cls:'paid', tag:"Tamás's pick",
-    verdict:"Tamás's entry. Ties qwen on accuracy (91.9% solved), scraped the most products in the live run (98.7%), and on the real bill costs about the same as qwen." },
+    verdict:"Tamás's entry. Ties qwen on accuracy (91.9% solved) and edged it on product success in the live run (93.6% vs 92.6%). Costs ~6× qwen per solve — but that's still pennies a month." },
   { key:'shape-match',  label:'shape-match',  kind:'computer vision · locate-only', cls:'free', tag:'challenger',
     verdict:'Finds about half the doodles by shape, but has no idea what order to click them — so most attempts fail. The locate step itself is free.' },
   { key:'color-cv',     label:'color-cv',     kind:'computer vision · locate-only', cls:'free', tag:'challenger',
-    verdict:'Spots doodles by ink colour. Same ordering wall as shape-match. ⚠ Bench shows $2.12/1k — that cost is the legend-reading step, not the locate; to be re-verified on the next run.' },
+    verdict:'Spots doodles by ink colour. Same ordering wall as shape-match. Free CV locate; the only cost is one qwen legend read (~$0.08/1k). The old $2.12 was stale Moondream-classify, not how you’d run it.' },
 ];
 const pct = x => x==null?'—':(x*100).toFixed(1)+'%';
 const ms  = x => x==null?'—':(x>=1000?(x/1000).toFixed(1)+'s':Math.round(x)+'ms');
@@ -191,8 +192,7 @@ async function load(){
       <div class="verdict">${m.verdict}</div></div>`;
   }).join('');
   document.getElementById('benchnote').innerHTML =
-    `Scores are real bench runs over ${n} saved Smyths puzzles. shape-match and color-cv score identically — both stall at the ordering step. ` +
-    `<b>Caveat:</b> their cost columns disagree ($0 vs $2.12) only because each bench config paired the CV locate with a different legend-reader; the locate itself is free.`;
+    `Scores are real bench runs over ${n} saved Smyths puzzles. shape-match and color-cv score identically — both stall at the ordering step. Their locate is free CV; the only cost is the qwen legend read.`;
 
   // found-vs-solved gap bars
   const maxV = 1;
@@ -226,7 +226,8 @@ async function load(){
   let runs=null; try{ runs = await fetch('data/shootout-runs.json?_='+Date.now()).then(r=>r.json()); }catch{}
   const runsEl = document.getElementById('runs'), live = document.getElementById('live');
   if(runs && runs.arms && runs.arms.length){
-    const A = runs.arms;
+    const A = runs.arms.filter(a=>(a.fetches||0)>0);
+    const skipped = runs.arms.filter(a=>!((a.fetches||0)>0)).map(a=>a.label);
     const p = x => x==null?'—':x+'%';
     document.getElementById('runtitle').textContent = `Live ${A.length}-arm run`;
     window._gemArm = A.find(a=>a.name==='gemini') || null;
@@ -249,7 +250,7 @@ async function load(){
         ${cell(a,'success_pct',p)}
         <td>${a.fetches_per_hour?a.fetches_per_hour.toLocaleString()+'/h':'—'}</td>
       </tr>`).join('') + `</tbody></table>
-      <p class="dim" style="font-size:12px;margin:8px 2px 0"><b>URLs tried</b> = how many we attempted (1,000 each). <b>Products scraped</b> = % that returned a real product; the rest hit a captcha wall or error on a bad exit (not bad products — just no product). <b>Captcha tries / solved</b> count only the fetches that hit the wall. ${runs.note||''}${runs.updated?' · updated '+new Date(runs.updated).toISOString().slice(0,16).replace('T',' '):''}</p>`;
+      <p class="dim" style="font-size:12px;margin:8px 2px 0"><b>URLs tried</b> = how many we attempted (1,000 each). <b>Products scraped</b> = % that returned a real product; the rest hit a captcha wall or error on a bad exit (not bad products — just no product). <b>Captcha tries / solved</b> count only the fetches that hit the wall. ${skipped.length?`<br><b>Not shown:</b> ${skipped.join(', ')} — ${skipped.length>1?'these arms':'this arm'} didn't complete this round. The head-to-head bench above shows how every method does on actual captchas.`:''} ${runs.note||''}${runs.updated?' · updated '+new Date(runs.updated).toISOString().slice(0,16).replace('T',' '):''}</p>`;
     placeRaceNote();
 
     // per-arm captured captchas now live on the Real captchas page (tagged by model).

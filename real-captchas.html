@@ -47,16 +47,18 @@
     <a href="shootout.html">Solver shootout</a>
     <a href="real-captchas.html" class="on">Real captchas</a>
     <a href="production.html">Production</a>
+    <a href="economics.html">Economics</a>
     <a href="timeline.html">Timeline</a>
   </div>
 
   <h1>Real captchas the solver actually faces</h1>
-  <p class="sub">Actual Smyths hCaptcha <b>doodle</b> puzzles hit during the live Tor runs — faint hand-drawn icons scribbled on a photo, with a strip up top saying <i>"select in this order."</i> A mix of clean puzzles, the solver's failed attempts, and a few passes. This is the raw material behind the <a href="shootout.html">shootout</a> and <a href="gallery.html">click overlays</a>.</p>
+  <p class="sub">Actual Smyths hCaptcha <b>doodle</b> puzzles — faint hand-drawn icons scribbled on a photo, with a strip up top saying <i>"select in this order."</i> A mix of raw captures, failed attempts, and a few solved. This is the raw material behind the <a href="shootout.html">shootout</a> and <a href="gallery.html">click overlays</a>.</p>
+  <p class="legend" style="margin:4px 0 0;color:var(--mut);font-size:13px">This is a <b>cumulative corpus</b> built over days of dev — including exits we deliberately hit to collect hard puzzles. It is <b>not</b> a sample of normal traffic, where captchas are <a href="exit-study.html">rare (~1%)</a>. One bad exit can produce a whole burst of these.</p>
 
   <div class="key">
     <span><span class="pill ok">solved</span> solver cleared it</span>
     <span><span class="pill no">failed</span> solver got it wrong</span>
-    <span><span class="pill re">real</span> raw capture — a numbered ① mark = a click the solver placed (usually a failed try)</span>
+    <span><span class="pill re">real</span> raw capture — a numbered ① mark = a click the solver placed during the capture</span>
   </div>
 
   <div class="filters" id="filters">

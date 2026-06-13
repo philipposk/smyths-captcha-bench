@@ -2,7 +2,7 @@
   "updated": 1781313521325,
   "corpus": 37,
   "hitRadius": 80,
-  "costNote": "Costs calibrated to REAL OpenRouter spend on this project (per-model bill), not token estimates.",
+  "costNote": "Cost = USD per 1,000 captcha-solves: real bench token-counts × real OpenRouter unit prices (Jun 2026). The solver only runs on a captcha, so per-scrape cost = this × the captcha rate. See the Economics tab.",
   "leaderboard": [
     {
       "name": "gemini-3-flash",
@@ -13,14 +13,17 @@
       "p50ms": 3623,
       "avgTokens": 2437,
       "avgCalls": 2,
-      "estPer1000Usd": 0.117,
+      "estPer1000Usd": 1.4935,
       "free": false,
       "errors": 0,
       "n": 37,
       "providers": {
         "openrouter": 74
       },
-      "costReal": true
+      "costReal": true,
+      "costPerSolve": 0.001494,
+      "costEst": false,
+      "costTier": 2
     },
     {
       "name": "qwen3-vl-32b→gemini-3.1-flash-lite",
@@ -31,13 +34,17 @@
       "p50ms": 2500,
       "avgTokens": 0,
       "avgCalls": 0,
-      "estPer1000Usd": 0.1593,
+      "estPer1000Usd": 0.174,
       "free": false,
       "errors": 0,
       "n": 37,
       "providers": {},
       "combo": true,
-      "new": true
+      "new": true,
+      "costPerSolve": 0.000174,
+      "costEst": false,
+      "costNoteRow": "qwen on every puzzle + gemini-3.1-flash-lite only on qwen’s misses",
+      "costTier": 1
     },
     {
       "name": "gemini-3.5-flash",
@@ -48,14 +55,17 @@
       "p50ms": 8327,
       "avgTokens": 3338,
       "avgCalls": 2,
-      "estPer1000Usd": 0.929,
+      "estPer1000Usd": 1.944,
       "free": false,
       "errors": 0,
       "n": 37,
       "providers": {
         "openrouter": 74
       },
-      "costReal": true
+      "costReal": true,
+      "costPerSolve": 0.001944,
+      "costEst": true,
+      "costTier": 3
     },
     {
       "name": "qwen3-vl-32b",
@@ -66,14 +76,17 @@
       "p50ms": 2499,
       "avgTokens": 763,
       "avgCalls": 2,
-      "estPer1000Usd": 0.151,
+      "estPer1000Usd": 0.1137,
       "free": false,
       "errors": 0,
       "n": 37,
       "providers": {
         "openrouter": 74
       },
-      "costReal": true
+      "costReal": true,
+      "costPerSolve": 0.000114,
+      "costEst": false,
+      "costTier": 1
     },
     {
       "name": "gemini-3.1-flash-lite",
@@ -84,13 +97,16 @@
       "p50ms": 3865,
       "avgTokens": 2428,
       "avgCalls": 2,
-      "estPer1000Usd": 0.103,
+      "estPer1000Usd": 0.7445,
       "free": false,
       "errors": 0,
       "n": 37,
       "providers": {
         "openrouter": 74
-      }
+      },
+      "costPerSolve": 0.000745,
+      "costEst": false,
+      "costTier": 2
     },
     {
       "name": "shape+color-ensemble",
@@ -101,14 +117,18 @@
       "p50ms": 2565,
       "avgTokens": 738,
       "avgCalls": 1.9,
-      "estPer1000Usd": 0.0755,
+      "estPer1000Usd": 0.1111,
       "free": false,
       "errors": 0,
       "n": 37,
       "providers": {
         "openrouter": 71
       },
-      "new": true
+      "new": true,
+      "costPerSolve": 0.000111,
+      "costEst": false,
+      "costNoteRow": "locate is free CV; cost is the legend read (qwen)",
+      "costTier": 1
     },
     {
       "name": "gpt-5.4-mini",
@@ -119,14 +139,17 @@
       "p50ms": 2609,
       "avgTokens": 883,
       "avgCalls": 2,
-      "estPer1000Usd": 0.0336,
+      "estPer1000Usd": 1.0747,
       "free": false,
       "errors": 0,
       "n": 37,
       "providers": {
         "openrouter": 74
       },
-      "new": true
+      "new": true,
+      "costPerSolve": 0.001075,
+      "costEst": false,
+      "costTier": 2
     },
     {
       "name": "glm-4.6v",
@@ -137,14 +160,17 @@
       "p50ms": 23249,
       "avgTokens": 1997,
       "avgCalls": 2,
-      "estPer1000Usd": 0.098,
+      "estPer1000Usd": 0.6981,
       "free": false,
       "errors": 0,
       "n": 37,
       "providers": {
         "openrouter": 74
       },
-      "costReal": true
+      "costReal": true,
+      "costPerSolve": 0.000698,
+      "costEst": true,
+      "costTier": 2
     },
     {
       "name": "gpt-5.4",
@@ -155,14 +181,17 @@
       "p50ms": 2874,
       "avgTokens": 877,
       "avgCalls": 2,
-      "estPer1000Usd": 0.223,
+      "estPer1000Usd": 2.0588,
       "free": false,
       "errors": 0,
       "n": 37,
       "providers": {
         "openrouter": 74
       },
-      "costReal": true
+      "costReal": true,
+      "costPerSolve": 0.002059,
+      "costEst": true,
+      "costTier": 3
     },
     {
       "name": "qwen3-vl-235b",
@@ -173,14 +202,17 @@
       "p50ms": 5082,
       "avgTokens": 780,
       "avgCalls": 2,
-      "estPer1000Usd": 0.021,
+      "estPer1000Usd": 0.333,
       "free": false,
       "errors": 0,
       "n": 37,
       "providers": {
         "openrouter": 74
       },
-      "costReal": true
+      "costReal": true,
+      "costPerSolve": 0.000333,
+      "costEst": true,
+      "costTier": 1
     },
     {
       "name": "gemini-2.5-flash",
@@ -191,7 +223,7 @@
       "p50ms": 2837,
       "avgTokens": 733,
       "avgCalls": 1.9,
-      "estPer1000Usd": 0.0241,
+      "estPer1000Usd": 0,
       "free": false,
       "errors": 0,
       "n": 37,
@@ -202,7 +234,11 @@
         "gemini-native-lite2": 22,
         "gemini-lite": 19,
         "gemini-native1": 2
-      }
+      },
+      "costPerSolve": 0,
+      "costEst": false,
+      "costNoteRow": "free Gemini key (within daily quota)",
+      "costTier": 0
     },
     {
       "name": "gemini-2.5-flash-lite",
@@ -213,14 +249,18 @@
       "p50ms": 3687,
       "avgTokens": 3481,
       "avgCalls": 2,
-      "estPer1000Usd": 0.0135,
+      "estPer1000Usd": 0,
       "free": false,
       "errors": 0,
       "n": 37,
       "providers": {
         "openrouter": 74
       },
-      "new": true
+      "new": true,
+      "costPerSolve": 0,
+      "costEst": false,
+      "costNoteRow": "free Gemini key (within daily quota)",
+      "costTier": 0
     },
     {
       "name": "qwen-solo",
@@ -237,7 +277,10 @@
       "n": 37,
       "providers": {
         "ollama": 74
-      }
+      },
+      "costPerSolve": 0,
+      "costEst": false,
+      "costTier": 0
     },
     {
       "name": "shape-match",
@@ -252,7 +295,10 @@
       "free": true,
       "errors": 0,
       "n": 37,
-      "providers": {}
+      "providers": {},
+      "costPerSolve": 0,
+      "costEst": false,
+      "costTier": 0
     },
     {
       "name": "color-cv",
@@ -263,14 +309,18 @@
       "p50ms": 2947,
       "avgTokens": 9,
       "avgCalls": 2.7,
-      "estPer1000Usd": 2.1189,
+      "estPer1000Usd": 0.078,
       "free": false,
       "errors": 0,
       "n": 37,
       "providers": {
         "gemini-native1": 1,
         "moondream": 98
-      }
+      },
+      "costPerSolve": 0.000078,
+      "costEst": false,
+      "costNoteRow": "free CV locate; one qwen legend read (earlier $2.12 was stale moondream-classify)",
+      "costTier": 1
     },
     {
       "name": "gemini-2.5-flash+shape",
@@ -281,14 +331,17 @@
       "p50ms": 1169,
       "avgTokens": 2105,
       "avgCalls": 1,
-      "estPer1000Usd": 0.6315,
+      "estPer1000Usd": 0.974,
       "free": false,
       "errors": 0,
       "n": 37,
       "providers": {
         "openrouter": 37
       },
-      "new": true
+      "new": true,
+      "costPerSolve": 0.000974,
+      "costEst": true,
+      "costTier": 2
     },
     {
       "name": "qwen+moondream",
@@ -299,14 +352,17 @@
       "p50ms": 21222,
       "avgTokens": 1156,
       "avgCalls": 3.6,
-      "estPer1000Usd": 2.1189,
+      "estPer1000Usd": 0.5944,
       "free": false,
       "errors": 0,
       "n": 37,
       "providers": {
         "ollama": 37,
         "moondream": 98
-      }
+      },
+      "costPerSolve": 0.000594,
+      "costEst": true,
+      "costTier": 2
     },
     {
       "name": "gpt-5.4-nano",
@@ -317,14 +373,17 @@
       "p50ms": 2925,
       "avgTokens": 880,
       "avgCalls": 2,
-      "estPer1000Usd": 0.00887,
+      "estPer1000Usd": 0.121,
       "free": false,
       "errors": 0,
       "n": 37,
       "providers": {
         "openrouter": 74
       },
-      "new": true
+      "new": true,
+      "costPerSolve": 0.000121,
+      "costEst": true,
+      "costTier": 1
     },
     {
       "name": "claude-sonnet-4.6",
@@ -335,14 +394,17 @@
       "p50ms": 5986,
       "avgTokens": 1023,
       "avgCalls": 2,
-      "estPer1000Usd": 0.365,
+      "estPer1000Usd": 4.389,
       "free": false,
       "errors": 0,
       "n": 37,
       "providers": {
         "openrouter": 74
       },
-      "costReal": true
+      "costReal": true,
+      "costPerSolve": 0.004389,
+      "costEst": true,
+      "costTier": 3
     },
     {
       "name": "moondream-cloud",
@@ -353,13 +415,16 @@
       "p50ms": 6215,
       "avgTokens": 0,
       "avgCalls": 4,
-      "estPer1000Usd": 3.1784,
+      "estPer1000Usd": 2,
       "free": false,
       "errors": 0,
       "n": 37,
       "providers": {
         "moondream": 147
-      }
+      },
+      "costPerSolve": 0.002,
+      "costEst": true,
+      "costTier": 3
     }
   ]
 }

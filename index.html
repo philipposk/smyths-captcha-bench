@@ -72,28 +72,14 @@
   .pill{display:inline-block;padding:2px 9px;border-radius:999px;font-size:12px;font-weight:650}
   .pill.free{background:rgba(70,214,166,.15);color:var(--good)}
   .pill.paid{background:rgba(244,183,64,.14);color:var(--warn)}
-  /* cost battery: fill = how pricey, colour = free(green)/paid(orange) */
-  .batt{display:inline-block;width:30px;height:14px;border:1.5px solid var(--dim);border-radius:3px;position:relative;vertical-align:middle;padding:1.5px;cursor:help}
-  .batt:after{content:"";position:absolute;right:-4px;top:4px;width:2.5px;height:6px;background:var(--dim);border-radius:0 2px 2px 0}
-  .batt i{display:block;height:100%;border-radius:1px;transition:width .3s}
+  /* cost tier chip: FREE→$$$, colour goes green→red as it gets pricier (more $ = worse, no battery inversion) */
+  .ctier{display:inline-block;font-weight:800;font-size:12px;letter-spacing:.5px;padding:2px 8px;border-radius:6px;font-variant-numeric:tabular-nums}
+  .ctier.t0{color:var(--good);background:rgba(70,214,166,.14)}
+  .ctier.t1{color:#9bd97a;background:rgba(150,210,110,.13)}
+  .ctier.t2{color:var(--warn);background:rgba(244,183,64,.15)}
+  .ctier.t3{color:var(--bad);background:rgba(255,106,106,.15)}
+  .cnum{font-size:11px;color:var(--dim);margin-left:5px;font-variant-numeric:tabular-nums}
   .top1 td{background:linear-gradient(90deg,rgba(122,169,255,.10),transparent 70%)}
-
-  /* crown + cartoon tooltip */
-  .crown{position:relative;display:inline-block;margin-left:5px;cursor:help;font-size:15px;filter:drop-shadow(0 1px 2px rgba(0,0,0,.5));
-    transition:transform .15s} .crown:hover{transform:translateY(-1px) rotate(-6deg) scale(1.12)}
-  /* anchored to the crown's left edge and opens rightward so it never clips on the
-     leftmost (#) column inside the table's scroll container */
-  .crown .tip{position:absolute;left:-6px;bottom:150%;transform:translate(0,6px) scale(.6);transform-origin:bottom left;
-    opacity:0;pointer-events:none;white-space:nowrap;z-index:20;
-    background:linear-gradient(180deg,#fff6dc,#ffe39e);color:#5a3d00;
-    font-weight:800;font-size:14.5px;letter-spacing:.2px;padding:9px 14px;border-radius:13px;
-    border:2px solid #ffcf4d;box-shadow:0 10px 24px rgba(0,0,0,.4),0 0 0 4px rgba(255,207,77,.12);
-    transition:opacity .16s ease, transform .22s cubic-bezier(.2,1.5,.4,1)}
-  .crown .tip small{display:block;font-size:11.5px;font-weight:700;color:#8a6a16;letter-spacing:0;margin-top:1px}
-  .crown .tip:after{content:"";position:absolute;top:100%;left:16px;
-    border:7px solid transparent;border-top-color:#ffe39e}
-  /* the popup renders ~15% bigger than a normal tooltip would (scale 1.15) */
-  .crown:hover .tip{opacity:1;transform:translate(0,0) scale(1.15)}
 
   h2.sec{font-size:18px;margin:34px 0 4px;letter-spacing:-.2px}
   .legend{margin-top:14px;font-size:13px;color:var(--mut);line-height:1.7}
@@ -117,36 +103,9 @@
   .cinfo .ctip:after{content:"";position:absolute;top:100%;right:14px;border:7px solid transparent;border-top-color:#0f1320}
   .cinfo:hover .ctip{opacity:1;transform:translateY(0) scale(1)}
 
-  /* a tiny ↕ caret on every sortable header (the convention) so it reads as clickable even without the gag */
+  /* a tiny ↕ caret on every sortable header (the convention) so it reads as clickable */
   th.sortable .arr{opacity:0} th.sortable:after{content:"↕";font-size:10px;margin-left:3px;opacity:.4} th.sortable.act:after{content:""} th.sortable.act .arr{opacity:1}
-
-  /* comic side-notes — live in the LEFT gutter, OUTSIDE the table, pointing right at their target.
-     Out of table flow (absolute) so they never affect column widths. Hidden when no gutter room. */
-  @keyframes bobx{0%,100%{transform:translateX(0)}50%{transform:translateX(7px)}}
-  @keyframes hintin{from{opacity:0;transform:translateX(-40px)}to{opacity:1;transform:translateX(0)}}
-  .gut{position:absolute;right:100%;margin-right:4px;z-index:26;display:flex;flex-direction:column;align-items:flex-end;gap:1px;pointer-events:none;text-align:right;animation:hintin .5s ease both}
-  .gut.hide{opacity:0;transition:opacity .5s}
-  .gut .lbl{font-family:"Comic Sans MS","Comic Sans",cursive;font-weight:700;line-height:1.05;text-shadow:0 2px 7px rgba(0,0,0,.7);white-space:nowrap}
-  .gut .lbl small{display:block;font:600 10px/1.2 "Comic Sans MS","Comic Sans",cursive}
-  .gut svg{animation:bobx 1.15s ease-in-out infinite;flex:none}
-  #sorthint .lbl{color:#ffd24d;font-size:14px;transform:rotate(-4deg)} #sorthint .lbl small{color:#cbb87a}
-  #gnote .lbl{color:#67dcb6;font-size:13px;transform:rotate(-3deg)} #gnote .lbl small{color:#ffd24d}
-  #gnote #gsub{position:relative;display:block}
-  #gnote .gnum{pointer-events:auto;cursor:help;border-bottom:1px dotted rgba(255,210,77,.5)}
-  #gnote .gmath{position:absolute;left:calc(100% + 10px);top:-6px;width:240px;transform:rotate(3deg);transform-origin:left top;pointer-events:auto;
-    background:#0f1320;border:1px solid #2b3346;border-radius:10px;padding:9px 11px;
-    font:400 10.5px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--dim);text-align:left;white-space:normal;text-shadow:none;
-    box-shadow:0 12px 30px rgba(0,0,0,.55);opacity:0;visibility:hidden;transition:.13s;z-index:40}
-  #gnote .gnum:hover + .gmath, #gnote .gmath:hover{opacity:1;visibility:visible}
-  .gx{pointer-events:auto;cursor:pointer;border:none;background:rgba(103,220,182,.16);color:#67dcb6;font:700 12px/1 ui-sans-serif;border-radius:50%;width:17px;height:17px;align-self:flex-end;margin-bottom:2px;display:flex;align-items:center;justify-content:center}
-  .gx:hover{background:rgba(255,90,90,.22);color:#ff8a8a}
-  @media(max-width:1100px){ .gut{display:none} }
-  /* non-sortable headers: a wink when clicked */
-  th.nonsort{cursor:default} th.nonsort:active{color:var(--txt)}
-  #bigmsg{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:200;pointer-events:none}
-  #bigmsg span{opacity:0;font-family:"Comic Sans MS","Comic Sans",cursive;font-weight:800;font-size:clamp(34px,7vw,74px);color:#ffd24d;text-shadow:0 6px 32px rgba(0,0,0,.85);transform:rotate(-4deg);text-align:center;padding:0 20px}
-  #bigmsg span.show{animation:bigpop 1.9s cubic-bezier(.2,1.4,.4,1) forwards}
-  @keyframes bigpop{0%{opacity:0;transform:scale(.5) rotate(-4deg)}14%{opacity:1;transform:scale(1.12) rotate(-4deg)}26%{transform:scale(1) rotate(-4deg)}78%{opacity:1}100%{opacity:0;transform:scale(1) rotate(-4deg)}}
+  th.nonsort{cursor:default}
 </style>
 </head>
 <body>
@@ -159,6 +118,7 @@
     <a href="shootout.html" style="font-size:13px;font-weight:600;color:var(--mut);background:var(--panel);border:1px solid var(--line);padding:6px 13px;border-radius:999px">Solver shootout</a>
     <a href="real-captchas.html" style="font-size:13px;font-weight:600;color:var(--mut);background:var(--panel);border:1px solid var(--line);padding:6px 13px;border-radius:999px">Real captchas</a>
     <a href="production.html" style="font-size:13px;font-weight:600;color:var(--mut);background:var(--panel);border:1px solid var(--line);padding:6px 13px;border-radius:999px">Production</a>
+    <a href="economics.html" style="font-size:13px;font-weight:600;color:var(--mut);background:var(--panel);border:1px solid var(--line);padding:6px 13px;border-radius:999px">Economics</a>
     <a href="timeline.html" style="font-size:13px;font-weight:600;color:var(--mut);background:var(--panel);border:1px solid var(--line);padding:6px 13px;border-radius:999px">Timeline</a>
   </div>
 
@@ -168,7 +128,7 @@
   </div>
 
   <h1>Which AI actually solves the captcha — cheapest?</h1>
-  <p class="sub">Every candidate model run over the <b>same</b> saved puzzles, scored on the only thing that counts: clicking the right little drawings <b>in the right order</b>. Ranked by real solve-rate, then speed and cost. Target: free / ≤ <b>$0.50 per 1,000 URLs scraped</b> (not per solve — captchas are rare: ~1 in 6 URLs by the early pilot, now being re-measured live by the <a href="exit-study.html">3-day Tor trial</a>).</p>
+  <p class="sub">Every candidate model run over the <b>same</b> saved puzzles, scored on the one thing that counts: clicking the right doodles <b>in the right order</b>. Ranked by solve-rate, then speed and cost. Captchas are rare — so what you actually pay to clear them is tiny. <a href="economics.html">See the real monthly cost →</a></p>
 
   <div class="about">
     <h2>What is this?</h2>
@@ -190,9 +150,9 @@
     <b>located</b> = found all the doodles but maybe out of order (still fails) ·
     <b>icons hit</b> = average share of doodles located ·
     <b>p50</b> = median time per puzzle ·
-    <b>$/1k</b> = real cost per 1,000 puzzles (from actual OpenRouter spend; local / free-tier = $0).
+    <b>cost</b> = USD per 1,000 captcha-solves (<span class="tag">FREE</span>→<span class="tag">$$$</span>), real bench tokens × real OpenRouter price. Hover it for the monthly cost.
   </div>
-  <div class="note" style="margin-top:8px">💡 Costs are <b>real OpenRouter usage</b>, projected from what the 37-puzzle bench actually cost — and those 37 came from a Tor exit with a <b>bad trust-score</b>, so the puzzles were unusually hard (more tokens). Real-world cost is likely a touch <b>lower</b>.</div>
+  <div class="note" style="margin-top:8px">💡 Cost is per <b>1,000 solves</b>, not per scrape — the solver only runs when a captcha appears, which is rare. So the real monthly bill is tiny: <a href="economics.html">see the Economics tab</a>. <span class="dim">A <code>~</code> means the unit price is estimated (model isn't a production pick).</span></div>
   <div class="note" id="deadnote"></div>
 
   <h2 class="sec">Exit health — the bigger lever</h2>
@@ -201,12 +161,11 @@
   <div id="exitnote" class="note" style="margin-top:4px"></div>
 
   <footer>
-    Same puzzles, every model · costs are real API spend, not list price ·
+    Same puzzles, every model · cost = real bench tokens × live OpenRouter price ·
     <a href="https://github.com/philipposk/smyths-scraper">scraper repo</a> ·
     <span class="dim">no API keys or raw site data are published here</span>
   </footer>
 </div>
-<div id="bigmsg"><span></span></div>
 
 <script>
 // per-model "what is it / how does it run" — shown in the Details column.
@@ -217,72 +176,56 @@ const DETAILS = {
   'qwen3-vl-32b':      'OpenRouter API · Alibaba · cheap grounded vision model. The value winner.',
   'glm-4.6v':          'OpenRouter API · Zhipu · paid. Decent but very slow (~23s/puzzle).',
   'gpt-5.4':           'OpenRouter API · OpenAI · paid. Mid accuracy on tiny icons.',
-  'qwen3-vl-32b→gemini-3.1-flash-lite': 'Combo: qwen first, gemini-3.1-flash-lite on qwen’s misses. 94.6% — beats either alone, ~$0.16/1k.',
-  'shape+color-ensemble': 'Locate is free CV (shape-match + colour-blob merged, 97.3%); the cost is the qwen LEGEND read. 86.5% solved at ~$0.08/1k.',
-  'gpt-5.4-mini':      'OpenRouter API · OpenAI · cheap. 81% solved at just ~$0.034/1k — the best-value option, period.',
+  'qwen3-vl-32b→gemini-3.1-flash-lite': 'Combo: qwen runs on every puzzle, gemini-3.1-flash-lite only on qwen’s misses. 94.6% — beats either alone. Costs a touch MORE than qwen ($0.17 vs $0.11/1k) because you pay qwen in full plus a little gemini.',
+  'shape+color-ensemble': 'Locate is free CV (shape-match + colour-blob merged, 97.3% icons hit); the only cost is the qwen legend read. 86.5% solved at ~$0.11/1k.',
+  'gpt-5.4-mini':      'OpenRouter API · OpenAI. 81% solved. Cheap to send but its output tokens are pricey, so ~$1.07/1k — mid-cost, not the value pick.',
   'gpt-5.4-nano':      'OpenRouter API · OpenAI · cheapest. Too small for grounding — clicks land off-target.',
   'gemini-2.5-flash-lite': 'OpenRouter API · Google · cheap. Weak on tiny icons (like 2.5-flash).',
-  'gemini-2.5-flash+shape': 'Combo: Gemini reads the legend, free shape-match locates. Locate is the bottleneck — doesn’t beat a full VLM.',
+  'gemini-2.5-flash+shape': 'Combo: Gemini reads the legend, free shape-match locates.',
   'qwen3-vl-235b':     'OpenRouter API · big Qwen · oddly weaker than the 32B on this task.',
   'gemini-2.5-flash':  'Gemini free tier · Google · $0. Best free option. Free quota ≈ 500–1,500 captcha solves/day before it caps.',
   'qwen-solo':         'Local · Ollama on your own machine · $0. Runs fully offline.',
   'shape-match':       'Pure computer-vision · no model at all · $0. Finds doodles, can’t order them.',
-  'color-cv':          'CV finds doodles + Moondream cloud names them. Partly paid.',
+  'color-cv':          'Free CV locate (finds doodles by ink colour); the only cost is one qwen legend read (~$0.08/1k). The earlier $2.12 was stale Moondream-classify, not how you’d run it.',
   'qwen+moondream':    'Local Qwen locates + Moondream cloud classifies. Partly paid.',
   'moondream-cloud':   'Moondream cloud point-model · paid. Misses the photo-overlaid doodles.',
   'claude-sonnet-4.6': 'OpenRouter API · Anthropic · paid. Weak at clicking small icons.'
 };
 // runs that couldn't be fairly scored (dead key / quota) — shown honestly, NOT ranked as a 0%.
-// (gemini-2.5-flash re-ran cleanly on a fresh day's free quota → now a real ranked row.)
 const DEAD = {};
-// Filippos’s picks — crown + cartoon tooltip on these rows.
-const PICKS = {
-  'qwen3-vl-32b': {t:'Filippos’s selection', s:'best value · ~2¢ / 1,000'},
-  'shape-match':  {t:'Filippos’s selection', s:'free · zero API'}
-};
 
 const fmtPct = (x) => (x==null ? '—' : (x*100).toFixed(1)+'%');
 const bar = (x) => `<span class="bar"><i style="width:${Math.round((x||0)*100)}%"></i></span>`;
 const money = (x) => (x==null ? '—' : (!x ? '$0' : (x<0.01 ? '$'+x.toFixed(4) : '$'+x.toFixed(x<1?3:2))));
 const ago = (ms) => { if(!ms) return '—'; const s=Math.round((Date.now()-ms)/1000); if(s<90) return s+'s ago'; const m=Math.round(s/60); if(m<90) return m+'m ago'; return Math.round(m/60)+'h ago'; };
 const detail = (r) => DETAILS[r.name] || (Object.keys(r.providers||{}).join(', ') || 'classical CV · $0');
-// Battery: FILL = how pricey (cheap = nearly empty, expensive = full); colour stays green (free) /
-// orange (paid) — the level shows the cost, the colour just says free vs paid.
-function battery(cost){
-  cost = cost || 0;
-  const free = cost === 0;
-  const t = Math.min(1, Math.sqrt(cost / 0.93));                 // 0..1 vs the priciest model (~$0.93)
-  const fill = free ? 12 : Math.round(22 + t * 78);              // free = low, paid scales with cost
-  const col = free ? 'var(--good)' : 'var(--warn)';             // green = free, orange = paid
-  const lbl = free ? 'free' : '$' + (cost < 0.1 ? cost.toFixed(3) : cost.toFixed(2)) + '/1k';
-  return `<span class="batt" title="${lbl}"><i style="width:${fill}%;background:${col}"></i></span>`;
+// Cost chip: FREE / $ / $$ / $$$ — colour goes green→red as it gets PRICIER (more $ = worse).
+// Tier is set in data (costTier); the number is $ per 1,000 solves. No battery, no inversion.
+function costChip(r){
+  const tier = r.costTier||0, sym = ['FREE','$','$$','$$$'][tier];
+  const per = r.estPer1000Usd||0;
+  const num = tier===0 ? '' : `<span class="cnum">$${per<0.1?per.toFixed(3):per.toFixed(2)}${r.costEst?'~':''}</span>`;
+  return `<span class="ctier t${tier}">${sym}</span>${num}`;
 }
 
 // ---- state ----
 let LB = [], DEADROWS = [];
-let captchaRate = 0.165;                 // rate used in the cost projection (see captchaRateSrc)
-let captchaRateSrc = 'early estimate · 97-fetch pilot';   // provenance of captchaRate
-let capProv = '';                        // live running tally: N captchas in M URLs at Hh of the trial
-const LIVE_RATE_MIN = 20;                // # live captchas before we trust the live rate over the pilot
-let gnoteSub = '~500–1.5k/day';          // gemini free-pick subtitle; goes live from the study
-let gnoteMath = '';                      // ✎ check-math tooltip for the solves/day projection
 const SCRAPES_PER_DAY = 3000, DAYS = 30;
 let sortKey = 'orderedSolveAcc', sortDir = -1;   // -1 = descending
 
-// $/1k-puzzles → real $ per 1,000 URLs scraped → $/month at 3k/day. Shown on hover over $/1k.
+// $/1,000-solves → $/month at 3k scrapes/day. The solver only runs on a captcha, so the per-scrape
+// cost = this × the captcha rate. We show a BAND: 0.8% measured → 16.5% worst-case early pilot.
 function costTip(r){
   const perK = r.estPer1000Usd||0;
-  if(!perK) return `<span class="hd">cost</span>Free to run — <b>$0</b> at any volume (local / free tier).`;
-  const perKurls = perK*captchaRate, perDay = perKurls*SCRAPES_PER_DAY/1000, perMonth = perDay*DAYS;
+  if(!perK) return `<span class="hd">cost</span>Free to run — <b>$0</b> at any volume (local model, or the free Gemini key within its daily quota).`;
+  const mo = (rate)=> perK*rate*SCRAPES_PER_DAY/1000*DAYS;
+  const lo = mo(0.008), hi = mo(0.165);
   return `<span class="hd">what it really costs</span>`+
-    `<b>${money(perK)}</b> per 1,000 <i>solved puzzles</i>.<br>`+
-    `Only ~${Math.round(captchaRate*1000)} of every 1,000 URLs hit a captcha (${(captchaRate*100).toFixed(1)}%), so → <b>${money(perKurls)} per 1,000 URLs scraped</b>.<br>`+
-    `At ${SCRAPES_PER_DAY.toLocaleString()} scrapes/day → <b>${money(perMonth)}/month</b>.`+
-    `<span class="math">✎ check math: $/mo = $/1k-puzzles × captcha-rate × ${SCRAPES_PER_DAY/1000*DAYS} `+
-    `= ${money(perK)} × ${(captchaRate*100).toFixed(1)}% × ${SCRAPES_PER_DAY/1000*DAYS} = ${money(perMonth)}. `+
-    `(${SCRAPES_PER_DAY/1000*DAYS} = ${SCRAPES_PER_DAY.toLocaleString()}/day ÷1k × ${DAYS}&nbsp;days).<br>`+
-    `<b>captcha-rate = ${(captchaRate*100).toFixed(1)}%</b> — source: ${captchaRateSrc}.`+
-    (capProv?`<br>${capProv}`:'')+`</span>`;
+    `<b>${money(perK)}</b> per 1,000 captcha-solves${r.costEst?' <i>(unit price estimated)</i>':''}.<br>`+
+    `The solver only fires on a captcha. At ${SCRAPES_PER_DAY.toLocaleString()} scrapes/day that's `+
+    `<b>${money(lo)}–${money(hi)}/month</b>.`+
+    `<span class="math">✎ $/mo = $/1k-solves × captcha-rate × ${SCRAPES_PER_DAY/1000*DAYS}. `+
+    `Band = 0.8% (measured) … 16.5% (worst-case early pilot). Full breakdown on the Economics tab.</span>`;
 }
 
 const COLS = [
@@ -290,7 +233,7 @@ const COLS = [
   {key:'solveAcc',        label:'found',    cls:''},
   {key:'locateAcc',       label:'icons hit',cls:'bar'},
   {key:'p50ms',           label:'p50',      cls:''},
-  {key:'estPer1000Usd',   label:'$/1k',     cls:''},
+  {key:'estPer1000Usd',   label:'cost',     cls:''},
 ];
 
 function renderBoard(){
@@ -307,19 +250,17 @@ function renderBoard(){
       <td class="num">${fmtPct(r.solveAcc)}</td>
       <td class="num">${fmtPct(r.locateAcc)}${bar(r.locateAcc)}</td>
       <td class="num">${(r.p50ms/1000).toFixed(1)}s</td>
-      <td class="num"><span class="cinfo">${money(r.estPer1000Usd)}<span class="ctip">${costTip(r)}</span></span></td>
-      <td>${battery(r.estPer1000Usd)}</td>
+      <td class="num"><span class="cinfo">${costChip(r)}<span class="ctip">${costTip(r)}</span></span></td>
     </tr>`;
   }).join('');
 
   const arr = sortDir<0 ? '▼' : '▲';
   const th = COLS.map(c=>`<th class="sortable num ${c.key===sortKey?'act':''}" data-sort="${c.key}">${c.label}<span class="arr">${arr}</span></th>`).join('');
   board.innerHTML = `<div class="tablewrap"><table>
-    <thead><tr><th class="rank">#</th><th class="nonsort" data-msg="ok… maybe not any…">model / combo</th><th class="detcol nonsort" data-msg="try again!">details</th>${th}<th></th></tr></thead>
+    <thead><tr><th class="rank">#</th><th class="nonsort" data-msg="ok… maybe not any…">model / combo</th><th class="detcol nonsort" data-msg="try again!">details</th>${th}</tr></thead>
     <tbody>${rows}</tbody></table></div>`;
 
   board.querySelectorAll('th.sortable').forEach(h=>h.addEventListener('click',()=>{
-    dismissHint();
     const k=h.dataset.sort;
     if(sortKey===k) sortDir=-sortDir; else { sortKey=k; sortDir=-1; }
     renderBoard();
@@ -337,44 +278,6 @@ function showBig(){
   setTimeout(()=>s.remove(),1750);
 }
 
-let hintShown=false;
-// arched comic arrow pointing RIGHT (label sits left of it, in the gutter, → into the table)
-const RARROW = `<svg width="62" height="30" viewBox="0 0 62 30" fill="none"><path d="M3 8 C18 2, 40 4, 57 22" stroke="CLR" stroke-width="3.5" stroke-linecap="round" fill="none"/><path d="M57 22 L46 19 M57 22 L52 11" stroke="CLR" stroke-width="3.5" stroke-linecap="round"/></svg>`;
-// Place a gutter note so its ARROWHEAD (which sits ~8px above the note's bottom edge, since the
-// arrow svg is the last child and its tip is near the svg's lower edge) lands on the vertical
-// CENTRE of the target row/header — so it always points at the right thing, at any sort order/size.
-const ARROW_TIP_FROM_BOTTOM = 8;
-function pointGutAt(el, target){
-  const wrap=document.getElementById('boardwrap'); if(!wrap||!el||!target) return;
-  const wr=wrap.getBoundingClientRect(), tr=target.getBoundingClientRect();
-  const rowCentre = tr.top - wr.top + tr.height/2;
-  el.style.top = Math.round(rowCentre - el.offsetHeight + ARROW_TIP_FROM_BOTTOM) + 'px';
-}
-function dismissHint(){ const h=document.getElementById('sorthint'); if(h){ h.classList.add('hide'); setTimeout(()=>h.remove(),500); } }
-function ensureGutNotes(){
-  const wrap=document.getElementById('boardwrap'); if(!wrap) return;
-  const grow=wrap.querySelector('tr[data-name="gemini-2.5-flash"]');
-  let g=document.getElementById('gnote');
-  if(grow){
-    if(!g){ g=document.createElement('div'); g.id='gnote'; g.className='gut';
-      g.innerHTML=`<button class="gx" title="dismiss" onclick="this.closest('#gnote').remove()">×</button><span class="lbl">best FREE pick<small id="gsub"></small></span>${RARROW.replace(/CLR/g,'#67dcb6')}`;
-      wrap.appendChild(g); }
-    const sub=g.querySelector('#gsub'); if(sub) sub.innerHTML=`<span class="gnum">${gnoteSub}</span>${gnoteMath}`;   // live-updates with the scrape; hover gnum for ✎ math
-    pointGutAt(g, grow);
-  } else if(g){ g.remove(); }
-  const sh=document.getElementById('sorthint'), thead=wrap.querySelector('thead tr');
-  if(sh && thead) pointGutAt(sh, thead);
-}
-function showSortHint(){
-  if(hintShown) return; hintShown=true;
-  const wrap=document.getElementById('boardwrap'), thead=wrap&&wrap.querySelector('thead tr'); if(!thead) return;
-  const el=document.createElement('div'); el.id='sorthint'; el.className='gut';
-  el.innerHTML=`<span class="lbl">Sort by:<small>click any column ↕</small></span>${RARROW.replace(/CLR/g,'#ffd24d')}`;
-  wrap.appendChild(el);
-  pointGutAt(el, thead);   // arrowhead lands on the header row
-  setTimeout(dismissHint, 12000);
-}
-
 async function load(){
   let d; try{ d = await fetch('data/results.json?_='+Date.now()).then(r=>r.json()); }catch{ return; }
   const all = d.leaderboard || [];
@@ -387,9 +290,9 @@ async function load(){
   const best = LB.slice().sort((a,b)=>(b.orderedSolveAcc||0)-(a.orderedSolveAcc||0))[0];
   document.getElementById('best').textContent = best ? fmtPct(best.orderedSolveAcc) : '—';
 
-  const cheap = LB.filter(r => (r.estPer1000Usd||0) <= 0.50*6 && r.orderedSolveAcc >= 0.85)
+  const cheap = LB.filter(r => r.orderedSolveAcc >= 0.85)
                   .sort((a,b)=>(a.estPer1000Usd||0)-(b.estPer1000Usd||0))[0];
-  document.getElementById('cheap').innerHTML = cheap ? `${cheap.name}<br><small>${fmtPct(cheap.orderedSolveAcc)} · ${money(cheap.estPer1000Usd)}/1k</small>` : '—';
+  document.getElementById('cheap').innerHTML = cheap ? `${cheap.name}<br><small>${fmtPct(cheap.orderedSolveAcc)} · ${money(cheap.estPer1000Usd)}/1k solves</small>` : '—';
 
   document.getElementById('deadnote').innerHTML = DEADROWS.length
     ? '⚠︎ <b style="color:var(--warn)">Not ranked:</b> ' + DEADROWS.map(r=>`<b>${r.name}</b> — ${DEAD[r.name]}`).join(' · ')
@@ -399,64 +302,32 @@ async function load(){
 
 async function loadExits(){
   const card=(k,v,sub)=>`<div class="card"><div class="k">${k}</div><div class="v">${v}</div>${sub?`<div class="dim" style="font-size:12px;margin-top:2px">${sub}</div>`:''}</div>`;
-  const lever = `<b>The lever:</b> a residential / mobile IP (instead of a datacenter/Tor exit) plus a stable real-Chrome fingerprint pushes the captcha rate toward ~0 — far more valuable than a faster solver.`;
-  // Prefer the LIVE 3-day study; fall back to the old one-afternoon sample until it has data.
+  const lever = `<b>The lever:</b> a residential / mobile IP (instead of a Tor exit) plus a stable real-Chrome fingerprint pushes the captcha rate toward ~0 — worth more than a faster solver.`;
+  const reconcile = `<b>Why the <a href="real-captchas.html">gallery</a> looks full of captchas while this rate is ~1%:</b> hostile exits are rare, but each one throws the wall on nearly every page — so a single bad exit makes a burst. The gallery is a cumulative corpus built over days of dev (and deliberately hitting bad exits for training data), not a sample of normal traffic.`;
   let s=null,e=null;
   try{ s = await fetch('data/exits-study.json?_='+Date.now()).then(r=>r.json()); }catch{}
   const ov = s && s.overall && s.overall.exits_n ? s.overall : null;
   if(ov){
-    // Cost captcha-rate provenance: show the LIVE running tally (how many real captchas the 3-day
-    // trial has actually handed the solver, and at what hour), and switch the cost projection from
-    // the 97-fetch pilot estimate to the live rate once enough captchas have landed (LIVE_RATE_MIN).
-    const det = (ov.captchas||{}).detected||0, att = ov.attempted||0;
-    const hrs = ov.duration_min!=null ? ov.duration_min/60 : null;
     const dayN = (s.days||[]).length;
-    const liveRate = att ? det/att : null;
-    capProv = att
-      ? `live so far: <b>${det} captcha${det===1?'':'s'}</b> in ${att.toLocaleString()} URLs`
-        + (liveRate!=null?` (${(liveRate*100).toFixed(liveRate<0.01?2:1)}%)`:'')
-        + (hrs!=null?` · ${hrs.toFixed(1)}h into the 3-day trial (day ${dayN}/3)`:'')
-      : '';
-    if(det >= LIVE_RATE_MIN && liveRate!=null){
-      captchaRate = liveRate;
-      captchaRateSrc = `live 3-day trial · ${det} captchas in ${att.toLocaleString()} URLs`;
-    } else {
-      captchaRate = 0.165;
-      captchaRateSrc = `early estimate · 97-fetch pilot (live trial still settling — ${det} captcha${det===1?'':'s'} so far)`;
-    }
-    // Live "best free pick" subtitle: actual solves/day = (exits/day) × exit-captcha-rate, where
-    // exits/day ≈ 3000 / (fetches per exit). Once the study has seen a captcha, show the real number.
-    const fpe = ov.exits_n ? ov.attempted/ov.exits_n : 0;
-    if(ov.captcha>0 && fpe>0){
-      const sd = Math.max(1,Math.round((3000/fpe)*(ov.captcha_rate_pct/100)));
-      gnoteSub = `~${sd} solves/day`;
-      gnoteMath = `<span class="gmath">✎ check math: solves/day = (3,000 URLs ÷ fetches-per-exit) × exit-captcha-rate `+
-        `= (3,000 ÷ ${fpe.toFixed(1)}) × ${ov.captcha_rate_pct.toFixed(1)}% ≈ ${sd}. `+
-        `fetches-per-exit = ${ov.attempted.toLocaleString()} fetches ÷ ${ov.exits_n} exits. Live from the study.</span>`;
-    } else {
-      gnoteSub = '~500–1.5k/day quota';
-      gnoteMath = `<span class="gmath">✎ no captcha seen yet this run — showing Gemini's free-tier quota ceiling (~500–1,500/day) until the study hits one.</span>`;
-    }
-    document.getElementById('exitlede').innerHTML = `The puzzle only fires on low-trust connections — so the real win is <b>avoiding</b> captchas, not solving them faster. A <b>3-day run across every region</b> is now measuring this properly; these numbers <b>update live</b> as it goes.`;
+    document.getElementById('exitlede').innerHTML = `The puzzle only fires on low-trust connections — so the real win is <b>avoiding</b> captchas, not solving them faster. Measured live over Tor across every region; <b>day ${dayN} of a planned 3 is in</b> (days 2–3 scheduled).`;
     document.getElementById('exitcards').innerHTML =
       card('Exits sampled', (ov.exits_n).toLocaleString(), `${(ov.attempted||0).toLocaleString()} product fetches`) +
-      card('Exit captcha rate', ov.captcha_rate_pct.toFixed(1)+'%', ov.captcha_ci? `95% CI ${ov.captcha_ci[0]}–${ov.captcha_ci[1]}%` : '') +
-      card('Clean exits', ov.exits&&ov.exits.windows? (ov.exits.clean_windows/ov.exits.windows*100).toFixed(0)+'%' : '—', ov.exits? `${ov.exits.clean_windows}/${ov.exits.windows} exits no wall` : '') +
-      card('Product success', (ov.success_pct??0).toFixed(1)+'%', 'parsed OK after clearing');
-    document.getElementById('exitnote').innerHTML = `<b>Live · day ${(s.days||[]).length} of 3</b> — full per-day + per-region breakdown on the <a href="exit-study.html">Tor exit study tab →</a> · ${lever}`;
+      card('Exit captcha rate', ov.captcha_rate_pct.toFixed(1)+'%', ov.captcha_ci? `95% CI ${ov.captcha_ci[0]}–${ov.captcha_ci[1]}% · ${ov.captcha}/${ov.exits_n} exits` : '') +
+      card('Clean exits', ov.exits&&ov.exits.windows? (ov.exits.clean_windows/ov.exits.windows*100).toFixed(0)+'%' : '—', ov.exits? `${ov.exits.clean_windows}/${ov.exits.windows} exits hit no wall` : '') +
+      card('Pages parsed OK', (ov.success_pct??0).toFixed(1)+'%', 'of fetches, after clearing');
+    document.getElementById('exitnote').innerHTML = `<b>Day ${dayN} of 3 · days 2–3 scheduled.</b> Full per-day + per-region breakdown on the <a href="exit-study.html">Tor exit study tab →</a><br>${reconcile}<br>${lever}`;
   } else {
     try{ e = await fetch('data/exits.json?_='+Date.now()).then(r=>r.json()); }catch{ return; }
-    if(e.captcha_rate_pct!=null) captchaRate = e.captcha_rate_pct/100;
     const noCap = (100 - (e.captcha_rate_pct??0)).toFixed(1);
-    document.getElementById('exitlede').innerHTML = `The puzzle only fires on low-trust connections — so the real win is <b>avoiding</b> captchas, not solving them faster. A <b>3-day study is starting</b> — these will switch to live numbers shortly.`;
+    document.getElementById('exitlede').innerHTML = `The puzzle only fires on low-trust connections — so the real win is <b>avoiding</b> captchas, not solving them faster. A multi-day Tor run is measuring this; numbers go live as it collects.`;
     document.getElementById('exitcards').innerHTML =
       card('No-captcha fetches', noCap+'%', `${e.scrapes_attempted-e.captcha_detected}/${e.scrapes_attempted} · $0 each`) +
       card('Hit a captcha', (e.captcha_rate_pct??'—')+'%', `${e.captcha_detected}/${e.scrapes_attempted} fetches`) +
       card('Clean exits', `${e.clean_exits}/${e.exits_sampled}`, `Tor exit nodes sampled`) +
       card('Hard blocked', (e.block_pct??'—')+'%', `${e.hard_blocks}/${e.scrapes_attempted}`);
-    document.getElementById('exitnote').innerHTML = `<b>Sample:</b> ${e.source||'small Tor run'} — too few to quote a hard rate; the live 3-day study (<a href="exit-study.html">tab →</a>) replaces this. ${lever}`;
+    document.getElementById('exitnote').innerHTML = `<b>Early sample</b> (${e.source||'small Tor run'}) — too few to quote a hard rate; the live study (<a href="exit-study.html">tab →</a>) replaces this.<br>${reconcile} ${lever}`;
   }
-  if(LB.length) renderBoard();   // refresh $/1k tooltips with the live captcha rate
+  if(LB.length) renderBoard();
 }
 
 load(); setInterval(load,60000);

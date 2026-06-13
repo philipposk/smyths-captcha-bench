@@ -45,6 +45,7 @@
     <a href="shootout.html">Solver shootout</a>
     <a href="real-captchas.html">Real captchas</a>
     <a href="production.html">Production</a>
+    <a href="economics.html">Economics</a>
     <a href="timeline.html" class="on">Timeline</a>
   </div>
 
@@ -54,6 +55,7 @@
   <div class="day">
     <h2>2026-06-13</h2>
     <ul class="t">
+      <li><b>Honesty pass over the whole site.</b> Recomputed every model's cost to one consistent basis — <b>$ per 1,000 captcha-solves</b> (real bench tokens × real OpenRouter prices), replacing a field that mixed total project bills with stale estimates; color-cv's bogus $2.12 dropped to ~$0.08. Swapped the cost "battery" (a full battery read as <i>good</i> on a cost axis) for a <b>$-tier chip</b> that goes green→red as it gets pricier. Added an <b>Economics</b> tab (real $/month, the free-key question, Tor machine specs). Killed the "3-day study" wording where only <b>day 1</b> has run, relabelled "Product success" → "pages parsed OK", and reconciled the captcha gallery (a cumulative corpus) against the ~1% live exit rate.</li>
       <li>First full <b>production day</b> went live on the dashboard, streaming scrape progress as it ran.</li>
       <li>Scoped the displayed exit-study metrics to <b>exclude the rate-limit window</b> from the night before (see the 06-12 incident) — so "hostile exits" reflects real hostility, not a dev mistake.</li>
       <li>Benched more cheap models/combos on the same 37 puzzles and surfaced them on the leaderboard + shootout.</li>
@@ -70,7 +72,7 @@
       <li class="ship">Shipped <b>human-like solving</b>: give up after a few puzzles + scroll/fidget instead of grinding 30 in a row. <span class="pr">PR #4</span></li>
       <li>Added a daily production runner + live status, surfaced as the <b>Production</b> tab.</li>
       <li>Ran the <b>solver shootout</b> — model "arms" scraping in parallel through separate Tor circuits — with a live comparison table.</li>
-      <li>Added <b>gemini-3.1-flash-lite</b> as a 4th contestant (a Tamás request) across the leaderboard, gallery and shootout; its clean 1,000-URL arm hit 98.7% products and 6/6 captchas.</li>
+      <li>Added <b>gemini-3.1-flash-lite</b> as a 4th contestant (a Tamás request) across the leaderboard, gallery and shootout; its live arm hit <b>93.6% product success</b> over 500 fetches (the exits it drew were clean, so it met 0 captchas to solve).</li>
       <li>Turned on real <b>captcha capture</b> during the exit study + per-day counts.</li>
       <li>Launched the <b>3-day Tor exit study</b> with per-exit logging and a new dashboard tab.</li>
       <li>Added the <b>Real captchas</b> gallery and rebuilt the click-overlay gallery as a model×puzzle matrix.</li>

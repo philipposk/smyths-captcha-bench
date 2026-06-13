@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The economics — what it actually costs to scrape Smyths</title>
+<meta name="description" content="Real monthly cost of clearing captchas, the free-key question, and the machine specs to run 3k/day over Tor.">
+<link rel="icon" href="favicon.svg">
+<style>
+  :root{
+    --bg:#0b0d11; --bg2:#0e1117; --panel:#13161d; --panel2:#171b23; --line:#222734;
+    --txt:#eef2f8; --mut:#93a0b4; --dim:#6b7585;
+    --good:#46d6a6; --warn:#f4b740; --bad:#ff6a6a; --accent:#7aa9ff;
+    --shadow:0 8px 30px rgba(0,0,0,.45);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:
+      radial-gradient(1100px 480px at 78% -8%, rgba(122,169,255,.10), transparent 60%),
+      radial-gradient(900px 420px at 4% 0%, rgba(70,214,166,.07), transparent 55%),
+      var(--bg);
+    color:var(--txt);font:15px/1.6 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1000px;margin:0 auto;padding:30px 18px 70px}
+  a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
+  .mut{color:var(--mut)} .dim{color:var(--dim)}
+  .nav{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+  .nav a{font-size:13px;font-weight:600;color:var(--mut);background:var(--panel);border:1px solid var(--line);padding:6px 13px;border-radius:999px}
+  .nav a.on{color:var(--txt);background:var(--panel2);border-color:#33415a}
+  .badge{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:600;letter-spacing:.3px;color:var(--good);background:rgba(70,214,166,.12);border:1px solid rgba(70,214,166,.25);padding:4px 11px;border-radius:999px}
+  h1{font-size:27px;line-height:1.15;margin:14px 0 6px;letter-spacing:-.4px;font-weight:750}
+  .sub{color:var(--mut);margin:0 0 8px;max-width:74ch}
+  h2.sec{font-size:18px;margin:34px 0 6px;letter-spacing:-.2px}
+  .lede{color:var(--mut);max-width:76ch;margin:2px 0 12px}
+  .big{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin:14px 0;box-shadow:var(--shadow)}
+  .big .hl{font-size:21px;font-weight:750;letter-spacing:-.3px;line-height:1.3}
+  .big .hl b{color:var(--good)}
+  .tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);margin:10px 0}
+  table{width:100%;border-collapse:collapse;background:var(--panel);min-width:560px}
+  th,td{padding:9px 12px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap;font-variant-numeric:tabular-nums}
+  th:first-child,td:first-child{text-align:left}
+  th{color:var(--dim);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.5px;background:var(--panel2)}
+  tr:last-child td{border-bottom:none}
+  tbody tr:hover{background:#181d27}
+  td.model{font-weight:680}
+  .ctier{display:inline-block;font-weight:800;font-size:11px;letter-spacing:.5px;padding:1px 7px;border-radius:5px}
+  .t0{color:var(--good);background:rgba(70,214,166,.14)} .t1{color:#9bd97a;background:rgba(150,210,110,.13)}
+  .t2{color:var(--warn);background:rgba(244,183,64,.15)} .t3{color:var(--bad);background:rgba(255,106,106,.15)}
+  .good{color:var(--good)} .warn{color:var(--warn)}
+  .note{font-size:12.5px;color:var(--dim);margin-top:10px;line-height:1.6}
+  .note code,p code,td code{background:#0d1016;border:1px solid var(--line);border-radius:5px;padding:1px 5px;color:var(--mut);font-size:.9em}
+  .disc{border:1px solid rgba(244,183,64,.3);background:rgba(244,183,64,.06);border-radius:11px;padding:12px 15px;margin:14px 0;font-size:13px;color:var(--mut)}
+  .disc b{color:var(--warn)}
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:12px 0}
+  @media(max-width:720px){.cols{grid-template-columns:1fr}}
+  .box{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+  .box h3{margin:0 0 6px;font-size:14px} .box p{margin:0 0 8px;color:var(--mut);font-size:13.5px} .box p:last-child{margin:0}
+  footer{color:var(--dim);margin-top:34px;font-size:13px;border-top:1px solid var(--line);padding-top:16px}
+  ul{margin:6px 0 0;padding-left:18px;color:var(--mut)} li{margin:3px 0}
+  b{color:var(--txt);font-weight:650}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="nav">
+    <a href="./">Captcha leaderboard</a>
+    <a href="gallery.html">Where models clicked</a>
+    <a href="exit-study.html">Tor exit study</a>
+    <a href="shootout.html">Solver shootout</a>
+    <a href="real-captchas.html">Real captchas</a>
+    <a href="production.html">Production</a>
+    <a href="economics.html" class="on">Economics</a>
+    <a href="timeline.html">Timeline</a>
+  </div>
+
+  <span class="badge">the reality of economics</span>
+  <h1>What does it actually cost to run this?</h1>
+  <p class="sub">Numbers a builder cares about: the monthly bill to clear captchas, whether the free Gemini key is enough, and the machine you'd need to pull 3,000 products a day over Tor. Cost figures are live from the <a href="./">leaderboard</a> (real bench tokens × real OpenRouter prices).</p>
+
+  <h2 class="sec">1 · The captcha bill is rounding error</h2>
+  <p class="lede">The solver only runs <i>when a captcha appears</i>, and captchas are rare (<a href="exit-study.html">measured ~0.8% of exits</a>). So the monthly cost = <code>$/1k-solves × captcha-rate × scrapes</code>. We show a band: <b>0.8% measured</b> → <b>16.5% worst-case</b> (the early small-sample pilot, kept as a pessimistic bound).</p>
+
+  <div class="big">
+    <div class="hl" id="headline">…</div>
+    <div class="note" id="headsub"></div>
+  </div>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr>
+        <th>model / combo</th><th>solved</th><th>$/1k&nbsp;solves</th>
+        <th>$/mo @ 0.8%</th><th>$/mo @ 16.5%</th>
+      </tr></thead>
+      <tbody id="costbody"><tr><td>loading…</td></tr></tbody>
+    </table>
+  </div>
+  <p class="note">Assumes <b>3,000 scrapes/day, every day (×30)</b>. <code>$/mo = $/1k-solves × rate × 90</code> &nbsp;(90 = 3k/day ÷ 1k × 30 days). A <code>~</code> on a price means the unit price is an estimate, not a model we run in production.</p>
+
+  <h2 class="sec">2 · "Isn't the free Gemini key enough?"</h2>
+  <p class="lede">Short answer: not on its own. Two separate things get called "Gemini":</p>
+  <div class="cols">
+    <div class="box">
+      <h3>Free Gemini key <span class="ctier t0">FREE</span></h3>
+      <p>Google's free tier — what <code>GEMINI_API_KEY</code> uses. Serves only <b>gemini-2.5-flash</b> (~500/day) and <b>2.5-flash-lite</b> (~1,000/day).</p>
+      <p>Problem 1: those models are <b>weak</b> on this puzzle — 32% / 30% solved vs 90%+ for the paid Gemini-3 tier.</p>
+      <p>Problem 2: the daily quota (~500–1,500 solves) sits <b>right at our captcha volume</b>, so a busy day exhausts it and the scraper stalls.</p>
+    </div>
+    <div class="box">
+      <h3>Paid via OpenRouter <span class="ctier t2">$$</span></h3>
+      <p>The strong models — <b>gemini-3-flash, 3.1-flash-lite, qwen3-vl-32b</b> — only exist on the paid tier, billed through OpenRouter. That's what every combo on the board uses.</p>
+      <p>But "paid" here is cents/month (section 1). So the honest setup is: <b>free key as a first try, paid OpenRouter as the fallback</b> when the puzzle is hard or the quota's gone — which is exactly what <a href="production.html">production</a> runs.</p>
+    </div>
+  </div>
+  <p class="note">We did <b>not</b> ship two separate builds — one solver picks the provider per call. The free key is tried first where it's viable; OpenRouter catches the rest for a few cents.</p>
+
+  <h2 class="sec">3 · The machine, and time, to do 3k/day over Tor</h2>
+  <p class="lede">Throughput is measured at <b>~600 product fetches/hour per arm</b> (555–731 across the study + shootout). An "arm" = one headed Chrome + its own Tor exit. You scale by adding arms — mostly for <b>exit diversity</b> (more distinct IPs in rotation), not because Tor is slow.</p>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr>
+        <th>parallel arms</th><th>throughput</th><th>time for 3,000</th><th>RAM (Chrome+Tor)</th><th>CPU</th>
+      </tr></thead>
+      <tbody>
+        <tr><td class="model">1</td><td>~600/hr</td><td>~5&nbsp;h</td><td>~0.45&nbsp;GB</td><td>~1 core</td></tr>
+        <tr><td class="model">3</td><td>~1,800/hr</td><td>~1.7&nbsp;h</td><td>~1.3&nbsp;GB</td><td>~2–3 cores</td></tr>
+        <tr><td class="model">6</td><td>~3,600/hr</td><td>~50&nbsp;min</td><td>~2.6&nbsp;GB</td><td>~4–6 cores</td></tr>
+        <tr><td class="model">9</td><td>~5,400/hr</td><td>~33&nbsp;min</td><td>~3.9&nbsp;GB</td><td>~6–9 cores</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <ul>
+    <li><b>Tor is tiny:</b> a Tor client runs in <b>~15–50 MB</b> RAM, single-threaded, and barely touches the CPU at one-page-at-a-time traffic. It is <i>not</i> the bottleneck.</li>
+    <li><b>The real cost is Chrome:</b> each arm is a headed patched-Chrome instance (~350–450 MB). 9 arms ≈ 9 browsers — that's where the RAM goes.</li>
+    <li><b>You don't need parallelism for 3k/day:</b> one arm at a polite human pace (1.5–4.5 s between fetches) clears 3,000 in ~5 hours. Add arms only for speed or to spread across more exit IPs.</li>
+    <li><b>Run one Tor process per arm</b> (Tor is single-threaded; separate processes get you separate exits and use separate cores).</li>
+  </ul>
+
+  <div class="disc">
+    <b>Double-check these for your setup.</b> RAM/throughput were measured on an Apple-Silicon Mac with patchright + a 1.5–4.5 s/fetch human pace; headed-Chrome memory and Tor exit availability vary by machine, OS, and the day. Prices are OpenRouter list (Jun 2026) and move. Treat the tables as order-of-magnitude, not a quote — re-measure on your target hardware before committing capacity.
+  </div>
+
+  <h2 class="sec">4 · Things we tried and dropped</h2>
+  <ul>
+    <li><b>DeepSeek V4 Flash</b> — cheap ($0.098/$0.196 per M tok) but <b>no image input</b>, so it can't see the doodle. Can't be a solver. Not on the board.</li>
+    <li><b>Free local Moondream / qwen-on-Ollama</b> — $0 but slow on Apple Silicon and weaker; useful as a backstop, not a primary.</li>
+    <li><b>color-cv at "$2.12"</b> — that number was stale Moondream-classify calls. Run properly (free CV locate + one qwen legend read) it's <b>~$0.08/1k</b>, same tier as the rest.</li>
+  </ul>
+
+  <footer>
+    Cost = real bench tokens × live OpenRouter price · throughput from the live study + shootout ·
+    <a href="https://github.com/philipposk/smyths-scraper">scraper repo</a> ·
+    <span class="dim">numbers update with the leaderboard</span>
+  </footer>
+</div>
+
+<script>
+const SCRAPES_PER_DAY = 3000, DAYS = 30, FACTOR = SCRAPES_PER_DAY/1000*DAYS; // 90
+const money = (x)=> x==null ? '—' : (!x ? '$0' : (x<0.1 ? '$'+x.toFixed(3) : '$'+x.toFixed(2)));
+const moMoney = (x)=> !x ? '$0' : (x<1 ? '$'+x.toFixed(2) : '$'+x.toFixed(x<10?1:0));
+const tierSym = ['FREE','$','$$','$$$'];
+
+async function load(){
+  let d; try{ d = await fetch('data/results.json?_='+Date.now()).then(r=>r.json()); }catch{ return; }
+  const rows = (d.leaderboard||[]).slice().sort((a,b)=>(b.orderedSolveAcc||0)-(a.orderedSolveAcc||0));
+
+  // headline: cheapest viable (>=85% solved) + worst-case for the BEST model, at the measured rate
+  const viable = rows.filter(r=>r.orderedSolveAcc>=0.85);
+  const cheapest = viable.slice().sort((a,b)=>(a.estPer1000Usd||0)-(b.estPer1000Usd||0))[0];
+  const best = viable[0];
+  const moAt = (r,rate)=> (r.estPer1000Usd||0)*rate*FACTOR;
+  const maxViableMo = Math.max(...viable.map(r=>moAt(r,0.008)));
+  document.getElementById('headline').innerHTML =
+    `At the measured rate, clearing captchas for <b>3,000 scrapes a day</b> costs <b>under ${moMoney(Math.ceil(maxViableMo*10)/10)}/month</b> with any solver on the board.`;
+  document.getElementById('headsub').innerHTML =
+    `Cheapest: <b>${cheapest.name}</b> at <b>${moMoney(moAt(cheapest,0.008))}/mo</b> (${(cheapest.orderedSolveAcc*100).toFixed(0)}% solved). `+
+    `Even at the pessimistic 16.5% rate the best model (<b>${best.name}</b>, ${(best.orderedSolveAcc*100).toFixed(0)}%) is ~${moMoney(moAt(best,0.165))}/mo. `+
+    `The scrape itself, over Tor, is free.`;
+
+  document.getElementById('costbody').innerHTML = rows.map(r=>{
+    const perK = r.estPer1000Usd||0, tier = r.costTier||0;
+    return `<tr>
+      <td class="model">${r.name}${r.new?' <span class="ctier t0" style="background:rgba(70,214,166,.18)">NEW</span>':''}</td>
+      <td class="${r.orderedSolveAcc>=0.85?'good':''}">${(r.orderedSolveAcc*100).toFixed(1)}%</td>
+      <td><span class="ctier t${tier}">${tierSym[tier]}</span> ${perK?money(perK)+(r.costEst?'~':''):''}</td>
+      <td>${moMoney(perK*0.008*FACTOR)}</td>
+      <td class="warn">${moMoney(perK*0.165*FACTOR)}</td>
+    </tr>`;
+  }).join('');
+}
+load();
+</script>
+</body>
+</html>
