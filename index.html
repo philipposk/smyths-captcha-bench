@@ -109,6 +109,10 @@
 
   /* crowns: gold = Philippos's pick, blue ♛ = your vote, purple = community. Sit side by side. */
   .crowns{display:inline-flex;gap:3px;vertical-align:middle;margin-left:7px}
+  /* live-runner badge: this model/combo is powering a live 3k/day scrape → links to Live runs */
+  .livebadge{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;color:var(--good);background:rgba(70,214,166,.12);border:1px solid rgba(70,214,166,.3);border-radius:999px;padding:1px 7px 1px 6px;margin-left:6px;vertical-align:middle;cursor:pointer;text-decoration:none}
+  .livebadge:hover{background:rgba(70,214,166,.22);text-decoration:none}
+  .livebadge .ldot{width:6px;height:6px;border-radius:50%;background:var(--good);animation:pulse 2s infinite}
   .cr{position:relative;cursor:help;font-size:14px;line-height:1}
   .cr.gold{filter:drop-shadow(0 1px 2px rgba(0,0,0,.5))}
   .cr.mine{color:var(--accent);font-size:15px;font-weight:700}
@@ -145,10 +149,7 @@
     <a href="./" style="font-size:13px;font-weight:600;color:var(--txt);background:var(--panel2);border:1px solid #33415a;padding:6px 13px;border-radius:999px">Captcha leaderboard</a>
     <a href="runs.html" style="font-size:13px;font-weight:600;color:var(--mut);background:var(--panel);border:1px solid var(--line);padding:6px 13px;border-radius:999px">Live runs</a>
     <a href="gallery.html" style="font-size:13px;font-weight:600;color:var(--mut);background:var(--panel);border:1px solid var(--line);padding:6px 13px;border-radius:999px">Where models clicked</a>
-    <a href="exit-study.html" style="font-size:13px;font-weight:600;color:var(--mut);background:var(--panel);border:1px solid var(--line);padding:6px 13px;border-radius:999px">Tor exit study</a>
-    <a href="shootout.html" style="font-size:13px;font-weight:600;color:var(--mut);background:var(--panel);border:1px solid var(--line);padding:6px 13px;border-radius:999px">Solver shootout</a>
     <a href="real-captchas.html" style="font-size:13px;font-weight:600;color:var(--mut);background:var(--panel);border:1px solid var(--line);padding:6px 13px;border-radius:999px">Real captchas</a>
-    <a href="production.html" style="font-size:13px;font-weight:600;color:var(--mut);background:var(--panel);border:1px solid var(--line);padding:6px 13px;border-radius:999px">Production</a>
     <a href="economics.html" style="font-size:13px;font-weight:600;color:var(--mut);background:var(--panel);border:1px solid var(--line);padding:6px 13px;border-radius:999px">Economics</a>
     <a href="timeline.html" style="font-size:13px;font-weight:600;color:var(--mut);background:var(--panel);border:1px solid var(--line);padding:6px 13px;border-radius:999px">Timeline</a>
   </div>
@@ -253,6 +254,15 @@ const PICKS = {
   'qwen3-vl-32b→gemini-3.1-flash-lite':'Philippos’s pick — best accuracy-per-$ combo',
   'shape+color-ensemble':'Philippos’s pick — free-CV, 86.5%'
 };
+// models powering a live scrape run right now — badge links to the Live runs page
+const LIVE_RUNNERS = {
+  'gemini-3.1-flash-lite':'Running the live production scrape — 3,000 URLs/day',
+  'qwen3-vl-32b':'Running the live Tor exit study — 3,000 URLs/day'
+};
+function liveBadge(name){
+  const t = LIVE_RUNNERS[name]; if(!t) return '';
+  return `<a class="livebadge" href="runs.html" title="${t} · open Live runs"><span class="ldot"></span>live</a>`;
+}
 // Real cross-person voting is ON via Supabase — an isolated `picks_votes` table (anon can read the
 // tally + cast/withdraw a vote). The key below is the project's PUBLIC publishable key, safe to ship:
 // row-level security limits anon to that one table, nothing else.
@@ -350,7 +360,7 @@ function renderBoard(){
   const rows = lb.map((r,i)=>{
     return `<tr class="${i===0?'top1':''}" data-name="${r.name}">
       <td><span class="rank">${i+1}</span></td>
-      <td class="name">${r.name}${crowns(r.name)}${r.new?' <span style="font-size:9px;font-weight:800;color:var(--good);background:rgba(70,214,166,.18);border-radius:4px;padding:0 5px;vertical-align:2px">NEW</span>':''}</td>
+      <td class="name">${r.name}${liveBadge(r.name)}${crowns(r.name)}${r.new?' <span style="font-size:9px;font-weight:800;color:var(--good);background:rgba(70,214,166,.18);border-radius:4px;padding:0 5px;vertical-align:2px">NEW</span>':''}</td>
       <td class="detcol det">${detail(r)}</td>
       <td><span class="solv">${fmtPct(r.orderedSolveAcc)}</span></td>
       <td class="num">${fmtPct(r.solveAcc)}</td>
