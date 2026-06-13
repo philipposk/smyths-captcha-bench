@@ -1,5 +1,5 @@
 {
-  "updated": 1781309736438,
+  "updated": 1781310745223,
   "corpus": 37,
   "hitRadius": 80,
   "costNote": "Paid $/1k from real OpenRouter spend; local/free=$0.",
@@ -21,6 +21,23 @@
         "openrouter": 74
       },
       "costReal": true
+    },
+    {
+      "name": "qwen3-vl-32b→gemini-3.1-flash-lite",
+      "legendAcc": 0,
+      "locateAcc": 1,
+      "solveAcc": 1,
+      "orderedSolveAcc": 0.946,
+      "p50ms": 2500,
+      "avgTokens": 0,
+      "avgCalls": 0,
+      "estPer1000Usd": 0.2881,
+      "free": false,
+      "errors": 0,
+      "n": 37,
+      "providers": {},
+      "combo": true,
+      "new": true
     },
     {
       "name": "gemini-3.5-flash",
