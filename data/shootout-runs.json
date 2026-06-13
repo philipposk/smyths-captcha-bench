@@ -1,5 +1,5 @@
 {
-  "updated": 1781308299292,
+  "updated": 1781312232104,
   "partial": true,
   "note": "Each arm scraped the same URL sample on its OWN Tor (own exits), in parallel. Arms differ only in the locate method; legend reading is qwen/vlm in all. Aggregate comparison, not a same-captcha test. Captcha counts are solve ATTEMPTS (a method that keeps failing logs several).",
   "arms": [
@@ -7,218 +7,85 @@
       "name": "qwen",
       "label": "qwen3-vl-32b",
       "locate": "vlm",
-      "kind": "vision AI \u00b7 paid (cheap)",
+      "kind": "vision AI · paid (cheap)",
       "partial": true,
-      "fetches": 2202,
-      "success_pct": 29.7,
-      "block_pct": 5.9,
-      "exits_n": 625,
+      "fetches": 3,
+      "success_pct": 100,
+      "block_pct": 0,
+      "exits_n": 1,
       "captchas": {
-        "detected": 21,
-        "solved": 2,
-        "failed": 19
+        "detected": 0,
+        "solved": 0,
+        "failed": 0
       },
-      "solve_rate_pct": 9.5,
-      "rotations": 624,
-      "duration_min": 306.4,
-      "fetches_per_hour": 431,
-      "items": [
-        {
-          "image": "data/shootout/qwen/qwen_doodle_a01_failed.png",
-          "solved": false,
-          "legend": [
-            "ink splat",
-            "musical notes"
-          ]
-        },
-        {
-          "image": "data/shootout/qwen/qwen_doodle_a02_failed.png",
-          "solved": false,
-          "legend": [
-            "bell",
-            "toolbox"
-          ]
-        },
-        {
-          "image": "data/shootout/qwen/qwen_doodle_a01_solved.png",
-          "solved": true,
-          "legend": [
-            "lollipop",
-            "birdhouse",
-            "hamburger"
-          ]
-        }
-      ]
+      "solve_rate_pct": null,
+      "rotations": 0,
+      "duration_min": 0.2,
+      "fetches_per_hour": 996,
+      "items": []
     },
     {
       "name": "gemini",
       "label": "gemini-3.1-flash-lite",
       "locate": "vlm",
-      "kind": "vision AI \u00b7 paid",
-      "partial": false,
-      "fetches": 3000,
-      "success_pct": 90.5,
-      "block_pct": 8.6,
-      "exits_n": 236,
+      "kind": "vision AI · paid",
+      "partial": true,
+      "fetches": 0,
+      "success_pct": null,
+      "block_pct": null,
+      "exits_n": 0,
       "captchas": {
-        "detected": 19,
-        "solved": 13,
-        "failed": 6
+        "detected": 0,
+        "solved": 0,
+        "failed": 0
       },
-      "solve_rate_pct": 68.4,
-      "rotations": 241,
-      "duration_min": 279.8,
-      "fetches_per_hour": 643,
-      "items": [
-        {
-          "image": "data/shootout/gemini/gemini_doodle_a02_solved.png",
-          "solved": true,
-          "legend": [
-            "duck",
-            "cassette",
-            "flower"
-          ]
-        },
-        {
-          "image": "data/shootout/gemini/gemini_doodle_a01_failed.png",
-          "solved": false,
-          "legend": [
-            "apple",
-            "owl",
-            "bus"
-          ]
-        },
-        {
-          "image": "data/shootout/gemini/gemini_doodle_a02_failed.png",
-          "solved": false,
-          "legend": [
-            "bus",
-            "motorcycle",
-            "bicycle"
-          ]
-        },
-        {
-          "image": "data/shootout/gemini/gemini_doodle_a01_solved.png",
-          "solved": true,
-          "legend": [
-            "bicycle",
-            "hammer"
-          ]
-        }
-      ]
+      "solve_rate_pct": null,
+      "rotations": 0,
+      "duration_min": 0,
+      "fetches_per_hour": 0,
+      "items": []
     },
     {
       "name": "shape",
       "label": "shape-match",
       "locate": "match",
-      "kind": "computer vision \u00b7 free locate",
+      "kind": "computer vision · free locate",
       "partial": true,
-      "fetches": 2979,
-      "success_pct": 85.1,
-      "block_pct": 13.3,
-      "exits_n": 286,
+      "fetches": 0,
+      "success_pct": null,
+      "block_pct": null,
+      "exits_n": 0,
       "captchas": {
-        "detected": 72,
-        "solved": 5,
-        "failed": 67
+        "detected": 0,
+        "solved": 0,
+        "failed": 0
       },
-      "solve_rate_pct": 6.9,
-      "rotations": 285,
-      "duration_min": 306.6,
-      "fetches_per_hour": 583,
-      "items": [
-        {
-          "image": "data/shootout/shape/shape_doodle_a02_failed.png",
-          "solved": false,
-          "legend": [
-            "cassette",
-            "microphone",
-            "ribbon"
-          ]
-        },
-        {
-          "image": "data/shootout/shape/shape_doodle_a01_failed.png",
-          "solved": false,
-          "legend": [
-            "ink bottle",
-            "paintbrush",
-            "snail",
-            "bird"
-          ]
-        },
-        {
-          "image": "data/shootout/shape/shape_doodle_a01_solved.png",
-          "solved": true,
-          "legend": [
-            "dice",
-            "owl"
-          ]
-        },
-        {
-          "image": "data/shootout/shape/shape_doodle_a02_solved.png",
-          "solved": true,
-          "legend": [
-            "bird",
-            "key",
-            "book"
-          ]
-        }
-      ]
+      "solve_rate_pct": null,
+      "rotations": 0,
+      "duration_min": 0,
+      "fetches_per_hour": 0,
+      "items": []
     },
     {
       "name": "color",
       "label": "color-cv",
       "locate": "blob",
-      "kind": "computer vision \u00b7 free locate",
+      "kind": "computer vision · free locate",
       "partial": true,
-      "fetches": 2017,
-      "success_pct": 31.1,
-      "block_pct": 0.6,
-      "exits_n": 561,
+      "fetches": 0,
+      "success_pct": null,
+      "block_pct": null,
+      "exits_n": 0,
       "captchas": {
-        "detected": 82,
-        "solved": 4,
-        "failed": 78
+        "detected": 0,
+        "solved": 0,
+        "failed": 0
       },
-      "solve_rate_pct": 4.9,
-      "rotations": 560,
-      "duration_min": 305.1,
-      "fetches_per_hour": 397,
-      "items": [
-        {
-          "image": "data/shootout/color/color_doodle_a02_failed.png",
-          "solved": false,
-          "legend": [
-            "pepper",
-            "ink bottle"
-          ]
-        },
-        {
-          "image": "data/shootout/color/color_doodle_a01_failed.png",
-          "solved": false,
-          "legend": [
-            "pepper",
-            "ink bottle"
-          ]
-        },
-        {
-          "image": "data/shootout/color/color_doodle_a02_solved.png",
-          "solved": true,
-          "legend": [
-            "bowling pins",
-            "test tube"
-          ]
-        },
-        {
-          "image": "data/shootout/color/color_doodle_a01_solved.png",
-          "solved": true,
-          "legend": [
-            "bell",
-            "toolbox"
-          ]
-        }
-      ]
+      "solve_rate_pct": null,
+      "rotations": 0,
+      "duration_min": 0,
+      "fetches_per_hour": 0,
+      "items": []
     }
-  ],
-  "warning": "\u26a0 This 3k run is INVALID for the qwen-based arms. Running 5 qwen solvers at once rate-limited the shared OpenRouter qwen endpoint (HTTP 429), so qwen / shape-match / color-cv went into a fail-and-rotate spiral \u2014 their numbers here are rate-limit artifacts, NOT real method performance. Only gemini-3.1-flash-lite (a separate endpoint) ran clean. A valid comparison needs the arms run one-at-a-time. The earlier 1k run is the trustworthy ranking."
+  ]
 }

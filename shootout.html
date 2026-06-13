@@ -129,8 +129,7 @@
   <div class="three" id="cards"></div>
   <p class="dim" style="font-size:12px;margin:8px 2px 0" id="benchnote"></p>
 
-  <h3 style="font-size:15px;margin:22px 0 6px;font-weight:700">Every config benched <span class="dim" style="font-weight:400;font-size:13px">· all <span id="nall">—</span> on the same 37 puzzles, sorted by solve rate</span></h3>
-  <div id="roster"></div>
+  <p class="dim" style="font-size:12.5px;margin:10px 2px 0">Full ranking of all benched configs on the <a href="./">leaderboard ›</a></p>
 
   <h2 class="sec">Why the free methods miss</h2>
   <p class="secsub">Both free methods <b>find</b> roughly half the doodles but <b>solve</b> far fewer — because finding a drawing isn't enough, you have to click them in the legend's order. That ordering step is what the vision model gets and the CV methods don't.</p>
@@ -195,14 +194,6 @@ async function load(){
     `Scores are real bench runs over ${n} saved Smyths puzzles. shape-match and color-cv score identically — both stall at the ordering step. ` +
     `<b>Caveat:</b> their cost columns disagree ($0 vs $2.12) only because each bench config paired the CV locate with a different legend-reader; the locate itself is free.`;
 
-  // full roster — every config benched on the 37 puzzles (not just the 4 live-run methods)
-  const lb = (res.leaderboard||[]);
-  const nallEl=document.getElementById('nall'); if(nallEl) nallEl.textContent = lb.length;
-  const NEWB = '<span style="font-size:9px;font-weight:800;color:var(--good);background:rgba(70,214,166,.18);border-radius:4px;padding:0 5px;margin-left:5px;vertical-align:1px">NEW</span>';
-  const rosterEl=document.getElementById('roster');
-  if(rosterEl) rosterEl.innerHTML = `<table class="cmp"><thead><tr><th>#</th><th>config</th><th>solved ✓</th><th>found</th><th>icons hit</th><th>p50</th><th>$/1k</th></tr></thead><tbody>`+
-    lb.map((r,i)=>`<tr><td>${i+1}</td><td><span class="mname">${r.name}</span>${r.new?NEWB:''}</td><td><b>${pct(r.orderedSolveAcc)}</b></td><td>${pct(r.solveAcc)}</td><td>${pct(r.locateAcc)}</td><td>${ms(r.p50ms)}</td><td>${usd(r.estPer1000Usd)}</td></tr>`).join('')+`</tbody></table>`;
-
   // found-vs-solved gap bars
   const maxV = 1;
   document.getElementById('gap').innerHTML = METHODS.map(m=>{
@@ -243,8 +234,8 @@ async function load(){
     // best-in-column helpers (higher is better for these)
     const best = (key) => Math.max(...A.map(a=>a[key]==null?-1:a[key]));
     const cell = (a,key,fmt) => `<td class="${a[key]!=null && a[key]===best(key)?'best':''}">${fmt(a[key])}</td>`;
-    runsEl.innerHTML = (runs.warning?`<div style="background:rgba(255,106,106,.1);border:1px solid rgba(255,106,106,.4);color:var(--bad);font-size:12.5px;border-radius:10px;padding:10px 13px;margin-bottom:11px;line-height:1.5">${runs.warning}</div>`:'') +
-      (runs.partial&&!runs.warning?`<div style="background:rgba(244,183,64,.1);border:1px solid rgba(244,183,64,.3);color:var(--warn);font-size:12.5px;border-radius:10px;padding:9px 13px;margin-bottom:11px">⚠ Partial smoke run — the arms were stopped early (the free methods got stuck rotating on hostile exits). Numbers are directional, not a full run.</div>`:'') +
+    runsEl.innerHTML =
+      (runs.partial?`<div style="background:rgba(244,183,64,.1);border:1px solid rgba(244,183,64,.3);color:var(--warn);font-size:12.5px;border-radius:10px;padding:9px 13px;margin-bottom:11px">⏳ Run in progress — numbers fill in as the arms scrape.</div>`:'') +
       `<table class="cmp"><thead><tr>
         <th>method</th><th>URLs tried</th><th>exits</th><th>captcha tries</th><th>solved</th>
         <th>solve rate</th><th>products scraped</th><th>speed</th></tr></thead><tbody>` +
