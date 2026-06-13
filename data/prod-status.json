@@ -1,15 +1,15 @@
 {
-  "updated": 1781393008972,
+  "updated": 1781394327752,
   "branch": "feat/production-reliability-pipeline",
   "note": "Production run: scrape every URL or log exactly why not. rotate fresh exit → escalate qwen→gemini-3.1-flash-lite → deferred retries → structured error log.",
   "overall": {
     "requested": 6000,
-    "scraped": 3222,
+    "scraped": 3468,
     "unscraped": 26,
-    "accounted_pct": 54.1,
-    "scraped_pct": 53.7,
+    "accounted_pct": 58.2,
+    "scraped_pct": 57.8,
     "errorsByCategory": {
-      "data_extraction": 28
+      "data_extraction": 31
     }
   },
   "days": [
@@ -66,11 +66,11 @@
       "status": "running",
       "date": null,
       "requested": 3000,
-      "scraped": 248,
+      "scraped": 494,
       "unscraped": 0,
       "captchas": {},
       "errorsByCategory": {
-        "data_extraction": 2
+        "data_extraction": 5
       },
       "sampleErrors": [
         {
@@ -80,6 +80,21 @@
         },
         {
           "url": "https://www.smythstoys.com/nl/nl-nl/speelgoed/poppen-en-accessories/poppen/pop-met-haar-assorti/p/174299",
+          "category": "data_extraction",
+          "attempts": 2
+        },
+        {
+          "url": "https://www.smythstoys.com/ch/de-ch/spielzeug/bauen-und-spielsets/schleich/schleich-eldrador-creatures/schleich-eldrador-creatures-70828-steintriceratops/p/244327",
+          "category": "data_extraction",
+          "attempts": 2
+        },
+        {
+          "url": "https://www.smythstoys.com/nl/nl-nl/speelgoed/creatief-en-knutselen/verjaardag-en-feest/folieballon-happy-birthday-53-cm/p/241349",
+          "category": "data_extraction",
+          "attempts": 2
+        },
+        {
+          "url": "https://www.smythstoys.com/ch/de-ch/spielzeug/action-spielzeug/spielzeugautos-und-spielsets/siku/siku-5510-polizeistation-mit-licht-und-sound/p/249851",
           "category": "data_extraction",
           "attempts": 2
         }
