@@ -1,15 +1,15 @@
 {
-  "updated": 1781392025835,
+  "updated": 1781393003430,
   "branch": "feat/production-reliability-pipeline",
   "note": "Production run: scrape every URL or log exactly why not. rotate fresh exit → escalate qwen→gemini-3.1-flash-lite → deferred retries → structured error log.",
   "overall": {
     "requested": 6000,
-    "scraped": 3025,
+    "scraped": 3222,
     "unscraped": 26,
-    "accounted_pct": 50.8,
-    "scraped_pct": 50.4,
+    "accounted_pct": 54.1,
+    "scraped_pct": 53.7,
     "errorsByCategory": {
-      "data_extraction": 26
+      "data_extraction": 28
     }
   },
   "days": [
@@ -66,11 +66,24 @@
       "status": "running",
       "date": null,
       "requested": 3000,
-      "scraped": 51,
+      "scraped": 248,
       "unscraped": 0,
       "captchas": {},
-      "errorsByCategory": {},
-      "sampleErrors": []
+      "errorsByCategory": {
+        "data_extraction": 2
+      },
+      "sampleErrors": [
+        {
+          "url": "https://www.smythstoys.com/nl/nl-nl/speelgoed/knuffels/pluche-en-knuffeldieren/teddyberen/knuffelbeer-xl-teddybeer-met-strik-knuffel-100-cm-bruin/p/168724",
+          "category": "data_extraction",
+          "attempts": 2
+        },
+        {
+          "url": "https://www.smythstoys.com/nl/nl-nl/speelgoed/poppen-en-accessories/poppen/pop-met-haar-assorti/p/174299",
+          "category": "data_extraction",
+          "attempts": 2
+        }
+      ]
     }
   ]
 }
