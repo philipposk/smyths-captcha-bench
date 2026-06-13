@@ -106,6 +106,39 @@
   /* a tiny ↕ caret on every sortable header (the convention) so it reads as clickable */
   th.sortable .arr{opacity:0} th.sortable:after{content:"↕";font-size:10px;margin-left:3px;opacity:.4} th.sortable.act:after{content:""} th.sortable.act .arr{opacity:1}
   th.nonsort{cursor:default}
+
+  /* crowns: gold = Philippos's pick, blue ♛ = your vote, purple = community. Sit side by side. */
+  .crowns{display:inline-flex;gap:3px;vertical-align:middle;margin-left:7px}
+  .cr{position:relative;cursor:help;font-size:14px;line-height:1}
+  .cr.gold{filter:drop-shadow(0 1px 2px rgba(0,0,0,.5))}
+  .cr.mine{color:var(--accent);font-size:15px;font-weight:700}
+  .cr.comm{color:#c89bff;font-size:13px;font-weight:800}
+  .cr .tip{position:absolute;left:50%;bottom:155%;transform:translateX(-50%) translateY(5px);opacity:0;pointer-events:none;white-space:nowrap;z-index:30;
+    background:linear-gradient(180deg,#fff6dc,#ffe39e);color:#5a3d00;font-weight:800;font-size:12px;padding:5px 10px;border-radius:9px;border:1.5px solid #ffcf4d;box-shadow:0 8px 20px rgba(0,0,0,.4);transition:.16s}
+  .cr.mine .tip,.cr.comm .tip{background:linear-gradient(180deg,#1a2030,#141925);color:var(--txt);border-color:#33415a}
+  .cr:hover .tip{opacity:1;transform:translateX(-50%) translateY(0)}
+  /* vote button + panel */
+  .votewrap{display:flex;flex-direction:column;align-items:center;gap:9px;margin:24px 0 4px}
+  .votebtn{font:800 17px/1 ui-sans-serif;color:#0b0d11;background:linear-gradient(180deg,#ffd24d,#f4b740);border:none;border-radius:13px;padding:15px 32px;cursor:pointer;box-shadow:0 8px 22px rgba(244,183,64,.3);transition:transform .12s,box-shadow .12s;display:inline-flex;align-items:center;gap:9px}
+  .votebtn:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(244,183,64,.45)} .votebtn:active{transform:translateY(0)}
+  .picksum{font-size:13px;color:var(--mut);text-align:center} .picksum b{color:var(--txt)}
+  .votepanel{display:none;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 15px;margin:10px auto 0;max-width:380px}
+  .votepanel.on{display:block} .votepanel h4{margin:0 0 7px;font-size:12px;text-transform:uppercase;letter-spacing:.5px;color:var(--mut)}
+  .votepanel .vr{display:flex;justify-content:space-between;gap:8px;font-size:13px;padding:3px 0;border-bottom:1px solid var(--line)} .votepanel .vr:last-child{border:none}
+  .votepanel .vr b{color:var(--txt)} .votepanel .vn{color:#c89bff;font-weight:700}
+  /* picker overlay + toast */
+  .vov{position:fixed;inset:0;background:rgba(5,7,11,.72);display:none;align-items:center;justify-content:center;z-index:300;padding:20px}
+  .vov.on{display:flex}
+  .vcard{background:var(--panel2);border:1px solid var(--line);border-radius:16px;padding:20px;max-width:440px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.6);max-height:80vh;overflow:auto}
+  .vcard h3{margin:0 0 4px;font-size:18px} .vcard p{margin:0 0 12px;color:var(--mut);font-size:13px}
+  .vlist{display:flex;flex-direction:column;gap:5px}
+  .vopt{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:9px 12px;border:1px solid var(--line);border-radius:9px;background:var(--panel);cursor:pointer;font-weight:600;font-size:14px;color:var(--txt)}
+  .vopt:hover{border-color:#33415a;background:#1a1f2a} .vopt.voted{border-color:var(--accent);background:rgba(122,169,255,.1)}
+  .vopt .vs{color:var(--mut);font-size:12px;font-weight:600}
+  .vclose{margin-top:13px;text-align:right} .vclose button{background:none;border:1px solid var(--line);color:var(--mut);border-radius:8px;padding:7px 14px;cursor:pointer;font-weight:600}
+  #toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);opacity:0;z-index:400;pointer-events:none;
+    background:linear-gradient(180deg,#1a2030,#141925);border:1px solid #33415a;color:var(--txt);font-weight:650;font-size:14px;padding:12px 20px;border-radius:12px;box-shadow:0 14px 34px rgba(0,0,0,.55);transition:.3s;max-width:90vw;text-align:center}
+  #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 </style>
 </head>
 <body>
@@ -146,6 +179,12 @@
 
   <div id="boardwrap" style="position:relative"><div id="board"></div></div>
 
+  <div class="votewrap">
+    <button class="votebtn" id="votebtn"><span style="font-size:20px">👑</span> Vote your own</button>
+    <div class="picksum" id="picksum"></div>
+    <div class="votepanel" id="votepanel"></div>
+  </div>
+
   <div class="legend">
     <b style="color:var(--good)">solved ✓</b> = clicked every doodle in the <b>right order</b> — the only result that actually passes the captcha (the real score) ·
     <b>located</b> = found all the doodles but maybe out of order (still fails) ·
@@ -167,6 +206,14 @@
     <span class="dim">no API keys or raw site data are published here</span>
   </footer>
 </div>
+
+<div class="vov" id="vov"><div class="vcard">
+  <h3>👑 Crown your pick</h3>
+  <p>Tap the model you'd actually run. Your crown shows up next to it on the board.</p>
+  <div class="vlist" id="vlist"></div>
+  <div class="vclose"><button onclick="document.getElementById('vov').classList.remove('on')">close</button></div>
+</div></div>
+<div id="toast"></div>
 
 <script>
 // per-model "what is it / how does it run" — shown in the Details column.
@@ -209,6 +256,79 @@ function costChip(r){
   return `<span class="ctier t${tier}">${sym}</span>${num}`;
 }
 
+// ---- Picks & voting -------------------------------------------------------
+// Philippos's picks (gold crown), attached to the MODEL so they stay correct at any sort order.
+const PICKS = {
+  'qwen3-vl-32b→gemini-3.1-flash-lite':'Philippos’s pick — best accuracy-per-$ combo',
+  'shape+color-ensemble':'Philippos’s pick — free-CV, 86.5%'
+};
+// Turn on REAL cross-person voting: create a `picks_votes` table (model text, voter text,
+// unique(model,voter)) in Supabase with anon INSERT+SELECT+DELETE RLS, then fill these two.
+// Empty = local-only (your crown saves to this browser; group voting nudges to Slack).
+const SUPA = { url:'', key:'' };
+const anonId = (()=>{ let id=localStorage.getItem('anonId'); if(!id){ id='a'+Math.abs((Date.now()^(performance.now()*1000|0))).toString(36); localStorage.setItem('anonId',id);} return id; })();
+let COMMUNITY = {}, VOTERS = 0;          // model -> vote count, distinct voters (backend only)
+const _h = () => ({apikey:SUPA.key, Authorization:'Bearer '+SUPA.key, 'Content-Type':'application/json', Prefer:'resolution=ignore-duplicates'});
+const Votes = {
+  mine(){ try{ return JSON.parse(localStorage.getItem('myPicks')||'[]'); }catch{ return []; } },
+  async toggle(name){
+    const v=this.mine(), i=v.indexOf(name), adding=i<0;
+    if(adding) v.push(name); else v.splice(i,1);
+    localStorage.setItem('myPicks', JSON.stringify(v));
+    if(SUPA.url){ try{
+      if(adding) await fetch(`${SUPA.url}/rest/v1/picks_votes`,{method:'POST',headers:_h(),body:JSON.stringify({model:name,voter:anonId})});
+      else await fetch(`${SUPA.url}/rest/v1/picks_votes?model=eq.${encodeURIComponent(name)}&voter=eq.${anonId}`,{method:'DELETE',headers:_h()});
+      await this.refresh();
+    }catch{} }
+    return adding;
+  },
+  async refresh(){
+    if(!SUPA.url) return;
+    try{
+      const rows = await fetch(`${SUPA.url}/rest/v1/picks_votes?select=model,voter`,{headers:_h()}).then(r=>r.json());
+      const m={}, vs=new Set(); for(const r of rows||[]){ m[r.model]=(m[r.model]||0)+1; vs.add(r.voter); }
+      COMMUNITY=m; VOTERS=vs.size;
+    }catch{}
+  }
+};
+function crowns(name){
+  let out='';
+  if(PICKS[name]) out += `<span class="cr gold">👑<span class="tip">${PICKS[name]}</span></span>`;
+  if(Votes.mine().includes(name)) out += `<span class="cr mine">♛<span class="tip">your pick</span></span>`;
+  const c = COMMUNITY[name]||0;
+  if(c>0) out += `<span class="cr comm">♛${c>1?'×'+c:''}<span class="tip">${c} community vote${c>1?'s':''}</span></span>`;
+  return out ? `<span class="crowns">${out}</span>` : '';
+}
+function openPicker(){
+  const list=document.getElementById('vlist'), mine=Votes.mine();
+  list.innerHTML = LB.map(r=>`<button class="vopt ${mine.includes(r.name)?'voted':''}" data-n="${r.name}">
+    <span>${r.name}</span><span class="vs">${mine.includes(r.name)?'♛ yours · tap to remove':fmtPct(r.orderedSolveAcc)+' solved'}</span></button>`).join('');
+  list.querySelectorAll('.vopt').forEach(b=>b.addEventListener('click', async ()=>{
+    document.getElementById('vov').classList.remove('on');
+    const added = await Votes.toggle(b.dataset.n);
+    renderBoard();
+    if(added) toast(`👑 Crown’s on <b>${b.dataset.n}</b>!` + (SUPA.url?' Counted — thanks!':' Now make it official — drop your pick in Slack 😄'));
+  }));
+  document.getElementById('vov').classList.add('on');
+}
+function toast(html){ const t=document.getElementById('toast'); if(!t) return; t.innerHTML=html; t.classList.add('show'); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('show'),4500); }
+function updatePicks(){
+  const el=document.getElementById('picksum'); if(el){
+    const mine=Votes.mine();
+    el.innerHTML = `👑 Philippos picks <b>best-of</b> &amp; <b>ensemble</b>`
+      + (mine.length?` · ♛ you: <b>${mine.join('</b>, <b>')}</b>`:'')
+      + (SUPA.url?'':` · <span class="dim">group vote in Slack</span>`);
+  }
+  const panel=document.getElementById('votepanel');   // ≥2 distinct voters → community leaderboard (backend only)
+  if(panel){
+    if(VOTERS>=2){
+      const rows=Object.entries(COMMUNITY).sort((a,b)=>b[1]-a[1]);
+      panel.innerHTML = `<h4>Community picks · ${VOTERS} voters</h4>`+rows.map(([n,c])=>`<div class="vr"><b>${n}</b><span class="vn">♛ ${c}</span></div>`).join('');
+      panel.classList.add('on');
+    } else panel.classList.remove('on');
+  }
+}
+
 // ---- state ----
 let LB = [], DEADROWS = [];
 const SCRAPES_PER_DAY = 3000, DAYS = 30;
@@ -245,7 +365,7 @@ function renderBoard(){
   const rows = lb.map((r,i)=>{
     return `<tr class="${i===0?'top1':''}" data-name="${r.name}">
       <td><span class="rank">${i+1}</span></td>
-      <td class="name">${r.name}${r.new?' <span style="font-size:9px;font-weight:800;color:var(--good);background:rgba(70,214,166,.18);border-radius:4px;padding:0 5px;vertical-align:2px">NEW</span>':''}</td>
+      <td class="name">${r.name}${crowns(r.name)}${r.new?' <span style="font-size:9px;font-weight:800;color:var(--good);background:rgba(70,214,166,.18);border-radius:4px;padding:0 5px;vertical-align:2px">NEW</span>':''}</td>
       <td class="detcol det">${detail(r)}</td>
       <td><span class="solv">${fmtPct(r.orderedSolveAcc)}</span></td>
       <td class="num">${fmtPct(r.solveAcc)}</td>
@@ -267,6 +387,7 @@ function renderBoard(){
     renderBoard();
   }));
   board.querySelectorAll('th.nonsort').forEach(h=>h.addEventListener('click',()=>showBig(h.dataset.msg)));
+  updatePicks();
 }
 // click a non-sortable header → drop a little smiley that falls off the bottom of the screen
 function showBig(){
@@ -331,8 +452,11 @@ async function loadExits(){
   if(LB.length) renderBoard();
 }
 
+document.getElementById('votebtn').addEventListener('click', openPicker);
 load(); setInterval(load,60000);
 loadExits(); setInterval(loadExits,60000);
+Votes.refresh().then(()=>{ if(LB.length){ renderBoard(); } });
+if(SUPA.url) setInterval(()=>Votes.refresh().then(()=>{ if(LB.length) renderBoard(); }), 60000);
 </script>
 </body>
 </html>
