@@ -1,5 +1,5 @@
 {
-  "updated": 1781315649519,
+  "updated": 1781315679005,
   "partial": true,
   "note": "Each arm scraped the same URL sample on its OWN Tor (own exits), in parallel. Arms differ only in the locate method; legend reading is qwen/vlm in all. Aggregate comparison, not a same-captcha test. Captcha counts are solve ATTEMPTS (a method that keeps failing logs several).",
   "arms": [
@@ -56,29 +56,30 @@
       "block_pct": 0,
       "exits_n": 8,
       "captchas": {
-        "detected": 8,
+        "detected": 9,
         "solved": 1,
-        "failed": 7
+        "failed": 8
       },
-      "solve_rate_pct": 12.5,
+      "solve_rate_pct": 11.1,
       "rotations": 7,
       "duration_min": 12.5,
       "fetches_per_hour": 670,
       "items": [
+        {
+          "image": "data/shootout/shape/shape_doodle_a01_failed.png",
+          "solved": false,
+          "legend": [
+            "apple",
+            "hamburger",
+            "bicycle"
+          ]
+        },
         {
           "image": "data/shootout/shape/shape_doodle_a02_solved.png",
           "solved": true,
           "legend": [
             "lighter",
             "balloons"
-          ]
-        },
-        {
-          "image": "data/shootout/shape/shape_doodle_a01_failed.png",
-          "solved": false,
-          "legend": [
-            "necklace",
-            "building"
           ]
         },
         {
