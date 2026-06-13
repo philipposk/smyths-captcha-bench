@@ -1,5 +1,5 @@
 {
-  "updated": 1781315679005,
+  "updated": 1781315831668,
   "partial": true,
   "note": "Each arm scraped the same URL sample on its OWN Tor (own exits), in parallel. Arms differ only in the locate method; legend reading is qwen/vlm in all. Aggregate comparison, not a same-captcha test. Captcha counts are solve ATTEMPTS (a method that keeps failing logs several).",
   "arms": [
@@ -51,20 +51,36 @@
       "locate": "match",
       "kind": "computer vision · free locate",
       "partial": true,
-      "fetches": 140,
+      "fetches": 158,
       "success_pct": 100,
       "block_pct": 0,
       "exits_n": 8,
       "captchas": {
-        "detected": 9,
-        "solved": 1,
-        "failed": 8
+        "detected": 11,
+        "solved": 2,
+        "failed": 9
       },
-      "solve_rate_pct": 11.1,
+      "solve_rate_pct": 18.2,
       "rotations": 7,
-      "duration_min": 12.5,
-      "fetches_per_hour": 670,
+      "duration_min": 15.8,
+      "fetches_per_hour": 602,
       "items": [
+        {
+          "image": "data/shootout/shape/shape_doodle_a01_solved.png",
+          "solved": true,
+          "legend": [
+            "engine",
+            "tree"
+          ]
+        },
+        {
+          "image": "data/shootout/shape/shape_doodle_a02_failed.png",
+          "solved": false,
+          "legend": [
+            "alarm clock",
+            "coins"
+          ]
+        },
         {
           "image": "data/shootout/shape/shape_doodle_a01_failed.png",
           "solved": false,
@@ -80,15 +96,6 @@
           "legend": [
             "lighter",
             "balloons"
-          ]
-        },
-        {
-          "image": "data/shootout/shape/shape_doodle_a02_failed.png",
-          "solved": false,
-          "legend": [
-            "whistle",
-            "necklace",
-            "carrot"
           ]
         }
       ]
