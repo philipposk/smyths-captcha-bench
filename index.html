@@ -262,24 +262,25 @@ const PICKS = {
   'qwen3-vl-32b→gemini-3.1-flash-lite':'Philippos’s pick — best accuracy-per-$ combo',
   'shape+color-ensemble':'Philippos’s pick — free-CV, 86.5%'
 };
-// Turn on REAL cross-person voting: create a `picks_votes` table (model text, voter text,
-// unique(model,voter)) in Supabase with anon INSERT+SELECT+DELETE RLS, then fill these two.
-// Empty = local-only (your crown saves to this browser; group voting nudges to Slack).
-const SUPA = { url:'', key:'' };
+// Real cross-person voting is ON via Supabase — an isolated `picks_votes` table (anon SELECT+INSERT,
+// add-only). The key below is the project's PUBLIC publishable key, safe to ship: row-level security
+// limits anon to reading the tally and casting a vote on that one table, nothing else.
+const SUPA = { url:'https://fmrnqepyyjucnfbrqawl.supabase.co', key:'sb_publishable_oVj0hHHQgRAmdcxAIHup0g_SWQuJ0AU' };
 const anonId = (()=>{ let id=localStorage.getItem('anonId'); if(!id){ id='a'+Math.abs((Date.now()^(performance.now()*1000|0))).toString(36); localStorage.setItem('anonId',id);} return id; })();
-let COMMUNITY = {}, VOTERS = 0;          // model -> vote count, distinct voters (backend only)
+let COMMUNITY = {}, VOTERS = 0;          // model -> vote count, distinct voters (from backend)
 const _h = () => ({apikey:SUPA.key, Authorization:'Bearer '+SUPA.key, 'Content-Type':'application/json', Prefer:'resolution=ignore-duplicates'});
 const Votes = {
   mine(){ try{ return JSON.parse(localStorage.getItem('myPicks')||'[]'); }catch{ return []; } },
   async toggle(name){
-    const v=this.mine(), i=v.indexOf(name), adding=i<0;
-    if(adding) v.push(name); else v.splice(i,1);
+    const v=this.mine(), i=v.indexOf(name);
+    if(SUPA.url){                                    // shared mode: add-only (no un-vote, prevents griefing)
+      if(i>=0) return 'already';
+      v.push(name); localStorage.setItem('myPicks', JSON.stringify(v));
+      try{ await fetch(`${SUPA.url}/rest/v1/picks_votes`,{method:'POST',headers:_h(),body:JSON.stringify({model:name,voter:anonId})}); await this.refresh(); }catch{}
+      return true;
+    }
+    const adding=i<0; if(adding) v.push(name); else v.splice(i,1);   // local mode: free toggle
     localStorage.setItem('myPicks', JSON.stringify(v));
-    if(SUPA.url){ try{
-      if(adding) await fetch(`${SUPA.url}/rest/v1/picks_votes`,{method:'POST',headers:_h(),body:JSON.stringify({model:name,voter:anonId})});
-      else await fetch(`${SUPA.url}/rest/v1/picks_votes?model=eq.${encodeURIComponent(name)}&voter=eq.${anonId}`,{method:'DELETE',headers:_h()});
-      await this.refresh();
-    }catch{} }
     return adding;
   },
   async refresh(){
@@ -302,12 +303,13 @@ function crowns(name){
 function openPicker(){
   const list=document.getElementById('vlist'), mine=Votes.mine();
   list.innerHTML = LB.map(r=>`<button class="vopt ${mine.includes(r.name)?'voted':''}" data-n="${r.name}">
-    <span>${r.name}</span><span class="vs">${mine.includes(r.name)?'♛ yours · tap to remove':fmtPct(r.orderedSolveAcc)+' solved'}</span></button>`).join('');
+    <span>${r.name}</span><span class="vs">${mine.includes(r.name)?('♛ yours'+(SUPA.url?'':' · tap to remove')):fmtPct(r.orderedSolveAcc)+' solved'}</span></button>`).join('');
   list.querySelectorAll('.vopt').forEach(b=>b.addEventListener('click', async ()=>{
     document.getElementById('vov').classList.remove('on');
-    const added = await Votes.toggle(b.dataset.n);
+    const res = await Votes.toggle(b.dataset.n);
     renderBoard();
-    if(added) toast(`👑 Crown’s on <b>${b.dataset.n}</b>!` + (SUPA.url?' Counted — thanks!':' Now make it official — drop your pick in Slack 😄'));
+    if(res===true) toast(`👑 Crown’s on <b>${b.dataset.n}</b>!` + (SUPA.url?' Counted — thanks!':' Now make it official — drop your pick in Slack 😄'));
+    else if(res==='already') toast(`You already crowned <b>${b.dataset.n}</b> 👑`);
   }));
   document.getElementById('vov').classList.add('on');
 }
