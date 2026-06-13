@@ -216,7 +216,7 @@ const DETAILS = {
   'glm-4.6v':          'OpenRouter API · Zhipu · paid. Decent but very slow (~23s/puzzle).',
   'gpt-5.4':           'OpenRouter API · OpenAI · paid. Mid accuracy on tiny icons.',
   'qwen3-vl-32b→gemini-3.1-flash-lite': 'Combo: qwen runs on every puzzle, gemini-3.1-flash-lite only on qwen’s misses. 94.6% — beats either alone. Costs a touch MORE than qwen ($0.17 vs $0.11/1k) because you pay qwen in full plus a little gemini.',
-  'shape+color-ensemble': 'Locate is free CV (shape-match + colour-blob merged, 97.3% icons hit); the only cost is the qwen legend read. 86.5% solved at ~$0.11/1k.',
+  'shape+color-ensemble': 'Free CV finds the doodles (shape + colour merged, 97.3% icons hit) — but the qwen legend read is what gets the ORDER right, and that costs ~$0.11/1k. So not actually free. Swap the free Gemini key in for the legend and it’d be $0, but that’s a different combo we haven’t benched yet.',
   'gpt-5.4-mini':      'OpenRouter API · OpenAI. 81% solved. Cheap to send but its output tokens are pricey, so ~$1.07/1k — mid-cost, not the value pick.',
   'gpt-5.4-nano':      'OpenRouter API · OpenAI · cheapest. Too small for grounding — clicks land off-target.',
   'gemini-2.5-flash-lite': 'OpenRouter API · Google · cheap. Weak on tiny icons (like 2.5-flash).',
@@ -225,7 +225,7 @@ const DETAILS = {
   'gemini-2.5-flash':  'Gemini free tier · Google · $0. Best free option. Free quota ≈ 500–1,500 captcha solves/day before it caps.',
   'qwen-solo':         'Local · Ollama on your own machine · $0. Runs fully offline.',
   'shape-match':       'Pure computer-vision · no model at all · $0. Finds doodles, can’t order them.',
-  'color-cv':          'Free CV locate (finds doodles by ink colour); the only cost is one qwen legend read (~$0.08/1k). The earlier $2.12 was stale Moondream-classify, not how you’d run it.',
+  'color-cv':          'Free CV finds doodles by ink colour, but the qwen legend read that orders them costs ~$0.08/1k — so not free either. The earlier $2.12 was stale Moondream-classify.',
   'qwen+moondream':    'Local Qwen locates + Moondream cloud classifies. Partly paid.',
   'moondream-cloud':   'Moondream cloud point-model · paid. Misses the photo-overlaid doodles.',
   'claude-sonnet-4.6': 'OpenRouter API · Anthropic · paid. Weak at clicking small icons.'
@@ -253,25 +253,24 @@ const PICKS = {
   'qwen3-vl-32b→gemini-3.1-flash-lite':'Philippos’s pick — best accuracy-per-$ combo',
   'shape+color-ensemble':'Philippos’s pick — free-CV, 86.5%'
 };
-// Real cross-person voting is ON via Supabase — an isolated `picks_votes` table (anon SELECT+INSERT,
-// add-only). The key below is the project's PUBLIC publishable key, safe to ship: row-level security
-// limits anon to reading the tally and casting a vote on that one table, nothing else.
+// Real cross-person voting is ON via Supabase — an isolated `picks_votes` table (anon can read the
+// tally + cast/withdraw a vote). The key below is the project's PUBLIC publishable key, safe to ship:
+// row-level security limits anon to that one table, nothing else.
 const SUPA = { url:'https://fmrnqepyyjucnfbrqawl.supabase.co', key:'sb_publishable_oVj0hHHQgRAmdcxAIHup0g_SWQuJ0AU' };
 const anonId = (()=>{ let id=localStorage.getItem('anonId'); if(!id){ id='a'+Math.abs((Date.now()^(performance.now()*1000|0))).toString(36); localStorage.setItem('anonId',id);} return id; })();
 let COMMUNITY = {}, VOTERS = 0;          // model -> vote count, distinct voters (from backend)
 const _h = () => ({apikey:SUPA.key, Authorization:'Bearer '+SUPA.key, 'Content-Type':'application/json', Prefer:'resolution=ignore-duplicates'});
 const Votes = {
   mine(){ try{ return JSON.parse(localStorage.getItem('myPicks')||'[]'); }catch{ return []; } },
-  async toggle(name){
-    const v=this.mine(), i=v.indexOf(name);
-    if(SUPA.url){                                    // shared mode: add-only (no un-vote, prevents griefing)
-      if(i>=0) return 'already';
-      v.push(name); localStorage.setItem('myPicks', JSON.stringify(v));
-      try{ await fetch(`${SUPA.url}/rest/v1/picks_votes`,{method:'POST',headers:_h(),body:JSON.stringify({model:name,voter:anonId})}); await this.refresh(); }catch{}
-      return true;
-    }
-    const adding=i<0; if(adding) v.push(name); else v.splice(i,1);   // local mode: free toggle
+  async toggle(name){                                // tap to crown, tap again to un-crown (reversible)
+    const v=this.mine(), i=v.indexOf(name), adding=i<0;
+    if(adding) v.push(name); else v.splice(i,1);
     localStorage.setItem('myPicks', JSON.stringify(v));
+    if(SUPA.url){ try{
+      if(adding) await fetch(`${SUPA.url}/rest/v1/picks_votes`,{method:'POST',headers:_h(),body:JSON.stringify({model:name,voter:anonId})});
+      else await fetch(`${SUPA.url}/rest/v1/picks_votes?model=eq.${encodeURIComponent(name)}&voter=eq.${encodeURIComponent(anonId)}`,{method:'DELETE',headers:_h()});
+      await this.refresh();
+    }catch{} }
     return adding;
   },
   async refresh(){
@@ -288,7 +287,7 @@ function crowns(name){
   let out='';
   if(PICKS[name]) out += `<span class="cr gold">👑<span class="tip">${PICKS[name]}</span></span>`;
   // clickable vote crown on every row — grey until you tap it, then gold; ×N at 2+ community votes
-  out += `<button class="votecr ${mine?'on':''}" data-n="${name}" title="${mine?'your pick — voted ✓':'tap to vote'}">♛${c>=2?`<sup>×${c}</sup>`:''}</button>`;
+  out += `<button class="votecr ${mine?'on':''}" data-n="${name}" title="${mine?'your pick — tap to remove':'tap to vote'}">♛${c>=2?`<sup>×${c}</sup>`:''}</button>`;
   return `<span class="crowns">${out}</span>`;
 }
 // "Vote your own" doesn't open a list — it nudges you to the crowns already on the board.
@@ -375,10 +374,9 @@ function renderBoard(){
   board.querySelectorAll('th.nonsort').forEach(h=>h.addEventListener('click',()=>showBig(h.dataset.msg)));
   board.querySelectorAll('.votecr').forEach(b=>b.addEventListener('click', async (e)=>{
     e.stopPropagation();
-    const res = await Votes.toggle(b.dataset.n);
+    const added = await Votes.toggle(b.dataset.n);
     renderBoard();
-    if(res===true) toast(`👑 Crown’s on <b>${b.dataset.n}</b>!` + (SUPA.url?' Counted — thanks!':' Now make it official in Slack 😄'));
-    else if(res==='already') toast(`You already crowned <b>${b.dataset.n}</b> 👑`);
+    toast(added ? (`👑 Crown’s on <b>${b.dataset.n}</b>!` + (SUPA.url?' Counted — thanks!':'')) : `Took your crown off <b>${b.dataset.n}</b> ✓`);
   }));
   updatePicks();
 }
