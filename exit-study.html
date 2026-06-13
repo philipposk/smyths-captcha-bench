@@ -64,7 +64,6 @@
   <div class="nav">
     <a href="./">◂ Captcha leaderboard</a>
     <a href="runs.html">Live runs</a>
-    <a href="gallery.html">Where models clicked</a>
     <a href="real-captchas.html">Real captchas</a>
     <a href="economics.html">Economics</a>
     <a href="timeline.html">Timeline</a>
@@ -122,9 +121,9 @@ async function load(){
   };
   document.getElementById('cards').innerHTML =
     card('Product fetches', (ov.attempted||0).toLocaleString(), `target ${(d.target_per_day||3000).toLocaleString()}/day · day ${days.length} · ${ov.exits_n||0} exits sampled`) +
-    card('Exit captcha rate', ov.exits_n? pct(ov.captcha_rate_pct) : '—', ov.captcha_ci? `95% CI ${pct(ov.captcha_ci[0])}–${pct(ov.captcha_ci[1])} · n=${ov.exits_n}` : 'collecting…') +
-    card('Bad exits', ov.exits&&ov.exits.windows? `${(ov.exits.hostile_windows/ov.exits.windows*100).toFixed(0)}%` : '—', ov.exits&&ov.exits.windows? `${ov.exits.hostile_windows}/${ov.exits.windows} exits hit a wall` : 'collecting…') +
-    card('Pages parsed OK', ov.attempted? pct(ov.success_pct) : '—', 'of fetches, after clearing the wall') +
+    card('Solvable captchas', ov.exits_n? pct(ov.captcha_rate_pct) : '—', ov.captcha_ci? `of exits threw a doodle wall · 95% CI ${pct(ov.captcha_ci[0])}–${pct(ov.captcha_ci[1])}` : 'collecting…') +
+    card('Fetches hard-blocked', ov.fetch_block_pct!=null? pct(ov.fetch_block_pct) : '—', ov.fetch_blocked!=null? `${ov.fetch_blocked}/${ov.attempted} hit an Imperva wall — not solvable` : 'collecting…') +
+    card('Pages parsed OK', ov.attempted? pct(ov.success_pct) : '—', 'of fetches returned a product') +
     (function(){ const c=ov.captchas||{}; return card('Captchas solved',
       c.detected ? `${c.solved}/${c.detected}` : '0',
       c.detected ? `${Math.round((c.solved/c.detected)*100)}% cleared by qwen3-vl-32b · saved for the shootout`

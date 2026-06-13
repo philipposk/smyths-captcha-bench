@@ -1,5 +1,5 @@
 {
-  "updated": 1781309366571,
+  "updated": 1781328760496,
   "regions": [
     "uk",
     "ie",
@@ -37,6 +37,14 @@
       ],
       "block_rate_pct": 0,
       "success_pct": 88.1,
+      "fetch_blocked": 187,
+      "fetch_block_pct": 10.8,
+      "fetch_outcomes": {
+        "success": 1520,
+        "block": 187,
+        "error": 1,
+        "parseFail": 18
+      },
       "by_region": {
         "uk": {
           "attempted": 210,
@@ -89,6 +97,14 @@
     ],
     "block_rate_pct": 0,
     "success_pct": 88.1,
+    "fetch_blocked": 187,
+    "fetch_block_pct": 10.8,
+    "fetch_outcomes": {
+      "success": 1520,
+      "block": 187,
+      "error": 1,
+      "parseFail": 18
+    },
     "by_region": {
       "uk": {
         "attempted": 210,
