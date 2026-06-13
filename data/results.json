@@ -1,5 +1,5 @@
 {
-  "updated": 1781310745223,
+  "updated": 1781311848458,
   "corpus": 37,
   "hitRadius": 80,
   "costNote": "Paid $/1k from real OpenRouter spend; local/free=$0.",
@@ -91,6 +91,24 @@
       "providers": {
         "openrouter": 74
       }
+    },
+    {
+      "name": "shape+color-ensemble",
+      "legendAcc": 0,
+      "locateAcc": 0.973,
+      "solveAcc": 0.973,
+      "orderedSolveAcc": 0.865,
+      "p50ms": 2565,
+      "avgTokens": 738,
+      "avgCalls": 1.9,
+      "estPer1000Usd": 0.2213,
+      "free": false,
+      "errors": 0,
+      "n": 37,
+      "providers": {
+        "openrouter": 71
+      },
+      "new": true
     },
     {
       "name": "gpt-5.4-mini",
