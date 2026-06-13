@@ -1,5 +1,5 @@
 {
-  "updated": 1781269758393,
+  "updated": 1781309736438,
   "corpus": 37,
   "hitRadius": 80,
   "costNote": "Paid $/1k from real OpenRouter spend; local/free=$0.",
@@ -74,6 +74,24 @@
       "providers": {
         "openrouter": 74
       }
+    },
+    {
+      "name": "gpt-5.4-mini",
+      "legendAcc": 0,
+      "locateAcc": 0.968,
+      "solveAcc": 0.919,
+      "orderedSolveAcc": 0.811,
+      "p50ms": 2609,
+      "avgTokens": 883,
+      "avgCalls": 2,
+      "estPer1000Usd": 0.2649,
+      "free": false,
+      "errors": 0,
+      "n": 37,
+      "providers": {
+        "openrouter": 74
+      },
+      "new": true
     },
     {
       "name": "glm-4.6v",
@@ -152,6 +170,24 @@
       }
     },
     {
+      "name": "gemini-2.5-flash-lite",
+      "legendAcc": 0,
+      "locateAcc": 0.559,
+      "solveAcc": 0.297,
+      "orderedSolveAcc": 0.297,
+      "p50ms": 3687,
+      "avgTokens": 3481,
+      "avgCalls": 2,
+      "estPer1000Usd": 1.0444,
+      "free": false,
+      "errors": 0,
+      "n": 37,
+      "providers": {
+        "openrouter": 74
+      },
+      "new": true
+    },
+    {
       "name": "qwen-solo",
       "legendAcc": 0,
       "locateAcc": 0.77,
@@ -202,6 +238,24 @@
       }
     },
     {
+      "name": "gemini-2.5-flash+shape",
+      "legendAcc": 0,
+      "locateAcc": 0.694,
+      "solveAcc": 0.459,
+      "orderedSolveAcc": 0.162,
+      "p50ms": 1169,
+      "avgTokens": 2105,
+      "avgCalls": 1,
+      "estPer1000Usd": 0.6315,
+      "free": false,
+      "errors": 0,
+      "n": 37,
+      "providers": {
+        "openrouter": 37
+      },
+      "new": true
+    },
+    {
       "name": "qwen+moondream",
       "legendAcc": 0,
       "locateAcc": 0.55,
@@ -218,6 +272,24 @@
         "ollama": 37,
         "moondream": 98
       }
+    },
+    {
+      "name": "gpt-5.4-nano",
+      "legendAcc": 0,
+      "locateAcc": 0.342,
+      "solveAcc": 0.054,
+      "orderedSolveAcc": 0.054,
+      "p50ms": 2925,
+      "avgTokens": 880,
+      "avgCalls": 2,
+      "estPer1000Usd": 0.2639,
+      "free": false,
+      "errors": 0,
+      "n": 37,
+      "providers": {
+        "openrouter": 74
+      },
+      "new": true
     },
     {
       "name": "claude-sonnet-4.6",
