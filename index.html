@@ -256,11 +256,9 @@ const PICKS = {
   'qwen3-vl-32b→gemini-3.1-flash-lite':'Philippos’s pick — best accuracy-per-$ combo',
   'shape+color-ensemble':'Philippos’s pick'
 };
-// models powering a live scrape run right now — badge links to the Live runs page
-const LIVE_RUNNERS = {
-  'gemini-3.1-flash-lite':'Running the live production scrape — 3,000 URLs/day',
-  'qwen3-vl-32b':'Running the live Tor exit study — 3,000 URLs/day'
-};
+// models powering a live scrape run right now — empty while the Mac auto-runs are paused
+// (the multi-day reliability test is moving to the Linux worker). Re-add when it's live there.
+const LIVE_RUNNERS = {};
 function liveBadge(name){
   const t = LIVE_RUNNERS[name]; if(!t) return '';
   return `<a class="livebadge" href="runs.html" title="${t} · open Live runs"><span class="ldot"></span>live</a>`;
@@ -449,7 +447,7 @@ async function loadExits(){
       card('Solvable captchas', ov.captcha_rate_pct.toFixed(1)+'%', `of exits threw a doodle wall · ${ov.captcha}/${ov.exits_n}`) +
       card('Fetches hard-blocked', (ov.fetch_block_pct??0).toFixed(1)+'%', `${(ov.fetch_blocked||0).toLocaleString()}/${(ov.attempted||0).toLocaleString()} Imperva walls — can’t be solved`) +
       card('Pages parsed OK', (ov.success_pct??0).toFixed(1)+'%', 'of fetches returned a product');
-    document.getElementById('exitnote').innerHTML = `<b>Day ${dayN} of 3 · days 2–3 scheduled.</b> Full per-day + per-region breakdown on the <a href="exit-study.html">Tor exit study tab →</a><br><b>Two kinds of wall:</b> <b>solvable doodle captchas</b> (rare — ${ov.captcha_rate_pct.toFixed(1)}% of exits, what the solver clears for pennies) and <b>hard Imperva blocks</b> (${(ov.fetch_block_pct??0).toFixed(1)}% of fetches — not solvable, you just lose that fetch). The ~${(100-(ov.success_pct??0)).toFixed(0)}% gap in “parsed OK” is mostly the latter, not dead products.<br>${lever}`;
+    document.getElementById('exitnote').innerHTML = `<b>Day ${dayN} sample (Mac run paused).</b> The full multi-day reliability test moves to the Linux worker (headed Chrome kept stalling here). Full breakdown on the <a href="exit-study.html">Tor exit study tab →</a><br><b>Two kinds of wall:</b> <b>solvable doodle captchas</b> (rare — ${ov.captcha_rate_pct.toFixed(1)}% of exits, what the solver clears for pennies) and <b>hard Imperva blocks</b> (${(ov.fetch_block_pct??0).toFixed(1)}% of fetches — not solvable, you just lose that fetch). The ~${(100-(ov.success_pct??0)).toFixed(0)}% gap in “parsed OK” is mostly the latter, not dead products.<br>${lever}`;
   } else {
     try{ e = await fetch('data/exits.json?_='+Date.now()).then(r=>r.json()); }catch{ return; }
     const noCap = (100 - (e.captcha_rate_pct??0)).toFixed(1);

@@ -87,7 +87,7 @@
       <li><b>Tor exit study</b> — measure how often a Tor exit hits the captcha wall. <b>3,000/day</b>, solver <code>qwen3-vl-32b</code>. → <a href="exit-study.html">detail</a></li>
       <li><b>Solver shootout</b> — one-shot head-to-head: 4 methods scrape the <b>same 500 URLs</b> on separate Tors. Not multi-day. → <a href="shootout.html">detail</a></li>
     </ul>
-    <p class="note" style="margin-top:9px"><b>Day status:</b> the two 3k/day runs are both on <b>day 1</b> (production still going; the exit study's day 1 is in, days 2–3 scheduled). The shootout isn't a daily run — it's a single 4-arm pass (qwen/gemini/shape done, color finishing). Nothing has rolled to day 2 yet.</p>
+    <p class="note" style="margin-top:9px"><b>Status:</b> the Mac auto-runs are <b>paused</b> — production wedged at 627/3,000 and the exit study completed a day-1 sample (headed Chrome kept stalling here). The full multi-day reliability test moves to the <b>Linux worker</b>. The shootout was a one-shot 4-arm pass (qwen/gemini/shape done, color pending).</p>
   </div>
 
   <h2 class="sec">The two 3k/day runs</h2>
@@ -163,7 +163,7 @@ async function load(){
     const o=study.overall, dayN=(study.days||[]).length;
     rows.push(`<tr>
       <td class="run">Tor exit study <small>measure exit hostility · qwen3-vl-32b</small></td>
-      <td><span class="pill run">day ${dayN} of 3</span></td>
+      <td><span class="pill done">day ${dayN} sample · paused</span></td>
       <td>${N(o.attempted)}</td>
       <td>${N(o.exits_n)}</td>
       <td><b>${pct(o.captcha_rate_pct)}</b> <span class="dimc">${o.exits&&o.exits.windows?`(${o.exits.hostile_windows}/${o.exits.windows})`:''}</span></td>
