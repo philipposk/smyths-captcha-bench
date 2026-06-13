@@ -1,12 +1,12 @@
 {
-  "updated": 1781369246523,
+  "updated": 1781369248605,
   "branch": "feat/production-reliability-pipeline",
   "note": "Production run: scrape every URL or log exactly why not. rotate fresh exit → escalate qwen→gemini-3.1-flash-lite → deferred retries → structured error log.",
   "overall": {
     "requested": 3000,
     "scraped": 2974,
-    "unscraped": 0,
-    "accounted_pct": 99.1,
+    "unscraped": 26,
+    "accounted_pct": 100,
     "scraped_pct": 99.1,
     "errorsByCategory": {
       "data_extraction": 104
@@ -15,14 +15,51 @@
   "days": [
     {
       "day": 1,
-      "status": "running",
-      "date": null,
+      "status": "done",
+      "date": "2026-06-13",
       "requested": 3000,
       "scraped": 2974,
-      "unscraped": 0,
+      "unscraped": 26,
+      "retryRounds": 1,
+      "escalation": [
+        "openai/gpt-5.4-mini"
+      ],
       "captchas": {},
-      "errorsByCategory": {},
-      "sampleErrors": []
+      "errorsByCategory": {
+        "data_extraction": 104
+      },
+      "sampleErrors": [
+        {
+          "url": "https://www.smythstoys.com/ie/en-ie/baby/pushchairs-and-strollers/strollers/zummi-explorer-compact-stroller-black/p/231255",
+          "category": "data_extraction",
+          "attempts": 2
+        },
+        {
+          "url": "https://www.smythstoys.com/nl/nl-nl/speelgoed/knuffels/pluche-en-knuffeldieren/overige-knuffels/snackles-knuffel-bij-met-haribo-serie-3-35-cm/p/247317",
+          "category": "data_extraction",
+          "attempts": 2
+        },
+        {
+          "url": "https://www.smythstoys.com/de/de-de/spielzeug/action-spielzeug/spielzeugautos-und-spielsets/hot-wheels/hot-wheels-premium-2024-formel-1-auto-mercedes-amg-petronas-f1-team-george-russell/p/250685015",
+          "category": "data_extraction",
+          "attempts": 2
+        },
+        {
+          "url": "https://www.smythstoys.com/ie/en-ie/baby/pushchairs-and-strollers/strollers/zummi-explorer-compact-stroller-black/p/231255",
+          "category": "data_extraction",
+          "attempts": 2
+        },
+        {
+          "url": "https://www.smythstoys.com/nl/nl-nl/speelgoed/actiespeelgoed/blasters-en-speelgoedpistolen/nerf/nerf-fortnite-blasterblue-shock/p/225603",
+          "category": "data_extraction",
+          "attempts": 2
+        },
+        {
+          "url": "https://www.smythstoys.com/ch/de-ch/spielzeug/action-spielzeug/pokemon/pokemon-karten/pokemon-karten-mega-entwicklung-wachsendes-chaos-booster-pack-3er-set-sortiert/p/259978",
+          "category": "data_extraction",
+          "attempts": 2
+        }
+      ]
     }
   ]
 }
