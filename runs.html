@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Live runs — everything running right now, in one place</title>
+<meta name="description" content="All the concurrent Smyths scrape runs (production 3k/day, the Tor exit study, the 4-method shootout) compared side by side.">
+<link rel="icon" href="favicon.svg">
+<style>
+  :root{
+    --bg:#0b0d11; --panel:#13161d; --panel2:#171b23; --line:#222734;
+    --txt:#eef2f8; --mut:#93a0b4; --dim:#6b7585;
+    --good:#46d6a6; --warn:#f4b740; --bad:#ff6a6a; --accent:#7aa9ff;
+    --shadow:0 8px 30px rgba(0,0,0,.45);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:
+      radial-gradient(1100px 480px at 78% -8%, rgba(122,169,255,.10), transparent 60%),
+      radial-gradient(900px 420px at 4% 0%, rgba(70,214,166,.07), transparent 55%),
+      var(--bg);
+    color:var(--txt);font:15px/1.6 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1040px;margin:0 auto;padding:30px 18px 70px}
+  a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
+  .mut{color:var(--mut)} .dim{color:var(--dim)} b{color:var(--txt);font-weight:650}
+  .nav{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+  .nav a{font-size:13px;font-weight:600;color:var(--mut);background:var(--panel);border:1px solid var(--line);padding:6px 13px;border-radius:999px}
+  .nav a.on{color:var(--txt);background:var(--panel2);border-color:#33415a}
+  .badge{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:600;color:var(--good);background:rgba(70,214,166,.12);border:1px solid rgba(70,214,166,.25);padding:4px 11px;border-radius:999px}
+  .pulse{width:7px;height:7px;border-radius:50%;background:var(--good);box-shadow:0 0 0 0 rgba(70,214,166,.6);animation:pulse 2s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(70,214,166,.55)}70%{box-shadow:0 0 0 7px rgba(70,214,166,0)}100%{box-shadow:0 0 0 0 rgba(70,214,166,0)}}
+  h1{font-size:27px;line-height:1.15;margin:14px 0 6px;letter-spacing:-.4px;font-weight:750}
+  .sub{color:var(--mut);margin:0 0 8px;max-width:76ch}
+  h2.sec{font-size:18px;margin:30px 0 4px;letter-spacing:-.2px}
+  .secsub{color:var(--mut);max-width:78ch;margin:2px 0 10px;font-size:14px}
+  .tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);margin:10px 0}
+  table{width:100%;border-collapse:collapse;background:var(--panel);min-width:680px}
+  th,td{padding:10px 12px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap;font-variant-numeric:tabular-nums}
+  th:first-child,td:first-child{text-align:left;white-space:normal}
+  th{color:var(--dim);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.5px;background:var(--panel2)}
+  tr:last-child td{border-bottom:none} tbody tr:hover{background:#181d27}
+  td.run{font-weight:700} td.run small{display:block;font-weight:400;color:var(--mut);font-size:12px;white-space:normal}
+  .pill{display:inline-block;padding:1px 8px;border-radius:999px;font-size:11px;font-weight:700}
+  .pill.run{background:rgba(70,214,166,.15);color:var(--good)} .pill.done{background:rgba(122,169,255,.14);color:var(--accent)}
+  .pill.idle{background:rgba(150,160,180,.12);color:var(--dim)}
+  .good{color:var(--good)} .warn{color:var(--warn)} .dimc{color:var(--dim)}
+  .note{font-size:12.5px;color:var(--dim);margin-top:8px;line-height:1.6}
+  .note code,td code{background:#0d1016;border:1px solid var(--line);border-radius:5px;padding:1px 5px;color:var(--mut);font-size:.9em}
+  .explain{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:13px;padding:14px 17px;margin:16px 0;box-shadow:var(--shadow)}
+  .explain h2{font-size:13px;text-transform:uppercase;letter-spacing:.6px;color:var(--mut);margin:0 0 8px}
+  .explain li{margin:4px 0;color:var(--mut)} .explain b{color:var(--txt)}
+  footer{color:var(--dim);margin-top:34px;font-size:13px;border-top:1px solid var(--line);padding-top:16px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="nav">
+    <a href="./">Captcha leaderboard</a>
+    <a href="runs.html" class="on">Live runs</a>
+    <a href="gallery.html">Where models clicked</a>
+    <a href="exit-study.html">Tor exit study</a>
+    <a href="shootout.html">Solver shootout</a>
+    <a href="real-captchas.html">Real captchas</a>
+    <a href="production.html">Production</a>
+    <a href="economics.html">Economics</a>
+    <a href="timeline.html">Timeline</a>
+  </div>
+
+  <span class="badge"><span class="pulse"></span> LIVE · auto-refresh 60s</span>
+  <h1>Everything running right now — in one place</h1>
+  <p class="sub">Three jobs scrape Smyths at the same time, each for a different reason. They were on separate tabs; here they are side by side. Numbers are live — <span id="updated">…</span>.</p>
+
+  <div class="explain">
+    <h2>What's actually running</h2>
+    <ul style="margin:0;padding-left:18px">
+      <li><b>Production</b> — scrape every requested URL or log why not. The real deliverable. <b>3,000/day</b>, solver <code>gemini-3.1-flash-lite</code> (+ escalation). → <a href="production.html">detail</a></li>
+      <li><b>Tor exit study</b> — measure how often a Tor exit hits the captcha wall. <b>3,000/day</b>, solver <code>qwen3-vl-32b</code>. → <a href="exit-study.html">detail</a></li>
+      <li><b>Solver shootout</b> — one-shot head-to-head: 4 methods scrape the <b>same 500 URLs</b> on separate Tors. Not multi-day. → <a href="shootout.html">detail</a></li>
+    </ul>
+    <p class="note" style="margin-top:9px"><b>Day status:</b> the two 3k/day runs are both on <b>day 1</b> (production still going; the exit study's day 1 is in, days 2–3 scheduled). The shootout isn't a daily run — it's a single 4-arm pass (qwen/gemini/shape done, color finishing). Nothing has rolled to day 2 yet.</p>
+  </div>
+
+  <h2 class="sec">The two 3k/day runs</h2>
+  <p class="secsub">Same target (3,000 URLs/day, every region, over Tor), <b>different jobs</b> — so some columns only one of them measures. Both are day 1.</p>
+  <div class="tablewrap">
+    <table>
+      <thead><tr>
+        <th>run</th><th>status</th><th>URLs done</th><th>exits</th>
+        <th>captcha rate</th><th>doodles met / solved</th><th>pages parsed OK</th><th>pace</th>
+      </tr></thead>
+      <tbody id="bigbody"><tr><td>loading…</td></tr></tbody>
+    </table>
+  </div>
+  <p class="note" id="bignote"></p>
+
+  <h2 class="sec">Solver shootout — 4 methods, same 500 URLs</h2>
+  <p class="secsub">A one-shot comparison: each method scrapes the same sample on its own Tor, in parallel. Captchas only show on the rare hostile exit, so "doodles met" is small — that's where the methods actually differ. <a href="shootout.html">Full breakdown ›</a></p>
+  <div class="tablewrap">
+    <table>
+      <thead><tr>
+        <th>method</th><th>status</th><th>URLs</th><th>exits</th>
+        <th>doodles met / solved</th><th>pages parsed OK</th><th>pace</th>
+      </tr></thead>
+      <tbody id="armbody"><tr><td>loading…</td></tr></tbody>
+    </table>
+  </div>
+  <p class="note" id="armnote"></p>
+
+  <footer>
+    One view, three jobs · all figures are live aggregate counts ·
+    <a href="https://github.com/philipposk/smyths-scraper">scraper repo</a> ·
+    <span class="dim">no URLs, IPs, or raw product data published — only counts</span>
+  </footer>
+</div>
+
+<script>
+const ago=(ms)=>{ if(!ms) return '—'; const s=Math.round((Date.now()-ms)/1000); if(s<90)return s+'s ago'; const m=Math.round(s/60); if(m<90)return m+'m ago'; return Math.round(m/60)+'h ago';};
+const pct=(x)=> x==null?'—':(+x).toFixed(1)+'%';
+const N=(x)=> x==null?'—':(+x).toLocaleString();
+const cell=(v)=> v==null?'<span class="dimc">—</span>':v;
+
+async function getJSON(u){ try{ return await fetch(u+'?_='+Date.now()).then(r=>r.json()); }catch{ return null; } }
+
+async function load(){
+  const [study, prod, shoot] = await Promise.all([
+    getJSON('data/exits-study.json'), getJSON('data/prod-status.json'), getJSON('data/shootout-runs.json')
+  ]);
+  const upd = Math.max(study&&study.updated||0, prod&&prod.updated||0, shoot&&shoot.updated||0);
+  document.getElementById('updated').textContent = 'updated '+ago(upd);
+
+  // ---- big runs (production + exit study) ----
+  const rows = [];
+  if(prod && prod.overall){
+    const o=prod.overall, d=(prod.days||[])[0]||{};
+    const pending = Math.max(0,(o.requested||0)-(o.scraped||0)-(o.unscraped||0));
+    rows.push(`<tr>
+      <td class="run">Production <small>scrape everything · gemini-3.1-flash-lite</small></td>
+      <td><span class="pill ${d.status==='running'?'run':'done'}">day 1 · ${d.status||'—'}</span></td>
+      <td>${N(o.scraped)} <span class="dimc">/ ${N(o.requested)}</span></td>
+      <td>${cell(null)}</td>
+      <td>${cell(null)}</td>
+      <td>${o.captchas&&o.captchas.detected?`${o.captchas.detected} / ${o.captchas.solved}`:'<span class="dimc">— (not logged yet)</span>'}</td>
+      <td>${cell(null)}</td>
+      <td>${cell(null)}</td>
+    </tr>`);
+  }
+  if(study && study.overall && study.overall.exits_n){
+    const o=study.overall, dayN=(study.days||[]).length;
+    rows.push(`<tr>
+      <td class="run">Tor exit study <small>measure exit hostility · qwen3-vl-32b</small></td>
+      <td><span class="pill run">day ${dayN} of 3</span></td>
+      <td>${N(o.attempted)}</td>
+      <td>${N(o.exits_n)}</td>
+      <td><b>${pct(o.captcha_rate_pct)}</b> <span class="dimc">${o.exits&&o.exits.windows?`(${o.exits.hostile_windows}/${o.exits.windows})`:''}</span></td>
+      <td>${(o.captchas&&o.captchas.detected)?`${o.captchas.detected} / ${o.captchas.solved}`:'0 / 0'}</td>
+      <td class="good">${pct(o.success_pct)}</td>
+      <td>${o.fetches_per_hour?N(o.fetches_per_hour)+'/h':'—'}</td>
+    </tr>`);
+  }
+  document.getElementById('bigbody').innerHTML = rows.join('') || '<tr><td>no run data yet</td></tr>';
+  document.getElementById('bignote').innerHTML =
+    `<b>Why the blanks:</b> the two jobs log different things. The exit study attributes every fetch to its exit (so it has the captcha rate + per-exit hostility); production only tracks scraped-vs-logged-vs-pending, so its captcha/pace columns are blank by design. `+
+    `<b>Why "doodles met" is ~0:</b> the one hostile exit the study saw was a hard Imperva block, not a solvable doodle. Real captcha puzzles are rare on clean exits.`;
+
+  // ---- shootout arms ----
+  if(shoot && shoot.arms && shoot.arms.length){
+    const ab = shoot.arms.map(a=>{
+      const ran=(a.fetches||0)>0;
+      const c=a.captchas||{};
+      return `<tr>
+        <td class="run">${a.label} <small>${a.locate||''}</small></td>
+        <td><span class="pill ${ran?(a.partial?'run':'done'):'idle'}">${ran?(a.partial?'running':'done'):'not run yet'}</span></td>
+        <td>${N(a.fetches)}</td>
+        <td>${a.exits_n||'—'}</td>
+        <td>${ran?`${c.detected||0} / ${c.solved||0}`:'<span class="dimc">—</span>'}</td>
+        <td class="${a.success_pct>=95?'good':''}">${a.success_pct!=null?pct(a.success_pct):'<span class="dimc">—</span>'}</td>
+        <td>${a.fetches_per_hour?N(a.fetches_per_hour)+'/h':'—'}</td>
+      </tr>`;
+    }).join('');
+    document.getElementById('armbody').innerHTML = ab;
+    const metTotal = shoot.arms.reduce((s,a)=>s+((a.captchas||{}).detected||0),0);
+    const solvedTotal = shoot.arms.reduce((s,a)=>s+((a.captchas||{}).solved||0),0);
+    document.getElementById('armnote').innerHTML =
+      `Across all arms so far: <b>${metTotal} doodle wall${metTotal===1?'':'s'} met, ${solvedTotal} solved</b> (most exits were clean → no puzzle). `+
+      `Product success is similar across methods because on a clean exit there's no captcha to solve; the methods only diverge on the rare wall — see the <a href="shootout.html">bench</a> for that. ${shoot.note||''}`;
+  } else {
+    document.getElementById('armbody').innerHTML = '<tr><td>no shootout run yet</td></tr>';
+  }
+}
+load(); setInterval(load, 60000);
+</script>
+</body>
+</html>
