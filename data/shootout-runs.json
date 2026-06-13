@@ -1,5 +1,5 @@
 {
-  "updated": 1781316141550,
+  "updated": 1781316145190,
   "partial": true,
   "note": "Each arm scraped the same URL sample on its OWN Tor (own exits), in parallel. Arms differ only in the locate method; legend reading is qwen/vlm in all. Aggregate comparison, not a same-captcha test. Captcha counts are solve ATTEMPTS (a method that keeps failing logs several).",
   "arms": [
@@ -51,54 +51,20 @@
       "locate": "match",
       "kind": "computer vision · free locate",
       "partial": true,
-      "fetches": 218,
-      "success_pct": 100,
-      "block_pct": 0,
-      "exits_n": 11,
+      "fetches": 0,
+      "success_pct": null,
+      "block_pct": null,
+      "exits_n": 0,
       "captchas": {
-        "detected": 11,
-        "solved": 2,
-        "failed": 9
+        "detected": 0,
+        "solved": 0,
+        "failed": 0
       },
-      "solve_rate_pct": 18.2,
-      "rotations": 10,
-      "duration_min": 21,
-      "fetches_per_hour": 623,
-      "items": [
-        {
-          "image": "data/shootout/shape/shape_doodle_a01_solved.png",
-          "solved": true,
-          "legend": [
-            "engine",
-            "tree"
-          ]
-        },
-        {
-          "image": "data/shootout/shape/shape_doodle_a02_failed.png",
-          "solved": false,
-          "legend": [
-            "alarm clock",
-            "coins"
-          ]
-        },
-        {
-          "image": "data/shootout/shape/shape_doodle_a01_failed.png",
-          "solved": false,
-          "legend": [
-            "apple",
-            "hamburger",
-            "bicycle"
-          ]
-        },
-        {
-          "image": "data/shootout/shape/shape_doodle_a02_solved.png",
-          "solved": true,
-          "legend": [
-            "lighter",
-            "balloons"
-          ]
-        }
-      ]
+      "solve_rate_pct": null,
+      "rotations": 0,
+      "duration_min": 0,
+      "fetches_per_hour": 0,
+      "items": []
     },
     {
       "name": "color",
