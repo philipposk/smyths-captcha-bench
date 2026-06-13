@@ -111,24 +111,25 @@
     {
       "name": "shape+color-ensemble",
       "legendAcc": 0,
-      "locateAcc": 0.973,
-      "solveAcc": 0.973,
-      "orderedSolveAcc": 0.865,
-      "p50ms": 2565,
-      "avgTokens": 738,
-      "avgCalls": 1.9,
-      "estPer1000Usd": 0.1111,
+      "locateAcc": 0.716,
+      "solveAcc": 0.486,
+      "orderedSolveAcc": 0.189,
+      "p50ms": 978,
+      "avgTokens": 146,
+      "avgCalls": 1,
+      "estPer1000Usd": 0.0495,
       "free": false,
       "errors": 0,
       "n": 37,
       "providers": {
-        "openrouter": 71
+        "openrouter": 37
       },
-      "new": true,
-      "costPerSolve": 0.000111,
+      "new": false,
+      "costPerSolve": 0.00005,
       "costEst": false,
-      "costNoteRow": "locate is free CV; cost is the legend read (qwen)",
-      "costTier": 1
+      "costNoteRow": "CV locate + one qwen legend read",
+      "costTier": 1,
+      "costReal": true
     },
     {
       "name": "gpt-5.4-mini",
@@ -425,6 +426,30 @@
       "costPerSolve": 0.002,
       "costEst": true,
       "costTier": 3
+    },
+    {
+      "name": "shape+color (free legend)",
+      "legendAcc": 0,
+      "locateAcc": 0.716,
+      "solveAcc": 0.486,
+      "orderedSolveAcc": 0.162,
+      "p50ms": 1262,
+      "avgTokens": 283,
+      "avgCalls": 0.9,
+      "providers": {
+        "gemini-native1": 5,
+        "gemini-native2": 15,
+        "gemini": 12
+      },
+      "free": true,
+      "new": true,
+      "costReal": true,
+      "errors": 0,
+      "n": 37,
+      "costPerSolve": 0,
+      "estPer1000Usd": 0,
+      "costEst": false,
+      "costTier": 0
     }
   ]
 }

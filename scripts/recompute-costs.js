@@ -40,8 +40,11 @@ for (const row of r.leaderboard) {
     cps = q + g * (1 - 0.919);                                 // qwen full + gemini on the 8.1% it missed
     note = 'qwen on every puzzle + gemini-3.1-flash-lite only on qwen’s misses';
   } else if (row.name === 'shape+color-ensemble') {
-    cps = perSolve(738, PRICE['qwen3-vl-32b']);                // CV locate is free; cost is the qwen legend read
-    note = 'locate is free CV; cost is the legend read (qwen)';
+    cps = perSolve(row.avgTokens || 146, PRICE['qwen3-vl-32b']); // CV locate (free) + one qwen legend read
+    note = 'CV locate + one qwen legend read';
+  } else if (row.name === 'shape+color (free legend)') {
+    cps = 0;                                                    // free Gemini key reads the legend; CV locate
+    note = 'free Gemini key legend + free CV locate';
   } else if (row.name === 'color-cv') {
     cps = perSolve(420, PRICE['qwen3-vl-32b']);                // free CV locate; one qwen legend read (no moondream)
     note = 'free CV locate; one qwen legend read (earlier $2.12 was stale moondream-classify)';

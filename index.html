@@ -219,7 +219,8 @@ const DETAILS = {
   'glm-4.6v':          'OpenRouter API · Zhipu · paid. Decent but very slow (~23s/puzzle).',
   'gpt-5.4':           'OpenRouter API · OpenAI · paid. Mid accuracy on tiny icons.',
   'qwen3-vl-32b→gemini-3.1-flash-lite': 'Combo: qwen runs on every puzzle, gemini-3.1-flash-lite only on qwen’s misses. 94.6% — beats either alone. Costs a touch MORE than qwen ($0.17 vs $0.11/1k) because you pay qwen in full plus a little gemini.',
-  'shape+color-ensemble': 'Free CV finds the doodles (shape + colour merged, 97.3% icons hit) — but the qwen legend read is what gets the ORDER right, and that costs ~$0.11/1k. So not actually free. Swap the free Gemini key in for the legend and it’d be $0, but that’s a different combo we haven’t benched yet.',
+  'shape+color-ensemble': 'Merges two free CV locators (shape + colour) + a qwen legend read. But CV can’t ORDER the icons, so it solves only ~19% — same as shape-match / color-cv alone, and the merge doesn’t even raise locate (71.6%). The old 86.5% was a bug: the CV silently returned nothing and qwen did the locate (that 86.5% is really just qwen).',
+  'shape+color (free legend)': 'Truly $0: the free Gemini key reads the legend, free CV locates — no paid call at all. Benched 16.2%, which proves the legend isn’t the bottleneck; the CV simply can’t put the icons in order.',
   'gpt-5.4-mini':      'OpenRouter API · OpenAI. 81% solved. Cheap to send but its output tokens are pricey, so ~$1.07/1k — mid-cost, not the value pick.',
   'gpt-5.4-nano':      'OpenRouter API · OpenAI · cheapest. Too small for grounding — clicks land off-target.',
   'gemini-2.5-flash-lite': 'OpenRouter API · Google · cheap. Weak on tiny icons (like 2.5-flash).',
@@ -254,7 +255,7 @@ function costChip(r){
 // Philippos's picks (gold crown), attached to the MODEL so they stay correct at any sort order.
 const PICKS = {
   'qwen3-vl-32b→gemini-3.1-flash-lite':'Philippos’s pick — best accuracy-per-$ combo',
-  'shape+color-ensemble':'Philippos’s pick — free-CV, 86.5%'
+  'shape+color-ensemble':'Philippos’s pick'
 };
 // models powering a live scrape run right now — badge links to the Live runs page
 const LIVE_RUNNERS = {
