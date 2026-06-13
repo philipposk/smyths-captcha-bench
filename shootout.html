@@ -108,6 +108,7 @@
     <a href="shootout.html" class="on">Solver shootout</a>
     <a href="real-captchas.html">Real captchas</a>
     <a href="production.html">Production</a>
+    <a href="timeline.html">Timeline</a>
   </div>
 
   <span class="badge">4-method head-to-head</span>
@@ -249,16 +250,8 @@ async function load(){
       <p class="dim" style="font-size:12px;margin:8px 2px 0"><b>URLs tried</b> = how many we attempted (1,000 each). <b>Products scraped</b> = % that returned a real product; the rest hit a captcha wall or error on a bad exit (not bad products — just no product). <b>Captcha tries / solved</b> count only the fetches that hit the wall. ${runs.note||''}${runs.updated?' · updated '+new Date(runs.updated).toISOString().slice(0,16).replace('T',' '):''}</p>`;
     placeRaceNote();
 
-    // per-arm captured captchas (real puzzles each arm faced + its attempt)
-    const withImgs = A.filter(a=>a.items&&a.items.length);
-    live.innerHTML = withImgs.length ? withImgs.map(a=>
-      `<div class="armcap"><h4>${a.label} <span class="loc">— what it actually faced (${a.items.length})</span></h4>
-        <div class="strip">`+ a.items.map(it=>
-          `<div class="shot"><img src="${it.image}?_=${runs.updated||Date.now()}" alt="captcha">
-            <div class="cap"><span class="dim">${(it.legend||[]).slice(0,3).join(', ')||'doodle'}</span>
-            <span class="pill ${it.solved?'ok':'no'}">${it.solved?'solved':'failed'}</span></div></div>`
-        ).join('') + `</div></div>`
-    ).join('') : `<div class="empty">No captchas were thrown during this run yet — most Tor exits loaded products with no challenge. Captured puzzles (with each arm's attempt) appear here as the runs hit them.</div>`;
+    // per-arm captured captchas now live on the Real captchas page (tagged by model).
+    live.innerHTML = `<p class="dim" style="font-size:13px;margin:0">See the real captchas each method faced → <a href="real-captchas.html">real-captchas.html</a></p>`;
   } else {
     runsEl.innerHTML = `<div class="empty"><b>No live run yet.</b><br>
       Kick one off with <code>scripts/shootout-run.sh &lt;N&gt;</code> — all three methods scrape the same URLs on separate Tors in parallel, and this fills with each arm's captcha solve-rate, product success, speed, and the real puzzles it faced.</div>`;

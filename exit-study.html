@@ -68,10 +68,12 @@
     <a href="shootout.html">Solver shootout</a>
     <a href="real-captchas.html">Real captchas</a>
     <a href="production.html">Production</a>
+    <a href="timeline.html">Timeline</a>
   </div>
 
   <span class="badge"><span class="pulse"></span> LIVE · 3-day run</span>
   <h1>How many Tor exits get captcha'd?</h1>
+  <p class="legend" style="margin:8px 0 0;color:var(--mut)">ℹ A 5-hour window on 2026-06-12 evening is scoped out of these numbers — a dev-side over-concurrency rate-limited the solver's model, so exits "couldn't clear" for reasons unrelated to exit hostility. Counting them would have shown a fake 38% hostile-exit rate; the real figure is ~1%. <a href="timeline.html">What happened →</a></p>
   <p class="sub">Scraping <b>3,000 random Smyths products/day</b> across <b>every region</b> (UK · IE · DE · AT · CH · FR · NL) over Tor, for 3 days — measuring how often an exit hits the captcha wall, with real confidence intervals. Solver: <b>qwen3-vl-32b</b> (the value-winner from the leaderboard); its free challengers shape-match &amp; color-cv get the head-to-head on the <a href="shootout.html">Solver shootout</a> tab.</p>
 
   <div class="about">

@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Timeline — how this was built</title>
+<meta name="description" content="Development changelog of the Smyths captcha solver + dashboard, including the honest record of what broke and why.">
+<link rel="icon" href="favicon.svg">
+<style>
+  :root{ --bg:#0b0d11; --panel:#13161d; --panel2:#171b23; --line:#222734; --txt:#eef2f8; --mut:#93a0b4; --dim:#6b7585;
+    --good:#46d6a6; --warn:#f4b740; --bad:#ff6a6a; --accent:#7aa9ff; --shadow:0 8px 30px rgba(0,0,0,.45); }
+  *{box-sizing:border-box}
+  body{margin:0;background:radial-gradient(1100px 480px at 78% -8%, rgba(122,169,255,.10), transparent 60%),var(--bg);
+    color:var(--txt);font:15px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:880px;margin:0 auto;padding:30px 18px 70px}
+  a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
+  .mut{color:var(--mut)} .dim{color:var(--dim)}
+  .nav{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+  .nav a{font-size:13px;font-weight:600;color:var(--mut);background:var(--panel);border:1px solid var(--line);padding:6px 13px;border-radius:999px}
+  .nav a.on{color:var(--txt);border-color:#33415a;background:var(--panel2)}
+  h1{font-size:26px;margin:12px 0 6px;letter-spacing:-.3px;font-weight:750}
+  .sub{color:var(--mut);margin:0 0 22px;max-width:72ch}
+  .day{margin:0 0 6px} .day h2{font-size:14px;color:var(--accent);text-transform:uppercase;letter-spacing:.6px;margin:24px 0 10px;font-weight:700}
+  ul.t{list-style:none;margin:0;padding:0;border-left:2px solid var(--line);margin-left:6px}
+  ul.t li{position:relative;padding:0 0 13px 22px;font-size:14px;line-height:1.55;color:var(--txt)}
+  ul.t li:before{content:"";position:absolute;left:-7px;top:6px;width:11px;height:11px;border-radius:50%;background:var(--panel2);border:2px solid var(--line)}
+  ul.t li b{color:var(--txt)}
+  li.incident{background:rgba(255,106,106,.07);border:1px solid rgba(255,106,106,.3);border-radius:11px;padding:12px 14px;margin:2px 0 13px;color:var(--mut)}
+  li.incident:before{background:var(--bad);border-color:var(--bad)}
+  li.incident b{color:var(--bad)} li.incident .lead{color:var(--txt);font-weight:700;display:block;margin-bottom:3px}
+  li.ship:before{background:var(--good);border-color:var(--good)}
+  .pr{display:inline-block;font-size:11px;font-weight:700;color:var(--accent);background:rgba(122,169,255,.13);border-radius:5px;padding:0 6px;margin-left:4px}
+  .prs{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:15px 18px;margin-top:26px;box-shadow:var(--shadow)}
+  .prs h3{margin:0 0 9px;font-size:13px;text-transform:uppercase;letter-spacing:.5px;color:var(--mut)}
+  .prs div{font-size:13.5px;color:var(--mut);margin:5px 0;line-height:1.5} .prs b{color:var(--txt)}
+  footer{color:var(--dim);margin-top:26px;font-size:13px;border-top:1px solid var(--line);padding-top:16px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="nav">
+    <a href="./">◂ Captcha leaderboard</a>
+    <a href="gallery.html">Where models clicked</a>
+    <a href="exit-study.html">Tor exit study</a>
+    <a href="shootout.html">Solver shootout</a>
+    <a href="real-captchas.html">Real captchas</a>
+    <a href="production.html">Production</a>
+    <a href="timeline.html" class="on">Timeline</a>
+  </div>
+
+  <h1>Timeline — how this was built (and what broke)</h1>
+  <p class="sub">A running log of the project: the bench, the gallery, the Tor exit study, the solver shootout, the production pipeline — and an honest record of the one self-inflicted incident, so the numbers on this site stay trustworthy.</p>
+
+  <div class="day">
+    <h2>2026-06-13</h2>
+    <ul class="t">
+      <li>First full <b>production day</b> went live on the dashboard, streaming scrape progress as it ran.</li>
+      <li>Scoped the displayed exit-study metrics to <b>exclude the rate-limit window</b> from the night before (see the 06-12 incident) — so "hostile exits" reflects real hostility, not a dev mistake.</li>
+      <li>Benched more cheap models/combos on the same 37 puzzles and surfaced them on the leaderboard + shootout.</li>
+      <li>Merged the captcha-image views into one <b>Real captchas</b> gallery (filter by model + verdict) and ingested fresh captures.</li>
+    </ul>
+  </div>
+
+  <div class="day">
+    <h2>2026-06-12</h2>
+    <ul class="t">
+      <li class="incident"><span class="lead">⚠ Incident (~20:44, my fault — Philippos)</span>
+        Started too many qwen-based scrapers at once — the 3-day exit study <b>plus</b> a 4-arm shootout at 3,000 URLs each <b>plus</b> the production run, ~5 concurrent solvers all hitting the same OpenRouter <b>qwen</b> endpoint. OpenRouter <b>rate-limited qwen (HTTP 429)</b>, which spiralled every qwen-based run into fail-and-rotate. Caught it, stopped the over-concurrent runs, and set a rule: <b>never run more than ~2 qwen solvers at once</b>. The metrics on this site are scoped to exclude that window, so they reflect the scraper — not the mistake.</li>
+      <li class="ship">Shipped the <b>production reliability pipeline</b>: scrape every product, or log exactly why it couldn't be fetched. <span class="pr">PR #3</span></li>
+      <li class="ship">Shipped <b>human-like solving</b>: give up after a few puzzles + scroll/fidget instead of grinding 30 in a row. <span class="pr">PR #4</span></li>
+      <li>Added a daily production runner + live status, surfaced as the <b>Production</b> tab.</li>
+      <li>Ran the <b>solver shootout</b> — model "arms" scraping in parallel through separate Tor circuits — with a live comparison table.</li>
+      <li>Added <b>gemini-3.1-flash-lite</b> as a 4th contestant (a Tamás request) across the leaderboard, gallery and shootout; its clean 1,000-URL arm hit 98.7% products and 6/6 captchas.</li>
+      <li>Turned on real <b>captcha capture</b> during the exit study + per-day counts.</li>
+      <li>Launched the <b>3-day Tor exit study</b> with per-exit logging and a new dashboard tab.</li>
+      <li>Added the <b>Real captchas</b> gallery and rebuilt the click-overlay gallery as a model×puzzle matrix.</li>
+      <li>Corrected paid-model <b>costs</b> from real OpenRouter spend (the flat estimate was ~13× too low for thinking models).</li>
+      <li>Merged a <b>13-config benchmark</b>: gemini-3-flash topped solve rate ~97%, qwen3-vl-32b ~92% as the value pick.</li>
+      <li>Added the <b>ordered-solve</b> metric (right icons in the right order) — exposing that the free CV baselines order near-randomly.</li>
+      <li>Prototyped the name-free <b>shape-match</b> locator + a cropper + labeling tool. <span class="pr">PR #2</span></li>
+      <li>Tuned the colour doodle detector — recall 16% → 71%.</li>
+      <li>Stood up the first <b>model-bench dashboard</b> from hand-labeled real puzzles.</li>
+    </ul>
+  </div>
+
+  <div class="day">
+    <h2>2026-06-09 — 06-11</h2>
+    <ul class="t">
+      <li>Made Gemini 2.5's "thinking" mode off-by-default for speed (env-toggle).</li>
+      <li class="ship">Grounding-aware locating: Moondream point-native + Flash-Lite, dropped groq/nvidia. <span class="pr">PR #1</span></li>
+      <li>Added a "locate-all" guard (re-locate until every icon is found before clicking) + bad-Tor-window guards.</li>
+    </ul>
+  </div>
+
+  <div class="day">
+    <h2>2026-06-08 — start</h2>
+    <ul class="t">
+      <li>Initialized the job-mode scraper: patchright + Tor + the free vision-LLM solver.</li>
+      <li>Fixed Tor circuit rotation inside the container (the 515 auth error).</li>
+      <li>Saved captcha puzzles + pass/fail verdict to feed the gallery.</li>
+      <li>Added gentle/fail-fast guards so a bad night never turns into hammering the site.</li>
+    </ul>
+  </div>
+
+  <div class="prs">
+    <h3>Open pull requests</h3>
+    <div><b>#4 — feat/humanize-solver:</b> human-like solving — give up after N puzzles + scroll/fidget.</div>
+    <div><b>#3 — feat/production-reliability-pipeline:</b> scrape everything, or log exactly why a product couldn't be fetched.</div>
+    <div><b>#2 — feat/shape-match-locate:</b> name-free shape-match locator + screenshot cropper + label tool.</div>
+    <div><b>#1 — feat/vision-grounding-upgrade:</b> grounding-aware locate — Moondream point-native + Flash-Lite, drop groq/nvidia.</div>
+  </div>
+
+  <footer>Honest by design — the incident stays on the record. <span class="dim">Built across two repos: the scraper/solver and this dashboard.</span></footer>
+</div>
+</body>
+</html>

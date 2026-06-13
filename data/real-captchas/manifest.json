@@ -1,6 +1,6 @@
 {
   "updated": 0,
-  "note": "Real Smyths captchas the live solver faced. Composites carry the solver verdict; the manual captures show the raw puzzle (a numbered ① mark = a click the solver placed, usually on a failed attempt).",
+  "note": "Real Smyths captchas the live solver faced. Composites carry the solver verdict; the manual captures show the raw puzzle (a numbered \u2460 mark = a click the solver placed, usually on a failed attempt).",
   "items": [
     {
       "img": "cap01.jpg",
@@ -133,6 +133,281 @@
     {
       "img": "cap33.jpg",
       "verdict": "real"
+    },
+    {
+      "img": "cap34.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap35.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap36.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap37.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap38.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap39.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap40.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap41.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap42.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap43.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap44.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap45.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap46.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap47.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap48.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap49.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap50.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap51.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap52.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap53.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap54.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap55.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap56.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap57.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap58.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap59.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap60.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap61.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap62.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap63.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap64.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap65.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap66.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap67.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap68.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap69.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap70.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap71.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap72.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap73.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap74.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap75.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap76.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap77.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap78.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap79.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap80.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap81.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap82.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap83.jpg",
+      "verdict": "real"
+    },
+    {
+      "img": "cap84.jpg",
+      "verdict": "failed",
+      "model": "qwen3-vl-32b"
+    },
+    {
+      "img": "cap85.jpg",
+      "verdict": "failed",
+      "model": "qwen3-vl-32b"
+    },
+    {
+      "img": "cap86.jpg",
+      "verdict": "solved",
+      "model": "qwen3-vl-32b"
+    },
+    {
+      "img": "cap87.jpg",
+      "verdict": "solved",
+      "model": "gemini-3.1-flash-lite"
+    },
+    {
+      "img": "cap88.jpg",
+      "verdict": "failed",
+      "model": "gemini-3.1-flash-lite"
+    },
+    {
+      "img": "cap89.jpg",
+      "verdict": "failed",
+      "model": "gemini-3.1-flash-lite"
+    },
+    {
+      "img": "cap90.jpg",
+      "verdict": "solved",
+      "model": "gemini-3.1-flash-lite"
+    },
+    {
+      "img": "cap91.jpg",
+      "verdict": "failed",
+      "model": "shape-match"
+    },
+    {
+      "img": "cap92.jpg",
+      "verdict": "failed",
+      "model": "shape-match"
+    },
+    {
+      "img": "cap93.jpg",
+      "verdict": "solved",
+      "model": "shape-match"
+    },
+    {
+      "img": "cap94.jpg",
+      "verdict": "solved",
+      "model": "shape-match"
+    },
+    {
+      "img": "cap95.jpg",
+      "verdict": "failed",
+      "model": "color-cv"
+    },
+    {
+      "img": "cap96.jpg",
+      "verdict": "failed",
+      "model": "color-cv"
+    },
+    {
+      "img": "cap97.jpg",
+      "verdict": "solved",
+      "model": "color-cv"
+    },
+    {
+      "img": "cap98.jpg",
+      "verdict": "solved",
+      "model": "color-cv"
     }
   ]
 }
