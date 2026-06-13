@@ -256,9 +256,8 @@ const PICKS = {
   'qwen3-vl-32b→gemini-3.1-flash-lite':'Philippos’s pick — best accuracy-per-$ combo',
   'shape+color-ensemble':'Philippos’s pick'
 };
-// models powering a live scrape run right now — empty while the Mac auto-runs are paused
-// (the multi-day reliability test is moving to the Linux worker). Re-add when it's live there.
-const LIVE_RUNNERS = {};
+// models powering a live scrape run right now — day-2 production run, in the Linux worker container.
+const LIVE_RUNNERS = { 'gemini-3.1-flash-lite':'running the day-2 production scrape in the Linux worker container' };
 function liveBadge(name){
   const t = LIVE_RUNNERS[name]; if(!t) return '';
   return `<a class="livebadge" href="runs.html" title="${t} · open Live runs"><span class="ldot"></span>live</a>`;
@@ -441,13 +440,13 @@ async function loadExits(){
   const ov = s && s.overall && s.overall.exits_n ? s.overall : null;
   if(ov){
     const dayN = (s.days||[]).length;
-    document.getElementById('exitlede').innerHTML = `The puzzle only fires on low-trust connections — so the real win is <b>avoiding</b> captchas, not solving them faster. Measured live over Tor across every region; <b>day ${dayN} of a planned 3 is in</b> (days 2–3 scheduled).`;
+    document.getElementById('exitlede').innerHTML = `The puzzle only fires on low-trust connections — so the real win is <b>avoiding</b> captchas, not solving them faster. Measured live over Tor across every region; this is the <b>day-1 exit sample</b>.`;
     document.getElementById('exitcards').innerHTML =
       card('Exits sampled', (ov.exits_n).toLocaleString(), `${(ov.attempted||0).toLocaleString()} product fetches`) +
       card('Solvable captchas', ov.captcha_rate_pct.toFixed(1)+'%', `of exits threw a doodle wall · ${ov.captcha}/${ov.exits_n}`) +
       card('Fetches hard-blocked', (ov.fetch_block_pct??0).toFixed(1)+'%', `${(ov.fetch_blocked||0).toLocaleString()}/${(ov.attempted||0).toLocaleString()} Imperva walls — can’t be solved`) +
       card('Pages parsed OK', (ov.success_pct??0).toFixed(1)+'%', 'of fetches returned a product');
-    document.getElementById('exitnote').innerHTML = `<b>Day ${dayN} sample (Mac run paused).</b> The full multi-day reliability test moves to the Linux worker (headed Chrome kept stalling here). Full breakdown on the <a href="exit-study.html">Tor exit study tab →</a><br><b>Two kinds of wall:</b> <b>solvable doodle captchas</b> (rare — ${ov.captcha_rate_pct.toFixed(1)}% of exits, what the solver clears for pennies) and <b>hard Imperva blocks</b> (${(ov.fetch_block_pct??0).toFixed(1)}% of fetches — not solvable, you just lose that fetch). The ~${(100-(ov.success_pct??0)).toFixed(0)}% gap in “parsed OK” is mostly the latter, not dead products.<br>${lever}`;
+    document.getElementById('exitnote').innerHTML = `<b>Day-1 exit sample.</b> The production reliability scrape is now crash-proof: <b>day 1 finished (2,974/3,000, 99.1%)</b> and <b>day 2 is running in the Linux worker container</b>. Full breakdown on the <a href="exit-study.html">Tor exit study tab →</a><br><b>Two kinds of wall:</b> <b>solvable doodle captchas</b> (rare — ${ov.captcha_rate_pct.toFixed(1)}% of exits, what the solver clears for pennies) and <b>hard Imperva blocks</b> (${(ov.fetch_block_pct??0).toFixed(1)}% of fetches — not solvable, you just lose that fetch). The ~${(100-(ov.success_pct??0)).toFixed(0)}% gap in “parsed OK” is mostly the latter, not dead products.<br>${lever}`;
   } else {
     try{ e = await fetch('data/exits.json?_='+Date.now()).then(r=>r.json()); }catch{ return; }
     const noCap = (100 - (e.captcha_rate_pct??0)).toFixed(1);

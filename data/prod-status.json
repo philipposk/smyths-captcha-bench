@@ -1,15 +1,15 @@
 {
-  "updated": 1781391689491,
+  "updated": 1781392025835,
   "branch": "feat/production-reliability-pipeline",
   "note": "Production run: scrape every URL or log exactly why not. rotate fresh exit → escalate qwen→gemini-3.1-flash-lite → deferred retries → structured error log.",
   "overall": {
     "requested": 6000,
-    "scraped": 2974,
+    "scraped": 3025,
     "unscraped": 26,
-    "accounted_pct": 50,
-    "scraped_pct": 49.6,
+    "accounted_pct": 50.8,
+    "scraped_pct": 50.4,
     "errorsByCategory": {
-      "data_extraction": 104
+      "data_extraction": 26
     }
   },
   "days": [
@@ -26,7 +26,7 @@
       ],
       "captchas": {},
       "errorsByCategory": {
-        "data_extraction": 104
+        "data_extraction": 26
       },
       "sampleErrors": [
         {
@@ -45,17 +45,17 @@
           "attempts": 2
         },
         {
-          "url": "https://www.smythstoys.com/ie/en-ie/baby/pushchairs-and-strollers/strollers/zummi-explorer-compact-stroller-black/p/231255",
-          "category": "data_extraction",
-          "attempts": 2
-        },
-        {
           "url": "https://www.smythstoys.com/nl/nl-nl/speelgoed/actiespeelgoed/blasters-en-speelgoedpistolen/nerf/nerf-fortnite-blasterblue-shock/p/225603",
           "category": "data_extraction",
           "attempts": 2
         },
         {
           "url": "https://www.smythstoys.com/ch/de-ch/spielzeug/action-spielzeug/pokemon/pokemon-karten/pokemon-karten-mega-entwicklung-wachsendes-chaos-booster-pack-3er-set-sortiert/p/259978",
+          "category": "data_extraction",
+          "attempts": 2
+        },
+        {
+          "url": "https://www.smythstoys.com/de/de-de/spielzeug/action-spielzeug/sonic-the-hedgehog/sonic-figuren-metal-sonic-giant-vs-sonic-2er-set/p/256869",
           "category": "data_extraction",
           "attempts": 2
         }
@@ -66,7 +66,7 @@
       "status": "running",
       "date": null,
       "requested": 3000,
-      "scraped": 0,
+      "scraped": 51,
       "unscraped": 0,
       "captchas": {},
       "errorsByCategory": {},

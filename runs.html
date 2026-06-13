@@ -87,11 +87,11 @@
       <li><b>Tor exit study</b> — measure how often a Tor exit hits the captcha wall. <b>3,000/day</b>, solver <code>qwen3-vl-32b</code>. → <a href="exit-study.html">detail</a></li>
       <li><b>Solver shootout</b> — one-shot head-to-head: 4 methods scrape the <b>same 500 URLs</b> on separate Tors. Not multi-day. → <a href="shootout.html">detail</a></li>
     </ul>
-    <p class="note" style="margin-top:9px"><b>Status:</b> the Mac auto-runs are <b>paused</b> — production wedged at 627/3,000 and the exit study completed a day-1 sample (headed Chrome kept stalling here). The full multi-day reliability test moves to the <b>Linux worker</b>. The shootout was a one-shot 4-arm pass (qwen/gemini/shape done, color pending).</p>
+    <p class="note" style="margin-top:9px"><b>Status:</b> <b>Production day 1 is complete — 2,974/3,000 (99.1%)</b>; the 26 misses are pages with no product data, not captcha or block failures. After the original wedge the run was made crash-proof (short capped passes + per-pass watchdog). <b>Day 2 is now running in the Linux worker container</b> — the production Docker image (Tor + Xvfb + Chrome), so there's no on-screen browser to stall. The exit study (qwen3-vl-32b) and the 4-arm shootout remain a day-1 / one-shot sample.</p>
   </div>
 
   <h2 class="sec">The two 3k/day runs</h2>
-  <p class="secsub">Same target (3,000 URLs/day, every region, over Tor), <b>different jobs</b> — so some columns only one of them measures. Both are day 1.</p>
+  <p class="secsub">Same target (3,000 URLs/day, every region, over Tor), <b>different jobs</b> — so some columns only one of them measures. Production is on <b>day 2</b> (day 1 complete, 2,974/3,000); the exit study is a day-1 sample.</p>
   <div class="tablewrap">
     <table>
       <thead><tr>
@@ -146,12 +146,12 @@ async function load(){
   // ---- big runs (production + exit study) ----
   const rows = [];
   if(prod && prod.overall){
-    const o=prod.overall, d=(prod.days||[])[0]||{};
-    const pending = Math.max(0,(o.requested||0)-(o.scraped||0)-(o.unscraped||0));
+    const o=prod.overall, days=prod.days||[], d=days[days.length-1]||{}, dn=d.day||days.length||1;
+    const pending = Math.max(0,(d.requested||0)-(d.scraped||0)-(d.unscraped||0));
     rows.push(`<tr>
       <td class="run">Production <small>scrape everything · gemini-3.1-flash-lite</small></td>
-      <td><span class="pill ${d.status==='running'?'run':'done'}">day 1 · ${d.status||'—'}</span></td>
-      <td>${N(o.scraped)} <span class="dimc">/ ${N(o.requested)}</span></td>
+      <td><span class="pill ${d.status==='running'?'run':'done'}">day ${dn} · ${d.status||'—'}</span></td>
+      <td>${N(d.scraped)} <span class="dimc">/ ${N(d.requested)}</span></td>
       <td>${cell(null)}</td>
       <td>${cell(null)}</td>
       <td>${o.captchas&&o.captchas.detected?`${o.captchas.detected} / ${o.captchas.solved}`:'<span class="dimc">— (not logged yet)</span>'}</td>
@@ -163,7 +163,7 @@ async function load(){
     const o=study.overall, dayN=(study.days||[]).length;
     rows.push(`<tr>
       <td class="run">Tor exit study <small>measure exit hostility · qwen3-vl-32b</small></td>
-      <td><span class="pill done">day ${dayN} sample · paused</span></td>
+      <td><span class="pill done">day ${dayN} sample</span></td>
       <td>${N(o.attempted)}</td>
       <td>${N(o.exits_n)}</td>
       <td><b>${pct(o.captcha_rate_pct)}</b> <span class="dimc">${o.exits&&o.exits.windows?`(${o.exits.hostile_windows}/${o.exits.windows})`:''}</span></td>
