@@ -72,6 +72,10 @@
   .pill{display:inline-block;padding:2px 9px;border-radius:999px;font-size:12px;font-weight:650}
   .pill.free{background:rgba(70,214,166,.15);color:var(--good)}
   .pill.paid{background:rgba(244,183,64,.14);color:var(--warn)}
+  /* cost battery: fill = how pricey, colour = free(green)/paid(orange) */
+  .batt{display:inline-block;width:30px;height:14px;border:1.5px solid var(--dim);border-radius:3px;position:relative;vertical-align:middle;padding:1.5px;cursor:help}
+  .batt:after{content:"";position:absolute;right:-4px;top:4px;width:2.5px;height:6px;background:var(--dim);border-radius:0 2px 2px 0}
+  .batt i{display:block;height:100%;border-radius:1px;transition:width .3s}
   .top1 td{background:linear-gradient(90deg,rgba(122,169,255,.10),transparent 70%)}
 
   /* crown + cartoon tooltip */
@@ -208,14 +212,14 @@
 // per-model "what is it / how does it run" — shown in the Details column.
 const DETAILS = {
   'gemini-3-flash':    'OpenRouter API · Google · paid. Top accuracy, no thinking-token tax.',
-  'gemini-3.1-flash-lite': 'OpenRouter API · Google · paid. Lite Gemini-3 — as accurate as qwen but ~6× the cost.',
+  'gemini-3.1-flash-lite': 'OpenRouter API · Google · paid. Lite Gemini-3 — as accurate as qwen, and actually a bit cheaper.',
   'gemini-3.5-flash':  'OpenRouter API · Google · paid. Accurate but burns pricey reasoning tokens.',
   'qwen3-vl-32b':      'OpenRouter API · Alibaba · cheap grounded vision model. The value winner.',
   'glm-4.6v':          'OpenRouter API · Zhipu · paid. Decent but very slow (~23s/puzzle).',
   'gpt-5.4':           'OpenRouter API · OpenAI · paid. Mid accuracy on tiny icons.',
-  'qwen3-vl-32b→gemini-3.1-flash-lite': 'Combo: qwen first, gemini-3.1-flash-lite on qwen’s misses. 94.6% — beats either alone, still only ~$0.29/1k.',
-  'shape+color-ensemble': 'Free shape-match + colour-blob locate MERGED (97.3% — they find different doodles), legend by qwen. 86.5% solved at ~$0.22/1k.',
-  'gpt-5.4-mini':      'OpenRouter API · OpenAI · cheap. Surprise: 81% solved at $0.26/1k — best value OpenAI option.',
+  'qwen3-vl-32b→gemini-3.1-flash-lite': 'Combo: qwen first, gemini-3.1-flash-lite on qwen’s misses. 94.6% — beats either alone, ~$0.16/1k.',
+  'shape+color-ensemble': 'Locate is free CV (shape-match + colour-blob merged, 97.3%); the cost is the qwen LEGEND read. 86.5% solved at ~$0.08/1k.',
+  'gpt-5.4-mini':      'OpenRouter API · OpenAI · cheap. 81% solved at just ~$0.034/1k — the best-value option, period.',
   'gpt-5.4-nano':      'OpenRouter API · OpenAI · cheapest. Too small for grounding — clicks land off-target.',
   'gemini-2.5-flash-lite': 'OpenRouter API · Google · cheap. Weak on tiny icons (like 2.5-flash).',
   'gemini-2.5-flash+shape': 'Combo: Gemini reads the legend, free shape-match locates. Locate is the bottleneck — doesn’t beat a full VLM.',
@@ -242,6 +246,17 @@ const bar = (x) => `<span class="bar"><i style="width:${Math.round((x||0)*100)}%
 const money = (x) => (x==null ? '—' : (!x ? '$0' : (x<0.01 ? '$'+x.toFixed(4) : '$'+x.toFixed(x<1?3:2))));
 const ago = (ms) => { if(!ms) return '—'; const s=Math.round((Date.now()-ms)/1000); if(s<90) return s+'s ago'; const m=Math.round(s/60); if(m<90) return m+'m ago'; return Math.round(m/60)+'h ago'; };
 const detail = (r) => DETAILS[r.name] || (Object.keys(r.providers||{}).join(', ') || 'classical CV · $0');
+// Battery: FILL = how pricey (cheap = nearly empty, expensive = full); colour stays green (free) /
+// orange (paid) — the level shows the cost, the colour just says free vs paid.
+function battery(cost){
+  cost = cost || 0;
+  const free = cost === 0;
+  const t = Math.min(1, Math.sqrt(cost / 0.93));                 // 0..1 vs the priciest model (~$0.93)
+  const fill = free ? 12 : Math.round(22 + t * 78);              // free = low, paid scales with cost
+  const col = free ? 'var(--good)' : 'var(--warn)';             // green = free, orange = paid
+  const lbl = free ? 'free' : '$' + (cost < 0.1 ? cost.toFixed(3) : cost.toFixed(2)) + '/1k';
+  return `<span class="batt" title="${lbl}"><i style="width:${fill}%;background:${col}"></i></span>`;
+}
 
 // ---- state ----
 let LB = [], DEADROWS = [];
@@ -284,11 +299,8 @@ function renderBoard(){
   const lb = LB.slice().sort((a,b)=> sortDir*(((a[sortKey]??0)-(b[sortKey]??0))) );
 
   const rows = lb.map((r,i)=>{
-    const isFree=(r.estPer1000Usd||0)===0;
-    const pick = PICKS[r.name];
-    const crown = pick ? `<span class="crown">👑<span class="tip">${pick.t}<small>${pick.s}</small></span></span>` : '';
     return `<tr class="${i===0?'top1':''}" data-name="${r.name}">
-      <td><span class="rank">${i+1}</span>${crown}</td>
+      <td><span class="rank">${i+1}</span></td>
       <td class="name">${r.name}${r.new?' <span style="font-size:9px;font-weight:800;color:var(--good);background:rgba(70,214,166,.18);border-radius:4px;padding:0 5px;vertical-align:2px">NEW</span>':''}</td>
       <td class="detcol det">${detail(r)}</td>
       <td><span class="solv">${fmtPct(r.orderedSolveAcc)}</span></td>
@@ -296,7 +308,7 @@ function renderBoard(){
       <td class="num">${fmtPct(r.locateAcc)}${bar(r.locateAcc)}</td>
       <td class="num">${(r.p50ms/1000).toFixed(1)}s</td>
       <td class="num"><span class="cinfo">${money(r.estPer1000Usd)}<span class="ctip">${costTip(r)}</span></span></td>
-      <td><span class="pill ${isFree?'free':'paid'}">${isFree?'free':'paid'}</span></td>
+      <td>${battery(r.estPer1000Usd)}</td>
     </tr>`;
   }).join('');
 
@@ -313,7 +325,6 @@ function renderBoard(){
     renderBoard();
   }));
   board.querySelectorAll('th.nonsort').forEach(h=>h.addEventListener('click',()=>showBig(h.dataset.msg)));
-  ensureGutNotes();
 }
 // click a non-sortable header → drop a little smiley that falls off the bottom of the screen
 function showBig(){
@@ -363,7 +374,6 @@ function showSortHint(){
   pointGutAt(el, thead);   // arrowhead lands on the header row
   setTimeout(dismissHint, 12000);
 }
-window.addEventListener('resize', ()=>{ if(document.getElementById('board')) ensureGutNotes(); });
 
 async function load(){
   let d; try{ d = await fetch('data/results.json?_='+Date.now()).then(r=>r.json()); }catch{ return; }
