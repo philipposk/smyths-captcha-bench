@@ -1,5 +1,5 @@
 {
-  "updated": 1781314214589,
+  "updated": 1781314222462,
   "partial": true,
   "note": "Each arm scraped the same URL sample on its OWN Tor (own exits), in parallel. Arms differ only in the locate method; legend reading is qwen/vlm in all. Aggregate comparison, not a same-captcha test. Captcha counts are solve ATTEMPTS (a method that keeps failing logs several).",
   "arms": [
@@ -9,7 +9,7 @@
       "locate": "vlm",
       "kind": "vision AI · paid (cheap)",
       "partial": true,
-      "fetches": 409,
+      "fetches": 411,
       "success_pct": 99.3,
       "block_pct": 0,
       "exits_n": 21,
@@ -20,7 +20,7 @@
       },
       "solve_rate_pct": null,
       "rotations": 20,
-      "duration_min": 33.2,
+      "duration_min": 33.3,
       "fetches_per_hour": 740,
       "items": []
     },
@@ -30,8 +30,8 @@
       "locate": "vlm",
       "kind": "vision AI · paid",
       "partial": true,
-      "fetches": 105,
-      "success_pct": 99,
+      "fetches": 107,
+      "success_pct": 99.1,
       "block_pct": 0,
       "exits_n": 6,
       "captchas": {
@@ -41,8 +41,8 @@
       },
       "solve_rate_pct": null,
       "rotations": 5,
-      "duration_min": 8.7,
-      "fetches_per_hour": 726,
+      "duration_min": 8.8,
+      "fetches_per_hour": 728,
       "items": []
     },
     {
