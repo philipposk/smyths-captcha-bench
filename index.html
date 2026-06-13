@@ -315,7 +315,16 @@ function renderBoard(){
   board.querySelectorAll('th.nonsort').forEach(h=>h.addEventListener('click',()=>showBig(h.dataset.msg)));
   ensureGutNotes();
 }
-function showBig(t){ const b=document.getElementById('bigmsg'); if(!b) return; const s=b.querySelector('span'); s.textContent=t; s.classList.remove('show'); void s.offsetWidth; s.classList.add('show'); }
+// click a non-sortable header → drop a little smiley that falls off the bottom of the screen
+function showBig(){
+  const faces=['😄','😁','🙂','😎','🤪','😜','🥳','😺','😏','😬'];
+  const s=document.createElement('div');
+  s.textContent=faces[Math.floor(Math.random()*faces.length)];
+  s.style.cssText='position:fixed;top:-46px;left:'+(8+Math.random()*84)+'vw;font-size:'+(26+Math.random()*22)+'px;z-index:300;pointer-events:none;transition:transform 1.6s cubic-bezier(.45,0,.75,1),opacity 1.6s ease-in';
+  document.body.appendChild(s);
+  requestAnimationFrame(()=>{ s.style.transform='translateY(106vh) rotate('+(Math.random()*720-360)+'deg)'; s.style.opacity='0'; });
+  setTimeout(()=>s.remove(),1750);
+}
 
 let hintShown=false;
 // arched comic arrow pointing RIGHT (label sits left of it, in the gutter, → into the table)
@@ -376,7 +385,6 @@ async function load(){
     ? '⚠︎ <b style="color:var(--warn)">Not ranked:</b> ' + DEADROWS.map(r=>`<b>${r.name}</b> — ${DEAD[r.name]}`).join(' · ')
     : '';
   renderBoard();
-  showSortHint();
 }
 
 async function loadExits(){
