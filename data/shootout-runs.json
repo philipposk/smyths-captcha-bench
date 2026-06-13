@@ -1,5 +1,5 @@
 {
-  "updated": 1781314586391,
+  "updated": 1781314731649,
   "partial": true,
   "note": "Each arm scraped the same URL sample on its OWN Tor (own exits), in parallel. Arms differ only in the locate method; legend reading is qwen/vlm in all. Aggregate comparison, not a same-captcha test. Captcha counts are solve ATTEMPTS (a method that keeps failing logs several).",
   "arms": [
@@ -8,20 +8,20 @@
       "label": "qwen3-vl-32b",
       "locate": "vlm",
       "kind": "vision AI · paid (cheap)",
-      "partial": true,
-      "fetches": 478,
-      "success_pct": 96.9,
-      "block_pct": 2.5,
-      "exits_n": 28,
+      "partial": false,
+      "fetches": 500,
+      "success_pct": 92.6,
+      "block_pct": 6.8,
+      "exits_n": 36,
       "captchas": {
         "detected": 0,
         "solved": 0,
         "failed": 0
       },
       "solve_rate_pct": null,
-      "rotations": 27,
-      "duration_min": 39.3,
-      "fetches_per_hour": 729,
+      "rotations": 35,
+      "duration_min": 41.9,
+      "fetches_per_hour": 716,
       "items": []
     },
     {
@@ -30,19 +30,19 @@
       "locate": "vlm",
       "kind": "vision AI · paid",
       "partial": true,
-      "fetches": 186,
-      "success_pct": 98.9,
+      "fetches": 215,
+      "success_pct": 99.1,
       "block_pct": 0,
-      "exits_n": 10,
+      "exits_n": 11,
       "captchas": {
         "detected": 0,
         "solved": 0,
         "failed": 0
       },
       "solve_rate_pct": null,
-      "rotations": 9,
-      "duration_min": 14.9,
-      "fetches_per_hour": 750,
+      "rotations": 10,
+      "duration_min": 17.3,
+      "fetches_per_hour": 745,
       "items": []
     },
     {
