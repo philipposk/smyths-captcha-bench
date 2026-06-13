@@ -126,16 +126,13 @@
   .votepanel.on{display:block} .votepanel h4{margin:0 0 7px;font-size:12px;text-transform:uppercase;letter-spacing:.5px;color:var(--mut)}
   .votepanel .vr{display:flex;justify-content:space-between;gap:8px;font-size:13px;padding:3px 0;border-bottom:1px solid var(--line)} .votepanel .vr:last-child{border:none}
   .votepanel .vr b{color:var(--txt)} .votepanel .vn{color:#c89bff;font-weight:700}
-  /* picker overlay + toast */
-  .vov{position:fixed;inset:0;background:rgba(5,7,11,.72);display:none;align-items:center;justify-content:center;z-index:300;padding:20px}
-  .vov.on{display:flex}
-  .vcard{background:var(--panel2);border:1px solid var(--line);border-radius:16px;padding:20px;max-width:440px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.6);max-height:80vh;overflow:auto}
-  .vcard h3{margin:0 0 4px;font-size:18px} .vcard p{margin:0 0 12px;color:var(--mut);font-size:13px}
-  .vlist{display:flex;flex-direction:column;gap:5px}
-  .vopt{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:9px 12px;border:1px solid var(--line);border-radius:9px;background:var(--panel);cursor:pointer;font-weight:600;font-size:14px;color:var(--txt)}
-  .vopt:hover{border-color:#33415a;background:#1a1f2a} .vopt.voted{border-color:var(--accent);background:rgba(122,169,255,.1)}
-  .vopt .vs{color:var(--mut);font-size:12px;font-weight:600}
-  .vclose{margin-top:13px;text-align:right} .vclose button{background:none;border:1px solid var(--line);color:var(--mut);border-radius:8px;padding:7px 14px;cursor:pointer;font-weight:600}
+  /* per-row vote crown: greyed ♛ → gold when YOU vote; ×N community count shows at 2+ votes */
+  .votecr{background:none;border:none;cursor:pointer;font-size:15px;line-height:1;padding:0 1px;color:var(--dim);vertical-align:middle;position:relative;transition:transform .12s,color .15s,text-shadow .15s}
+  .votecr:hover{transform:scale(1.25);color:var(--gold)}
+  .votecr.on{color:var(--gold);text-shadow:0 1px 5px rgba(255,207,77,.55)}
+  .votecr sup{font-size:9px;font-weight:800;color:#c89bff;margin-left:1px;vertical-align:super}
+  @keyframes votepulse{0%,100%{transform:scale(1)}50%{transform:scale(1.55);color:var(--gold)}}
+  .votecr.pulse{animation:votepulse .75s ease 2}
   #toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);opacity:0;z-index:400;pointer-events:none;
     background:linear-gradient(180deg,#1a2030,#141925);border:1px solid #33415a;color:var(--txt);font-weight:650;font-size:14px;padding:12px 20px;border-radius:12px;box-shadow:0 14px 34px rgba(0,0,0,.55);transition:.3s;max-width:90vw;text-align:center}
   #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
@@ -207,12 +204,6 @@
   </footer>
 </div>
 
-<div class="vov" id="vov"><div class="vcard">
-  <h3>👑 Crown your pick</h3>
-  <p>Tap the model you'd actually run. Your crown shows up next to it on the board.</p>
-  <div class="vlist" id="vlist"></div>
-  <div class="vclose"><button onclick="document.getElementById('vov').classList.remove('on')">close</button></div>
-</div></div>
 <div id="toast"></div>
 
 <script>
@@ -293,25 +284,18 @@ const Votes = {
   }
 };
 function crowns(name){
+  const c = COMMUNITY[name]||0, mine = Votes.mine().includes(name);
   let out='';
   if(PICKS[name]) out += `<span class="cr gold">👑<span class="tip">${PICKS[name]}</span></span>`;
-  if(Votes.mine().includes(name)) out += `<span class="cr mine">♛<span class="tip">your pick</span></span>`;
-  const c = COMMUNITY[name]||0;
-  if(c>0) out += `<span class="cr comm">♛${c>1?'×'+c:''}<span class="tip">${c} community vote${c>1?'s':''}</span></span>`;
-  return out ? `<span class="crowns">${out}</span>` : '';
+  // clickable vote crown on every row — grey until you tap it, then gold; ×N at 2+ community votes
+  out += `<button class="votecr ${mine?'on':''}" data-n="${name}" title="${mine?'your pick — voted ✓':'tap to vote'}">♛${c>=2?`<sup>×${c}</sup>`:''}</button>`;
+  return `<span class="crowns">${out}</span>`;
 }
-function openPicker(){
-  const list=document.getElementById('vlist'), mine=Votes.mine();
-  list.innerHTML = LB.map(r=>`<button class="vopt ${mine.includes(r.name)?'voted':''}" data-n="${r.name}">
-    <span>${r.name}</span><span class="vs">${mine.includes(r.name)?('♛ yours'+(SUPA.url?'':' · tap to remove')):fmtPct(r.orderedSolveAcc)+' solved'}</span></button>`).join('');
-  list.querySelectorAll('.vopt').forEach(b=>b.addEventListener('click', async ()=>{
-    document.getElementById('vov').classList.remove('on');
-    const res = await Votes.toggle(b.dataset.n);
-    renderBoard();
-    if(res===true) toast(`👑 Crown’s on <b>${b.dataset.n}</b>!` + (SUPA.url?' Counted — thanks!':' Now make it official — drop your pick in Slack 😄'));
-    else if(res==='already') toast(`You already crowned <b>${b.dataset.n}</b> 👑`);
-  }));
-  document.getElementById('vov').classList.add('on');
+// "Vote your own" doesn't open a list — it nudges you to the crowns already on the board.
+function promptVote(){
+  document.getElementById('board').scrollIntoView({behavior:'smooth',block:'start'});
+  toast('👇 Tap the <b>♛</b> next to any model to crown your pick');
+  setTimeout(()=>document.querySelectorAll('.votecr:not(.on)').forEach(c=>{ c.classList.add('pulse'); setTimeout(()=>c.classList.remove('pulse'),1500); }), 280);
 }
 function toast(html){ const t=document.getElementById('toast'); if(!t) return; t.innerHTML=html; t.classList.add('show'); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('show'),4500); }
 function updatePicks(){
@@ -389,6 +373,13 @@ function renderBoard(){
     renderBoard();
   }));
   board.querySelectorAll('th.nonsort').forEach(h=>h.addEventListener('click',()=>showBig(h.dataset.msg)));
+  board.querySelectorAll('.votecr').forEach(b=>b.addEventListener('click', async (e)=>{
+    e.stopPropagation();
+    const res = await Votes.toggle(b.dataset.n);
+    renderBoard();
+    if(res===true) toast(`👑 Crown’s on <b>${b.dataset.n}</b>!` + (SUPA.url?' Counted — thanks!':' Now make it official in Slack 😄'));
+    else if(res==='already') toast(`You already crowned <b>${b.dataset.n}</b> 👑`);
+  }));
   updatePicks();
 }
 // click a non-sortable header → drop a little smiley that falls off the bottom of the screen
@@ -454,7 +445,7 @@ async function loadExits(){
   if(LB.length) renderBoard();
 }
 
-document.getElementById('votebtn').addEventListener('click', openPicker);
+document.getElementById('votebtn').addEventListener('click', promptVote);
 load(); setInterval(load,60000);
 loadExits(); setInterval(loadExits,60000);
 Votes.refresh().then(()=>{ if(LB.length){ renderBoard(); } });
