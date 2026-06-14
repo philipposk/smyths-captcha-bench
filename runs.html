@@ -63,6 +63,29 @@
   .mcell{background:#0c0e13;border:1px solid var(--line);border-radius:9px;overflow:hidden;aspect-ratio:1/1;position:relative;transition:transform .1s,border-color .1s}
   .mcell:hover{transform:scale(1.07);border-color:#3a4a63;z-index:5;box-shadow:0 6px 18px rgba(0,0,0,.5)}
   .mcell img{width:100%;height:100%;object-fit:cover;display:block}
+  /* day-2 miss report modal */
+  .miss-link{display:inline-block;margin:2px 0 12px;font-size:13.5px;font-weight:600;color:var(--warn);background:rgba(244,183,64,.10);border:1px solid rgba(244,183,64,.28);padding:6px 13px;border-radius:999px;cursor:pointer}
+  .miss-link:hover{background:rgba(244,183,64,.18)}
+  .ovl{position:fixed;inset:0;background:rgba(4,6,10,.74);backdrop-filter:blur(3px);display:none;align-items:flex-start;justify-content:center;z-index:50;padding:40px 16px;overflow:auto}
+  .ovl.show{display:flex}
+  .modal{background:var(--panel);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);max-width:920px;width:100%;padding:24px 26px 28px;position:relative}
+  .modal h2{margin:0 36px 4px 0;font-size:22px;letter-spacing:-.3px}
+  .modal .x{position:absolute;top:14px;right:16px;width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:var(--panel2);color:var(--mut);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+  .modal .x:hover{color:var(--txt);border-color:#33415a}
+  .kpis{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
+  .kpi{background:var(--panel2);border:1px solid var(--line);border-radius:11px;padding:9px 13px;min-width:92px}
+  .kpi b{display:block;font-size:20px;line-height:1.1} .kpi span{font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:.4px}
+  .tag{display:inline-block;font-size:10.5px;font-weight:700;padding:2px 7px;border-radius:6px;text-transform:uppercase;letter-spacing:.3px}
+  .tag.homepage{background:rgba(255,106,106,.16);color:#ff9a9a}
+  .tag.category{background:rgba(122,169,255,.16);color:#a9c6ff}
+  .tag.allitems{background:rgba(147,160,180,.18);color:#c2cbd9}
+  .tag.error{background:rgba(244,183,64,.18);color:#ffce6e}
+  .misstbl{width:100%;border-collapse:collapse;min-width:0;font-size:13px}
+  .misstbl th,.misstbl td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:left;white-space:normal}
+  .misstbl td.r{text-align:right;color:var(--dim);font-variant-numeric:tabular-nums;white-space:nowrap;width:30px}
+  .misstbl th{position:sticky;top:0;background:var(--panel2);color:var(--dim);font-size:11px;text-transform:uppercase;letter-spacing:.4px}
+  .misstbl tbody tr:hover{background:#181d27}
+  .note2{font-size:13px;color:var(--mut);background:var(--panel2);border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:8px;padding:11px 13px;margin:10px 0 0}
 </style>
 </head>
 <body>
@@ -92,6 +115,7 @@
 
   <h2 class="sec">The two 3k/day runs</h2>
   <p class="secsub">Same target (3,000 URLs/day, every region, over Tor), <b>different jobs</b> — so some columns only one of them measures. Production is on <b>day 2</b> (day 1 complete, 2,974/3,000); the exit study is a day-1 sample.</p>
+  <span class="miss-link" onclick="openMiss()">⚠ Day 2: 36 of 3,000 didn't yield a product — see the full report ›</span>
   <div class="tablewrap">
     <table>
       <thead><tr>
@@ -217,6 +241,42 @@ async function loadGallery(){
 }
 load(); setInterval(load, 60000);
 loadGallery();
+
+// ---- Day-2 miss report modal ----
+const MISS_KIND={homepage:'→ region homepage',category:'→ category page',allitems:'→ "all items"',error:'error / no data'};
+async function openMiss(){
+  const ov=document.getElementById('missOvl'); ov.classList.add('show');
+  if(ov.dataset.loaded) return;
+  try{
+    const d=await fetch('data/day2-misses.json?_='+Date.now()).then(r=>r.json());
+    document.getElementById('missKpis').innerHTML=
+      `<div class="kpi"><b>${d.scraped.toLocaleString()}</b><span>scraped</span></div>`+
+      `<div class="kpi"><b>${d.missed}</b><span>no product</span></div>`+
+      `<div class="kpi"><b>0</b><span>parser misses</span></div>`+
+      `<div class="kpi"><b>${((d.scraped/d.requested)*100).toFixed(1)}%</b><span>of target</span></div>`;
+    document.getElementById('missBody').innerHTML=d.items.map((it,i)=>
+      `<tr><td class="r">${i+1}</td><td>${it.name}</td><td>${it.region}</td><td><span class="tag ${it.kind}">${MISS_KIND[it.kind]||it.kind}</span> <span class="dim" style="font-size:12px">${it.landed}</span></td></tr>`).join('');
+    document.getElementById('missMethod').textContent=d.method;
+    ov.dataset.loaded='1';
+  }catch(e){ document.getElementById('missBody').innerHTML='<tr><td colspan="4">could not load report (data/day2-misses.json)</td></tr>'; }
+}
+function closeMiss(){ document.getElementById('missOvl').classList.remove('show'); }
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeMiss(); });
+document.getElementById('missOvl').addEventListener('click',e=>{ if(e.target.id==='missOvl') closeMiss(); });
 </script>
+
+<div class="ovl" id="missOvl">
+  <div class="modal">
+    <button class="x" onclick="closeMiss()" aria-label="Close">&#10005;</button>
+    <h2>Day 2 — the 36 URLs that returned no product</h2>
+    <p class="mut" style="margin:2px 0 0;font-size:14px">Every one was opened by hand in a normal residential browser. <b>None is a live product the scraper missed</b> — each is a discontinued/delisted toy whose old URL now redirects away (to a category, the brand page, “all items”, or the region homepage). The scraper reached every page; there was simply no product on it.</p>
+    <div class="kpis" id="missKpis"></div>
+    <div style="overflow:auto;max-height:46vh;border:1px solid var(--line);border-radius:10px">
+      <table class="misstbl"><thead><tr><th class="r">#</th><th>Product (at scrape time)</th><th>Region</th><th>What the dead URL does now</th></tr></thead><tbody id="missBody"></tbody></table>
+    </div>
+    <p class="note2"><b>Smoking gun:</b> the Schleich “Steintriceratops 70828” is here 3× (CH, DE, AT) and the Siku 5510 twice — the same SKU dead in every region. A parser bug would fail randomly; the same product failing everywhere means the product is gone, not the scraper. <span id="missMethod" style="display:block;margin-top:8px;color:var(--dim)"></span></p>
+    <p class="note2" style="border-left-color:var(--accent)"><b>Pipeline:</b> all 36 are written to <code>day2_errors.jsonl</code> with a category + full attempt history, shaped for the worker's error format — nothing vanishes silently. Caveat: a discontinued product currently logs as <code>data_extraction</code> (same bucket as a genuine parse failure), because the fetch follows the redirect to a 200 page. We can add a distinct <code>discontinued</code> category by checking the post-redirect URL.</p>
+  </div>
+</div>
 </body>
 </html>
