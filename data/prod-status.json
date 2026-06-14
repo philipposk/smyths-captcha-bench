@@ -1,15 +1,15 @@
 {
-  "updated": 1781395661372,
+  "updated": 1781397021757,
   "branch": "feat/production-reliability-pipeline",
   "note": "Production run: scrape every URL or log exactly why not. rotate fresh exit → escalate qwen→gemini-3.1-flash-lite → deferred retries → structured error log.",
   "overall": {
     "requested": 6000,
-    "scraped": 3718,
+    "scraped": 3963,
     "unscraped": 26,
-    "accounted_pct": 62.4,
-    "scraped_pct": 62,
+    "accounted_pct": 66.5,
+    "scraped_pct": 66,
     "errorsByCategory": {
-      "data_extraction": 31
+      "data_extraction": 36
     }
   },
   "days": [
@@ -66,11 +66,11 @@
       "status": "running",
       "date": null,
       "requested": 3000,
-      "scraped": 744,
+      "scraped": 989,
       "unscraped": 0,
       "captchas": {},
       "errorsByCategory": {
-        "data_extraction": 5
+        "data_extraction": 10
       },
       "sampleErrors": [
         {
@@ -95,6 +95,11 @@
         },
         {
           "url": "https://www.smythstoys.com/ch/de-ch/spielzeug/action-spielzeug/spielzeugautos-und-spielsets/siku/siku-5510-polizeistation-mit-licht-und-sound/p/249851",
+          "category": "data_extraction",
+          "attempts": 2
+        },
+        {
+          "url": "https://www.smythstoys.com/ch/de-ch/spielzeug/plueschtiere-und-kuscheltiere/kuscheltiere/snackles/snackles-disney-kuscheltier-stitch-mit-kokosnuss-35-cm/p/249541",
           "category": "data_extraction",
           "attempts": 2
         }
