@@ -1,5 +1,5 @@
 {
-  "updated": 1781620871741,
+  "updated": 1781621008257,
   "branch": "feat/production-reliability-pipeline",
   "note": "Production run: scrape every URL or log exactly why not. rotate fresh exit → escalate to gemini-3.1-flash-lite/gpt-5.4-mini → deferred retries → structured error log.",
   "overall": {
@@ -15,12 +15,12 @@
   },
   "summary": {
     "products": 8904,
-    "fetches": 10864,
-    "exits": 371,
-    "durationMin": 1543,
-    "durationH": 25.7,
-    "captchasMet": 71,
-    "captchasSolved": 59,
+    "fetches": 10878,
+    "exits": 377,
+    "durationMin": 1546,
+    "durationH": 25.8,
+    "captchasMet": 72,
+    "captchasSolved": 60,
     "runs": [
       {
         "name": "Production day 1",
@@ -43,11 +43,11 @@
       {
         "name": "Production day 3",
         "runner": "docker-amd64",
-        "fetches": 3283,
-        "exits": 87,
-        "durationMin": 831,
-        "captchasMet": 23,
-        "captchasSolved": 21
+        "fetches": 3297,
+        "exits": 93,
+        "durationMin": 833.7,
+        "captchasMet": 24,
+        "captchasSolved": 22
       },
       {
         "name": "Tor exit study",
@@ -183,13 +183,13 @@
       "scraped": 2966,
       "unscraped": 0,
       "captchas": {
-        "detected": 23,
-        "solved": 21,
+        "detected": 24,
+        "solved": 22,
         "failed": 2
       },
-      "fetches": 3283,
-      "exits": 87,
-      "durationMin": 831,
+      "fetches": 3297,
+      "exits": 93,
+      "durationMin": 833.7,
       "errorsByCategory": {
         "data_extraction": 34
       },
