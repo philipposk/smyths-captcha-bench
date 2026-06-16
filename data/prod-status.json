@@ -1,26 +1,26 @@
 {
-  "updated": 1781572319067,
+  "updated": 1781573684060,
   "branch": "feat/production-reliability-pipeline",
   "note": "Production run: scrape every URL or log exactly why not. rotate fresh exit → escalate to gemini-3.1-flash-lite/gpt-5.4-mini → deferred retries → structured error log.",
   "overall": {
     "requested": 9000,
-    "scraped": 6183,
+    "scraped": 6428,
     "unscraped": 62,
-    "accounted_pct": 69.4,
-    "scraped_pct": 68.7,
+    "accounted_pct": 72.1,
+    "scraped_pct": 71.4,
     "errorsByCategory": {
-      "data_extraction": 61,
+      "data_extraction": 66,
       "http_error": 1
     }
   },
   "summary": {
-    "products": 6183,
-    "fetches": 7834,
-    "exits": 287,
-    "durationMin": 734,
-    "durationH": 12.2,
-    "captchasMet": 48,
-    "captchasSolved": 38,
+    "products": 6428,
+    "fetches": 8089,
+    "exits": 290,
+    "durationMin": 757,
+    "durationH": 12.6,
+    "captchasMet": 51,
+    "captchasSolved": 40,
     "runs": [
       {
         "name": "Production day 1",
@@ -43,11 +43,11 @@
       {
         "name": "Production day 3",
         "runner": "docker-amd64",
-        "fetches": 253,
-        "exits": 3,
-        "durationMin": 22.1,
-        "captchasMet": 0,
-        "captchasSolved": 0
+        "fetches": 508,
+        "exits": 6,
+        "durationMin": 44.9,
+        "captchasMet": 3,
+        "captchasSolved": 2
       },
       {
         "name": "Tor exit study",
@@ -180,18 +180,46 @@
       "date": null,
       "runner": "docker-amd64",
       "requested": 3000,
-      "scraped": 245,
+      "scraped": 490,
       "unscraped": 0,
       "captchas": {
-        "detected": 0,
-        "solved": 0,
-        "failed": 0
+        "detected": 3,
+        "solved": 2,
+        "failed": 1
       },
-      "fetches": 253,
-      "exits": 3,
-      "durationMin": 22.1,
-      "errorsByCategory": {},
-      "sampleErrors": []
+      "fetches": 508,
+      "exits": 6,
+      "durationMin": 44.9,
+      "errorsByCategory": {
+        "data_extraction": 5
+      },
+      "sampleErrors": [
+        {
+          "url": "https://www.smythstoys.com/at/de-at/spielzeug/action-spielzeug/disney-lorcana/disney-lorcana-winterzauber-schatzkiste-der-luminari/p/256901",
+          "category": "data_extraction",
+          "attempts": 2
+        },
+        {
+          "url": "https://www.smythstoys.com/at/de-at/spielzeug/action-spielzeug/actionfiguren/weitere-actionfiguren/twinchees-hello-kitty-and-friends-hide-und-seek-kakurenbo-figuren-5-cm-sortiert/p/256614",
+          "category": "data_extraction",
+          "attempts": 2
+        },
+        {
+          "url": "https://www.smythstoys.com/ie/en-ie/toys/travel-games/scrabble-classic-refresh-board-game/p/235749",
+          "category": "data_extraction",
+          "attempts": 2
+        },
+        {
+          "url": "https://www.smythstoys.com/at/de-at/spielzeug/action-spielzeug/nerf/nerf-elite-2-0/nerf-elite-2-0-loadout-blaster-3er-set-mit-14-pfeilen/p/250694",
+          "category": "data_extraction",
+          "attempts": 2
+        },
+        {
+          "url": "https://www.smythstoys.com/ch/de-ch/spielzeug/lego/lego-neuheiten/lego-sonic-the-hedgehog-77119-tails-tornado-1/p/259151",
+          "category": "data_extraction",
+          "attempts": 2
+        }
+      ]
     }
   ]
 }
