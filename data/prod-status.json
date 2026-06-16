@@ -1,12 +1,12 @@
 {
-  "updated": 1781621014058,
+  "updated": 1781621016276,
   "branch": "feat/production-reliability-pipeline",
   "note": "Production run: scrape every URL or log exactly why not. rotate fresh exit → escalate to gemini-3.1-flash-lite/gpt-5.4-mini → deferred retries → structured error log.",
   "overall": {
     "requested": 9000,
     "scraped": 8904,
-    "unscraped": 62,
-    "accounted_pct": 99.6,
+    "unscraped": 96,
+    "accounted_pct": 100,
     "scraped_pct": 98.9,
     "errorsByCategory": {
       "data_extraction": 95,
@@ -176,12 +176,16 @@
     },
     {
       "day": 3,
-      "status": "running",
-      "date": null,
+      "status": "done",
+      "date": "2026-06-16",
       "runner": "docker-amd64",
       "requested": 3000,
       "scraped": 2966,
-      "unscraped": 0,
+      "unscraped": 34,
+      "retryRounds": 1,
+      "escalation": [
+        "openai/gpt-5.4-mini"
+      ],
       "captchas": {
         "detected": 24,
         "solved": 22,
