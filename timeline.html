@@ -50,6 +50,28 @@
   <p class="sub">A running log of the project: the bench, the gallery, the Tor exit study, the solver shootout, the production pipeline — and an honest record of the one self-inflicted incident, so the numbers on this site stay trustworthy.</p>
 
   <div class="day">
+    <h2>2026-06-16</h2>
+    <ul class="t">
+      <li><b>Verified every "missing" product by hand.</b> Opened all <b>36</b> URLs that day-2 didn't scrape, one by one, in a normal browser — <b>every single one is a discontinued/delisted toy</b> whose old URL now 301-redirects to a category page, the brand page, "all items", or the region homepage. <b>Zero were live products the parser missed.</b> Tell-tale: the same SKU (Schleich "Steintriceratops 70828") is dead in CH, DE <i>and</i> AT — a parser bug fails randomly, a gone product fails everywhere. Added a <b>pop-up report</b> on Live runs (closes with ✕ / Esc) listing each one and where its dead URL now lands.</li>
+      <li>Reframed the home-page summary into <b>"What we've gathered — across every run"</b>: products captured, pages fetched, Tor exits used, time spent, and captchas met → solved — <b>totalled across all runs</b>. Dropped "failed"-style framing, because a discontinued product didn't <i>fail</i> — there was simply nothing on the page to scrape. The scarier "random-exit hostility %" stays on the exit-study tab, clearly labelled as a different measurement.</li>
+      <li>The <b>Live runs</b> table now shows <b>every production day</b> (not just the latest), each with its real captcha-met→solved and pace numbers, pulled from the saved per-pass reports + exit logs.</li>
+      <li>Fixed a misleading roll-up: it counted <i>every retry attempt</i> as an error ("104 errors" when only <b>26</b> URLs actually ended unscraped). Now it counts unique, truly-unscraped URLs only.</li>
+      <li><b>Day 3</b> — a third 3,000-URL production day — kicked off in the Linux container.</li>
+    </ul>
+  </div>
+
+  <div class="day">
+    <h2>2026-06-14</h2>
+    <ul class="t">
+      <li class="incident"><span class="lead">⚠ Incident — the day-1 run wedged (and the dashboard briefly believed it)</span>
+        The first production day (launched 06-13) <b>froze for ~11 h at 627/3,000</b>: headed Chrome on this Mac hung in the retry pass, while a separate status publisher kept writing "running" — so the dashboard reported progress that wasn't happening. Root cause: one giant long-lived browser with no watchdog. Fix: killed the zombie, freed the Chrome profile lock, and <b>rebuilt the run to be crash-proof</b> — short capped passes (250 URLs) each recomputing what's left from the saved file, with a per-pass watchdog, so a hang now costs ≤25 min instead of the whole night. Lesson on the record: never trust a "running" flag — verify the output file is actually growing.</li>
+      <li class="ship"><b>Day 1 finished — 2,974/3,000 (99.1%)</b> once the run was crash-proof; the 26 it couldn't get were all discontinued products, with zero captcha or block losses.</li>
+      <li class="ship"><b>Built + proved the Linux worker image.</b> The Docker image (Tor + Xvfb virtual display + real Chrome) runs the scraper with no on-screen window to wedge — exactly how it'll run on the production worker. Verified on this Mac: Tor bootstraps inside the container, exit-rotation auth checks out, and it scrapes + solves doodles end-to-end.</li>
+      <li class="ship"><b>Day 2 ran entirely inside that container</b> — 2,964/3,000 (98.8%) — with a <b>fresh disposable container per batch</b>, so a hang can never carry over to the next one.</li>
+    </ul>
+  </div>
+
+  <div class="day">
     <h2>2026-06-13</h2>
     <ul class="t">
       <li><b>Honesty pass over the whole site.</b> Recomputed every model's cost to one consistent basis — <b>$ per 1,000 captcha-solves</b> (real bench tokens × real OpenRouter prices), replacing a field that mixed total project bills with stale estimates; color-cv's bogus $2.12 dropped to ~$0.08. Swapped the cost "battery" (a full battery read as <i>good</i> on a cost axis) for a <b>$-tier chip</b> that goes green→red as it gets pricier. Added an <b>Economics</b> tab (real $/month, the free-key question, Tor machine specs). Killed the "3-day study" wording where only <b>day 1</b> has run, relabelled "Product success" → "pages parsed OK", and reconciled the captcha gallery (a cumulative corpus) against the ~1% live exit rate.</li>
