@@ -1,26 +1,26 @@
 {
-  "updated": 1781619186082,
+  "updated": 1781620151235,
   "branch": "feat/production-reliability-pipeline",
   "note": "Production run: scrape every URL or log exactly why not. rotate fresh exit → escalate to gemini-3.1-flash-lite/gpt-5.4-mini → deferred retries → structured error log.",
   "overall": {
     "requested": 9000,
-    "scraped": 8802,
+    "scraped": 8904,
     "unscraped": 62,
-    "accounted_pct": 98.5,
-    "scraped_pct": 97.8,
+    "accounted_pct": 99.6,
+    "scraped_pct": 98.9,
     "errorsByCategory": {
-      "data_extraction": 88,
+      "data_extraction": 95,
       "http_error": 1
     }
   },
   "summary": {
-    "products": 8802,
-    "fetches": 10624,
-    "exits": 329,
-    "durationMin": 1515,
-    "durationH": 25.3,
-    "captchasMet": 68,
-    "captchasSolved": 56,
+    "products": 8904,
+    "fetches": 10788,
+    "exits": 343,
+    "durationMin": 1531,
+    "durationH": 25.5,
+    "captchasMet": 69,
+    "captchasSolved": 57,
     "runs": [
       {
         "name": "Production day 1",
@@ -43,11 +43,11 @@
       {
         "name": "Production day 3",
         "runner": "docker-amd64",
-        "fetches": 3043,
-        "exits": 45,
-        "durationMin": 803.2,
-        "captchasMet": 20,
-        "captchasSolved": 18
+        "fetches": 3207,
+        "exits": 59,
+        "durationMin": 819.4,
+        "captchasMet": 21,
+        "captchasSolved": 19
       },
       {
         "name": "Tor exit study",
@@ -180,18 +180,18 @@
       "date": null,
       "runner": "docker-amd64",
       "requested": 3000,
-      "scraped": 2864,
+      "scraped": 2966,
       "unscraped": 0,
       "captchas": {
-        "detected": 20,
-        "solved": 18,
+        "detected": 21,
+        "solved": 19,
         "failed": 2
       },
-      "fetches": 3043,
-      "exits": 45,
-      "durationMin": 803.2,
+      "fetches": 3207,
+      "exits": 59,
+      "durationMin": 819.4,
       "errorsByCategory": {
-        "data_extraction": 27
+        "data_extraction": 34
       },
       "sampleErrors": [
         {
