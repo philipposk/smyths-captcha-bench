@@ -1,24 +1,24 @@
 {
-  "updated": 1781617677207,
+  "updated": 1781619180188,
   "branch": "feat/production-reliability-pipeline",
   "note": "Production run: scrape every URL or log exactly why not. rotate fresh exit → escalate to gemini-3.1-flash-lite/gpt-5.4-mini → deferred retries → structured error log.",
   "overall": {
     "requested": 9000,
-    "scraped": 8717,
+    "scraped": 8802,
     "unscraped": 62,
-    "accounted_pct": 97.5,
-    "scraped_pct": 96.9,
+    "accounted_pct": 98.5,
+    "scraped_pct": 97.8,
     "errorsByCategory": {
-      "data_extraction": 90,
+      "data_extraction": 88,
       "http_error": 1
     }
   },
   "summary": {
-    "products": 8717,
-    "fetches": 10522,
-    "exits": 328,
-    "durationMin": 1490,
-    "durationH": 24.8,
+    "products": 8802,
+    "fetches": 10624,
+    "exits": 329,
+    "durationMin": 1515,
+    "durationH": 25.3,
     "captchasMet": 68,
     "captchasSolved": 56,
     "runs": [
@@ -43,9 +43,9 @@
       {
         "name": "Production day 3",
         "runner": "docker-amd64",
-        "fetches": 2941,
-        "exits": 44,
-        "durationMin": 778,
+        "fetches": 3043,
+        "exits": 45,
+        "durationMin": 803.2,
         "captchasMet": 20,
         "captchasSolved": 18
       },
@@ -180,18 +180,18 @@
       "date": null,
       "runner": "docker-amd64",
       "requested": 3000,
-      "scraped": 2779,
+      "scraped": 2864,
       "unscraped": 0,
       "captchas": {
         "detected": 20,
         "solved": 18,
         "failed": 2
       },
-      "fetches": 2941,
-      "exits": 44,
-      "durationMin": 778,
+      "fetches": 3043,
+      "exits": 45,
+      "durationMin": 803.2,
       "errorsByCategory": {
-        "data_extraction": 29
+        "data_extraction": 27
       },
       "sampleErrors": [
         {
