@@ -1,26 +1,26 @@
 {
-  "updated": 1781573690953,
+  "updated": 1781575067911,
   "branch": "feat/production-reliability-pipeline",
   "note": "Production run: scrape every URL or log exactly why not. rotate fresh exit → escalate to gemini-3.1-flash-lite/gpt-5.4-mini → deferred retries → structured error log.",
   "overall": {
     "requested": 9000,
-    "scraped": 6428,
+    "scraped": 6675,
     "unscraped": 62,
-    "accounted_pct": 72.1,
-    "scraped_pct": 71.4,
+    "accounted_pct": 74.9,
+    "scraped_pct": 74.2,
     "errorsByCategory": {
-      "data_extraction": 66,
+      "data_extraction": 69,
       "http_error": 1
     }
   },
   "summary": {
-    "products": 6428,
-    "fetches": 8089,
-    "exits": 290,
-    "durationMin": 757,
-    "durationH": 12.6,
-    "captchasMet": 51,
-    "captchasSolved": 40,
+    "products": 6675,
+    "fetches": 8342,
+    "exits": 293,
+    "durationMin": 780,
+    "durationH": 13,
+    "captchasMet": 53,
+    "captchasSolved": 42,
     "runs": [
       {
         "name": "Production day 1",
@@ -43,11 +43,11 @@
       {
         "name": "Production day 3",
         "runner": "docker-amd64",
-        "fetches": 508,
-        "exits": 6,
-        "durationMin": 44.9,
-        "captchasMet": 3,
-        "captchasSolved": 2
+        "fetches": 761,
+        "exits": 9,
+        "durationMin": 68,
+        "captchasMet": 5,
+        "captchasSolved": 4
       },
       {
         "name": "Tor exit study",
@@ -180,18 +180,18 @@
       "date": null,
       "runner": "docker-amd64",
       "requested": 3000,
-      "scraped": 490,
+      "scraped": 737,
       "unscraped": 0,
       "captchas": {
-        "detected": 3,
-        "solved": 2,
+        "detected": 5,
+        "solved": 4,
         "failed": 1
       },
-      "fetches": 508,
-      "exits": 6,
-      "durationMin": 44.9,
+      "fetches": 761,
+      "exits": 9,
+      "durationMin": 68,
       "errorsByCategory": {
-        "data_extraction": 5
+        "data_extraction": 8
       },
       "sampleErrors": [
         {
@@ -216,6 +216,11 @@
         },
         {
           "url": "https://www.smythstoys.com/ch/de-ch/spielzeug/lego/lego-neuheiten/lego-sonic-the-hedgehog-77119-tails-tornado-1/p/259151",
+          "category": "data_extraction",
+          "attempts": 2
+        },
+        {
+          "url": "https://www.smythstoys.com/ie/en-ie/toys/pre-school-and-electronic-learning/fisher-price/fisher-price-activity/fisher-price-learn-with-me-zebra-baby-walker/p/148625",
           "category": "data_extraction",
           "attempts": 2
         }
