@@ -169,19 +169,23 @@ async function load(){
 
   // ---- big runs (production + exit study) ----
   const rows = [];
-  if(prod && prod.overall){
-    const o=prod.overall, days=prod.days||[], d=days[days.length-1]||{}, dn=d.day||days.length||1;
-    const pending = Math.max(0,(d.requested||0)-(d.scraped||0)-(d.unscraped||0));
-    rows.push(`<tr>
-      <td class="run">Production <small>scrape everything · gemini-3.1-flash-lite</small></td>
-      <td><span class="pill ${d.status==='running'?'run':'done'}">day ${dn} · ${d.status||'—'}</span></td>
-      <td>${N(d.scraped)} <span class="dimc">/ ${N(d.requested)}</span></td>
-      <td>${cell(null)}</td>
-      <td>${cell(null)}</td>
-      <td>${o.captchas&&o.captchas.detected?`${o.captchas.detected} / ${o.captchas.solved}`:'<span class="dimc">— (not logged yet)</span>'}</td>
-      <td>${cell(null)}</td>
-      <td>${cell(null)}</td>
-    </tr>`);
+  if(prod && prod.days && prod.days.length){
+    for(const d of prod.days){
+      const okPct = d.requested ? (d.scraped/d.requested*100) : 0;
+      const pace = (d.fetches&&d.durationMin) ? Math.round(d.fetches/(d.durationMin/60))+'/h' : null;
+      const cap = (d.captchas&&((d.captchas.detected||0)+(d.captchas.solved||0))>0) ? `${d.captchas.detected} / ${d.captchas.solved}` : '<span class="dimc">0 / 0</span>';
+      const runnerLbl = d.runner==='docker-amd64' ? 'Linux container' : (d.runner==='mac' ? 'macOS' : '');
+      rows.push(`<tr>
+        <td class="run">Production <small>scrape everything · gemini-3.1-flash-lite${runnerLbl?' · '+runnerLbl:''}</small></td>
+        <td><span class="pill ${d.status==='running'?'run':'done'}">day ${d.day} · ${d.status||'—'}</span></td>
+        <td>${N(d.scraped)} <span class="dimc">/ ${N(d.requested)}</span></td>
+        <td>${d.exits?N(d.exits):cell(null)}</td>
+        <td>${cell(null)}</td>
+        <td>${cap}</td>
+        <td class="good">${okPct?pct(okPct):cell(null)}</td>
+        <td>${pace?pace:cell(null)}</td>
+      </tr>`);
+    }
   }
   if(study && study.overall && study.overall.exits_n){
     const o=study.overall, dayN=(study.days||[]).length;
@@ -198,8 +202,7 @@ async function load(){
   }
   document.getElementById('bigbody').innerHTML = rows.join('') || '<tr><td>no run data yet</td></tr>';
   document.getElementById('bignote').innerHTML =
-    `<b>Why the blanks:</b> the two jobs log different things. The exit study attributes every fetch to its exit (so it has the captcha rate + per-exit hostility); production only tracks scraped-vs-logged-vs-pending, so its captcha/pace columns are blank by design. `+
-    `<b>Why "doodles met" is ~0:</b> the one hostile exit the study saw was a hard Imperva block, not a solvable doodle. Real captcha puzzles are rare on clean exits.`;
+    `<b>Captcha rate</b> is blank for production by design: it sticks with a working exit instead of hopping to fresh ones, so it isn't sampling the exit pool the way the study is. <b>Doodles met → solved</b> are the real solver counts for that day; <b>pages parsed OK</b> = scraped ÷ requested — the small remainder is discontinued products (the URL now redirects to a category), not failures: <a onclick="openMiss()" style="cursor:pointer">see the day-2 report ›</a>.`;
 
   // ---- shootout arms ----
   if(shoot && shoot.arms && shoot.arms.length){

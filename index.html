@@ -194,8 +194,8 @@
   <div class="note" style="margin-top:8px">💡 Cost is per <b>1,000 solves</b>, not per scrape — the solver only runs when a captcha appears, which is rare. So the real monthly bill is tiny: <a href="economics.html">see the Economics tab</a>. <span class="dim">A <code>~</code> means the unit price is estimated (model isn't a production pick).</span></div>
   <div class="note" id="deadnote"></div>
 
-  <h2 class="sec">Exit health — the bigger lever</h2>
-  <p class="mut" id="exitlede" style="margin:4px 0 4px;max-width:72ch;font-size:14px">The puzzle only appears on low-trust connections. Most fetches never see one — so the real win is <b>avoiding</b> captchas, not solving them faster.</p>
+  <h2 class="sec">What we've gathered — across every run</h2>
+  <p class="mut" id="exitlede" style="margin:4px 0 4px;max-width:72ch;font-size:14px">Products captured, pages fetched, Tor exits used, time spent, and the doodle captchas met and cleared — totalled across all runs.</p>
   <div class="cards" id="exitcards"></div>
   <div id="exitnote" class="note" style="margin-top:4px"></div>
 
@@ -435,18 +435,28 @@ async function loadExits(){
   const card=(k,v,sub)=>`<div class="card"><div class="k">${k}</div><div class="v">${v}</div>${sub?`<div class="dim" style="font-size:12px;margin-top:2px">${sub}</div>`:''}</div>`;
   const lever = `<b>The lever:</b> a residential / mobile IP (instead of a Tor exit) plus a stable real-Chrome fingerprint pushes the captcha rate toward ~0 — worth more than a faster solver.`;
   const reconcile = `<b>Why the <a href="real-captchas.html">gallery</a> looks full of captchas while this rate is ~1%:</b> hostile exits are rare, but each one throws the wall on nearly every page — so a single bad exit makes a burst. The gallery is a cumulative corpus built over days of dev (and deliberately hitting bad exits for training data), not a sample of normal traffic.`;
-  let s=null,e=null;
+  let ps=null,s=null,e=null;
+  try{ ps = await fetch('data/prod-status.json?_='+Date.now()).then(r=>r.json()); }catch{}
   try{ s = await fetch('data/exits-study.json?_='+Date.now()).then(r=>r.json()); }catch{}
+  const sum = ps && ps.summary ? ps.summary : null;
   const ov = s && s.overall && s.overall.exits_n ? s.overall : null;
-  if(ov){
-    const dayN = (s.days||[]).length;
+  if(sum){
+    const cr = ov ? ov.captcha_rate_pct.toFixed(1) : '~1';
+    document.getElementById('exitlede').innerHTML = `Everything the scraper has pulled so far, across <b>every run</b> — products captured, pages fetched, Tor exits used, time spent, and the doodle captchas it met and cleared along the way.`;
+    document.getElementById('exitcards').innerHTML =
+      card('Products captured', sum.products.toLocaleString(), 'across the production days') +
+      card('Fetches made', sum.fetches.toLocaleString(), 'page requests · all runs') +
+      card('Tor exits used', sum.exits.toLocaleString(), 'distinct exit circuits') +
+      card('Time gathering data', sum.durationH+' h', `${sum.durationMin.toLocaleString()} min total`) +
+      card('Captchas met → solved', `${sum.captchasMet} → ${sum.captchasSolved}`, 'doodle walls cleared by the solver');
+    document.getElementById('exitnote').innerHTML = `<b>Production reliability:</b> day 1 = 2,974/3,000 (99.1%), day 2 = 2,964/3,000 (98.8%). The small remainder is <b>discontinued products</b> — the old URL now redirects to a category page, so there's nothing to scrape, not a failure (<a href="runs.html">see the day-2 report →</a>). Doodle captchas are <b>rare</b> (~${cr}% of exits) and cleared for pennies; the bigger reliability lever is the connection itself.<br>${lever}`;
+  } else if(ov){
     document.getElementById('exitlede').innerHTML = `The puzzle only fires on low-trust connections — so the real win is <b>avoiding</b> captchas, not solving them faster. Measured live over Tor across every region; this is the <b>day-1 exit sample</b>.`;
     document.getElementById('exitcards').innerHTML =
       card('Exits sampled', (ov.exits_n).toLocaleString(), `${(ov.attempted||0).toLocaleString()} product fetches`) +
       card('Solvable captchas', ov.captcha_rate_pct.toFixed(1)+'%', `of exits threw a doodle wall · ${ov.captcha}/${ov.exits_n}`) +
-      card('Fetches hard-blocked', (ov.fetch_block_pct??0).toFixed(1)+'%', `${(ov.fetch_blocked||0).toLocaleString()}/${(ov.attempted||0).toLocaleString()} Imperva walls — can’t be solved`) +
       card('Pages parsed OK', (ov.success_pct??0).toFixed(1)+'%', 'of fetches returned a product');
-    document.getElementById('exitnote').innerHTML = `<b>Day-1 exit sample.</b> The production reliability scrape is now crash-proof: <b>day 1 finished (2,974/3,000, 99.1%)</b> and <b>day 2 is running in the Linux worker container</b>. Full breakdown on the <a href="exit-study.html">Tor exit study tab →</a><br><b>Two kinds of wall:</b> <b>solvable doodle captchas</b> (rare — ${ov.captcha_rate_pct.toFixed(1)}% of exits, what the solver clears for pennies) and <b>hard Imperva blocks</b> (${(ov.fetch_block_pct??0).toFixed(1)}% of fetches — not solvable, you just lose that fetch). The ~${(100-(ov.success_pct??0)).toFixed(0)}% gap in “parsed OK” is mostly the latter, not dead products.<br>${lever}`;
+    document.getElementById('exitnote').innerHTML = `${reconcile}<br>${lever}`;
   } else {
     try{ e = await fetch('data/exits.json?_='+Date.now()).then(r=>r.json()); }catch{ return; }
     const noCap = (100 - (e.captcha_rate_pct??0)).toFixed(1);
