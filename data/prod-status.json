@@ -1,5 +1,5 @@
 {
-  "updated": 1781617671540,
+  "updated": 1781617677207,
   "branch": "feat/production-reliability-pipeline",
   "note": "Production run: scrape every URL or log exactly why not. rotate fresh exit → escalate to gemini-3.1-flash-lite/gpt-5.4-mini → deferred retries → structured error log.",
   "overall": {
